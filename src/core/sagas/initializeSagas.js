@@ -17,13 +17,18 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function*(action) {
         const result = yield fetch(url, options).then(res => res.json())
             .then(response => {
                 const redirectUrl = get(response, 'redirectURL', null);
+                const status = get(response, 'status', null);
+
                 if (redirectUrl) {
                     window.location.href = redirectUrl;
+                } else if (status === 'sign_terms') {
+                    window.location.href = '/#/terms';
                 }
+
                 return response;
             });
-        yield put(initializeAction.success(result))
+        yield put(initializeAction.success(result));
     } catch(e) {
-        yield put(initializeAction.error(e))
+        yield put(initializeAction.error(e));
     }
 });

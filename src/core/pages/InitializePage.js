@@ -132,9 +132,9 @@ const styles = {
 class InitializePage extends Component {
 
     componentDidMount() {
-        if (!token) {
+        //if (!token) {
             this.props.initializeAction();
-        }
+        //}
     }
 
     render() {
