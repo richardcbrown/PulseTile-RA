@@ -40,7 +40,7 @@ const convertDataRequestToHTTP = (type, resource, params) => {
             if (resource === 'patients') {
                 url = `${domainName}/api/${resource}`;
             } else {
-                url = `${domainName}/${apiPatientsUser}/${patientID}/${resource}`;
+                url = `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
             }
             if (!options.headers) {
                 options.headers = new Headers({ Accept: 'application/json' });
