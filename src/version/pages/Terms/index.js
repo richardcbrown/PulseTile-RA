@@ -1,10 +1,67 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from "@material-ui/core/Typography";
-import AcceptButton from "../../common/Buttons/AcceptButton";
+import ConfirmButton from "../../common/Buttons/ConfirmButton";
 import { acceptTermsAction } from "../../actions/acceptTermsAction";
 import { getTermsAction } from "../../actions/getTermsAction";
+import TopBarNoUser from "../../common/TopBarNoUser";
+import backgroundImage from "../../images/Artboard.png";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+
+const styles = {
+    termsBackground: {
+        width: "100%",
+        display: "flex",
+        flexGrow: 1,
+        background: `url(${backgroundImage}) 0 0 repeat` 
+    },
+    termsContainer: {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        width: "100%"
+    },
+    policyContainer: {
+        flexGrow: 1,
+        marginBottom: "24px",
+        padding: "12px"
+    },
+    policyAcceptContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center"
+    },
+    contentContainer: {
+        display: "flex",
+        flexGrow: 1,
+        flexDirection: "column",
+        margin: 0
+    },
+    policiesContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "stretch",
+        margin: 0,
+        flexGrow: 1,
+        width: "100%"
+    },
+    declarationContainer: {
+        overflowY: "auto"
+    },
+    policyAndAcceptContainer: {
+        display: "flex",
+        flexDirection: "column"
+    },
+    continueContainer: {
+        alignSelf: "flex-end",
+        margin: 0,
+        width: "100%"
+    }
+};
 
 class Terms extends Component {
 
@@ -22,41 +79,56 @@ class Terms extends Component {
     
     render() {
 
-        const { policies } = this.props;
+        const { policies, classes } = this.props;
         
         const allAccepted = this.allPoliciesAccepted();
 
         return (
-            <div>
-                <div>Terms</div>
+            <div className={ classes.termsContainer }>
+                <TopBarNoUser />
 
-                {
-                    policies.map((p, key) => {
-                        return (
-                            <div key={key}>
-                                { p.narrative }
-
-                                <div>
-                                    <Checkbox
-                                        //className={classes.checkbox}
-                                        checked={() => this.policyAccepted(p)}
-                                        color="primary"
-                                        onChange={() => this.acceptPolicy(p)}
-                                    />
-                                    <Typography>I accept</Typography>
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-
-                {
-                    allAccepted ?
-
-                    <AcceptButton onClick={() => this.accept()} /> :
-                    
-                    null
-                }
+                <div className={ classes.termsBackground }>
+                    <Grid container spacing={24} className={ classes.contentContainer }>
+                        <Grid container spacing={24} className={ classes.policiesContainer }>
+                            {
+                                policies.map((p, key) => {
+                                    return (
+                                        <Grid item xs={12} sm={12} md={6} lg={6} key={key} className={ classes.policyAndAcceptContainer }>
+                                            <Card className={ classes.policyContainer }>
+                                                <div className={ classes.declarationContainer }>
+                                                    <Typography>
+                                                        { p.narrative }
+                                                    </Typography>
+                                                </div>
+                                            </Card>
+                                            <Card className={ classes.policyAcceptContainer }>
+                                                <Checkbox
+                                                    //className={classes.checkbox}
+                                                    checked={this.policyAccepted(p)}
+                                                    color="primary"
+                                                    onChange={() => this.acceptPolicy(p)}
+                                                />
+                                                <Typography>I accept</Typography>
+                                            </Card>
+                                        </Grid>
+                                    )
+                                })
+                            }
+                        </Grid>
+                        <Grid container spacing={24} className={ classes.continueContainer }>
+                            {
+                                <Grid item xs={12}>
+                                    <Card>
+                                        <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
+                                        <a href="https://myhelm.org">
+                                            <Typography>I do not want to use Helm ></Typography>
+                                        </a>
+                                    </Card>
+                                </Grid>
+                            }
+                        </Grid>
+                    </Grid>
+                </div>
             </div>
         )
     }
@@ -77,6 +149,7 @@ class Terms extends Component {
 
         if (acceptedPolicies.find((p) => p.id === policy.id)) {
             this.setState({ acceptedPolicies: acceptedPolicies.filter((p) => p.id !== policy.id) });
+            return;
         }
 
         this.setState({ acceptedPolicies: [ ...acceptedPolicies, policy ] });
@@ -124,4 +197,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Terms);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Terms));

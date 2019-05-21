@@ -1,61 +1,45 @@
 import React, { Component } from "react";
-import { Toolbar, SaveButton, ListButton } from "react-admin";
-
+import { Toolbar } from "react-admin";
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import BlockIcon from '@material-ui/icons/Block';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
-import CustomSaveButton from "../../../core/common/Buttons/CustomSaveButton";
 import GeneralDialog from "../Dialogs/GeneralDialog";
+import { Typography } from "@material-ui/core";
+import ConfirmButton from "../../common/Buttons/ConfirmButton";
 
 const styles = theme => ({
-    listButton: {
-        display: "block",
-        width: 120,
-        height: 40,
-        paddingTop: "6px !important",
-        paddingLeft: "8px !important",
-        backgroundColor: theme.palette.dangerColor,
-        border: `1px solid ${theme.palette.dangerColor}`,
-        color: "#fff",
-        borderRadius: 20,
-        fontSize: 16,
-        fontWeight: 800,
-        "& svg": {
-            marginRight: 2,
-        },
-        "& span": {
-            textTransform: "capitalize",
-        },
-        "&:hover": {
-            backgroundColor: "#fff",
-            color: theme.palette.dangerColor,
-        }
-    },
     toolbar: {
         backgroundColor: theme.palette.toolbarColor,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-end"
+    },
+    createButton: {
+        display: "block",
+        width: 100,
+        height: 40,
+        margin: 8,
+        padding: 0,
+        backgroundColor: "white",
+        color: theme.palette.mainColor,
+        border: `1px solid ${theme.palette.mainColor}`,
+        borderRadius: 25,
+        fontSize: 16,
+        fontWeight: 800,
+        "&:hover": {
+            backgroundColor: theme.palette.mainColor,
+            color: "white",
+        }
+    },
+    link: {
+        marginBottom: "8px",
+        marginRight: "8px"
     }
 });
-
-// /**
-//  * This component returns toolbar without delete button for create forms
-//  *
-//  * @author Bogdan Shcherban <bsc@piogroup.net>
-//  * @param {shape} classes
-//  * @param {shape} props
-//  */
-// const CreateFormToolbar = ({ classes, ...props}) => {    
-//     return (
-//         <Toolbar className={classes.toolbar} {...props} >
-//             {/* <CustomSaveButton {...props} /> */}
-//             <button onClick={  }>Update</button>
-
-//             <Link to="/top3Things/history">Show previous entries</Link>
-//         </Toolbar>
-//     );
-// };
 
 class CreateFormDialogToolbar extends Component {
     
@@ -65,16 +49,26 @@ class CreateFormDialogToolbar extends Component {
     
     render() {
 
-        const { classes } = this.props;
+        const { classes, disabled } = this.props;
+        const { submitting } = this.state;
 
         return (
             <Toolbar className={classes.toolbar} {...this.props} >
-                {/* <CustomSaveButton {...props} /> */}
-                <Tooltip title="Update">
-                    <IconButton aria-label="Update" className={classes.createButton} onClick={() => this.setState({ showDialog: true })}>
-                        <AddIcon /> Update
-                    </IconButton>
-                </Tooltip>
+                
+                {
+                    !submitting ?
+
+                    <Tooltip title="Update">
+                        <IconButton disabled={ disabled } aria-label="Update" className={classes.createButton} onClick={() => this.setState({ showDialog: true })}>
+                            <AddIcon /> Update
+                        </IconButton>
+                    </Tooltip>
+
+                    :
+
+                    null
+                }
+
                 <GeneralDialog 
                     open={ this.state.showDialog }
                     onClose={ () => this.setState({ showDialog: false }) }
@@ -82,13 +76,20 @@ class CreateFormDialogToolbar extends Component {
                     message="Do not enter anything that requires assistance or urgent attention. If you need urgent medical attention please contact your GP surgery, ring 111 or 999. You remain responsible for acting on the health concerns you may have.
                     The information you enter here will be shared with health and care practitioners involved in your care." 
                     options={[
-                        <button>Cancel</button>,
-                        <CustomSaveButton {...this.props} />
+                        <Button aria-label="Cancel" onClick={() => this.setState({ showDialog: false })}>Cancel</Button>,
+                        <ConfirmButton label="Accept and Continue" onClick={() => this.create() } />
                     ]}
                 />
-                <Link to="/top3Things/history">Show previous entries</Link>
+                <Link className={ classes.link } to="/top3Things/history">
+                    <Typography>Show previous entries</Typography>
+                </Link>
             </Toolbar>
         );
+    }
+
+    create() {
+        this.props.handleSave();
+        this.setState({ showDialog: false });
     }
 }
 

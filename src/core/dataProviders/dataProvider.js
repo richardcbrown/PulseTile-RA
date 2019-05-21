@@ -283,6 +283,7 @@ const dataProvider = (type, resource, params) => {
                 responseInfo += '|' + get(res, 'error', null);
                 throw new HttpError(responseInfo);
             }
+
             return convertHTTPResponse(res, type, resource, params)
         })
         .catch(err => {

@@ -18,7 +18,7 @@ import toursStyles from "../styles";
  * @param {func}    callback
  * @constructor
  */
-const RunUserTour = ({ classes, runTour, isPassed, callback }) => {
+const RunUserTour = ({ classes, runTour, shouldRunTour, callback }) => {
     return (
         <React.Fragment>
             <Tooltip title="User Tour">
@@ -28,7 +28,7 @@ const RunUserTour = ({ classes, runTour, isPassed, callback }) => {
                     aria-haspopup="true"
                     aria-label="Tour"
                     color="inherit"
-                    onClick={() => runTour()} >
+                    onClick={ () => runTour() }>
                     <HelpIcon />
                 </IconButton>
             </Tooltip>
@@ -39,7 +39,7 @@ const RunUserTour = ({ classes, runTour, isPassed, callback }) => {
                 showProgress={true}
                 locale={locale}
                 steps={tourSteps}
-                run={isPassed}
+                run={shouldRunTour}
                 styles={toursStyles}
                 callback={callback}
             />

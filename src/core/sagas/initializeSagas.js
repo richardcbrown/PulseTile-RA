@@ -23,6 +23,8 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function*(action) {
                     window.location.href = redirectUrl;
                 } else if (status === 'sign_terms') {
                     window.location.href = '/#/terms';
+                } else {
+                    window.location.href = '/';
                 }
 
                 return response;

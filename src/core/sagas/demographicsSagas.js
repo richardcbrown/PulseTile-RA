@@ -29,6 +29,14 @@ export default takeEvery(DEMOGRAPHICS_ACTION.REQUEST, function*(action) {
                     responseInfo.errorMessage = get(res, 'error', null);
                     return false;
                 }
+
+                const status = get(res, 'status', null);
+
+                if (status && status === 'sign_terms') {
+                    window.location.href = '/#/login';
+                    return null;
+                }
+
                 return res;
             });
 

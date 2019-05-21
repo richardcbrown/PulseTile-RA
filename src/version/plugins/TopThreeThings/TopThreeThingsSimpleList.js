@@ -19,11 +19,11 @@ const TopThreeThingsSimpleList = ({ classes, ...rest }) => (
         basePath="/top3Things"
         {...rest}
     >
-        <DateField source="dateCreated" label="Date created"  />
-        <TextField source="name1" label="#1" />
-        <TextField source="name2" label="#2" />
-        <TextField source="name3" label="#3" />
-        <TextField source="source" label="Source" />
+        <DateField sortable={ false } source="dateCreated" label="Date created"  />
+        <TextField sortable={ false } source="name1" label="#1" />
+        <TextField sortable={ false } source="name2" label="#2" />
+        <TextField sortable={ false } source="name3" label="#3" />
+        <TextField sortable={ false } source="source" label="Source" />
     </SimpleListTemplate>
 );
 

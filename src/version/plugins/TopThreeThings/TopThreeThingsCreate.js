@@ -1,24 +1,39 @@
 import React, { Component } from "react";
-
-import CreateTemplate from "../../../core/common/ResourseTemplates/CreateTemplate";
-import Inputs from "./fragments/Inputs";
 import { connect } from "react-redux";
 import { synopsisTopThreeThingsAction } from "../../actions/synopsisActions";
 import get from "lodash/get";
 import customDataProvider from "../../../core/dataProviders/dataProvider";
-import { DisabledInput, TextInput, DateInput, LongTextInput, Create, SimpleForm } from "react-admin";
+import { TextInput, DateInput, LongTextInput, Create, SimpleForm, maxLength } from "react-admin";
 import moment from "moment";
+import { withStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar";
 import TableHeader from "../../../core/common/TableHeader";
 import Breadcrumbs from "../../../core/common/Breadcrumbs";
+import backgroundImage from "../../images/Artboard.png";
+import { Typography } from "@material-ui/core";
 
+const styles = {
+    createBlock: {
+        padding: "24px",
+        background: `url(${backgroundImage}) 0 0 repeat`
+    }
+};
 
-// const TopThreeThingsCreate = ({ classes, ...rest }) => (
-//     <CreateTemplate blockTitle="Problems / Issues" {...rest}>
-//         <Inputs />
-//     </CreateTemplate>
-// );
+const CharacterCount = ({ form, formItem, limit, show }) => {
+    
+    const showCount = form && show;
+    
+    if (!showCount) {
+        return (null);
+    }
+
+    const remaining = limit - (form.values && form.values[formItem] ? form.values[formItem].length : 0);
+
+    return (
+        <Typography>{ remaining }/{ limit } characters remaining</Typography>
+    )
+}
 
 /**
  * This component returns TopThreeThings creation form
@@ -39,8 +54,6 @@ class TopThreeThingsCreate extends Component {
 
     componentDidMount() {
         this.props.getTopThreeThingsSynopsis();
-
-        console.log(this.props);
     }
 
     componentDidUpdate() {
@@ -53,14 +66,27 @@ class TopThreeThingsCreate extends Component {
         }
     }
 
+    handleSave = () => {
+
+        const { form } = this.props;
+
+        if (form.anyTouched && !form.syncErrors) {
+            this.refs.formRef.props.save(form.values, '/top3Things');
+        }
+    }
+
+    showCount = (key) => {
+        const { form } = this.props;
+
+        return form && (!form.syncErrors || !form.syncErrors[key]);
+    }
+
     render() {
 
-        let rest = { ...this.props };
+        const { classes, form, ...rest } = this.props;
 
         const resourceUrl="top3Things";
         const title="Top Three Things";
-
-        let classes = {};
 
         const breadcrumbsResource = [
             { url: "/" + resourceUrl, title: title, isActive: false },
@@ -72,95 +98,69 @@ class TopThreeThingsCreate extends Component {
                 <TableHeader resource={resourceUrl} />            
                 <Grid item xs={12} sm={12} className={classes.createBlock}>
                     <Create {...rest}>
-                        <SimpleForm className={classes.createForm} toolbar={<CreateFormToolbar />}>
+                        <SimpleForm 
+                            className={classes.createForm}
+                            toolbar={<CreateFormToolbar { ...rest } handleSave={ this.handleSave } disabled={ !form || !form.anyTouched || form.syncErrors } />}
+                            onSubmit={ this.submit }
+                            ref="formRef"
+                        >
                             <TextInput 
                                 className={classes.labelBlock}  
                                 source="name1" 
                                 label="#1"
-                                defaultValue={ this.state.name1 } 
+                                defaultValue={ this.state.name1 }
+                                validate={ maxLength(75) } 
                             />
+                            <CharacterCount limit={ 75 } form={ form } formItem="name1" show={ this.showCount("name1") } />
                             <LongTextInput 
                                 className={classes.labelBlock} 
                                 source="description1" 
                                 label="Description #1" 
                                 fullWidth
-                                defaultValue={ this.state.description1 } 
+                                defaultValue={ this.state.description1 }
+                                validate={ maxLength(500) } 
                             />
+                            <CharacterCount limit={ 500 } form={ form } formItem="description1" show={ this.showCount("description1") } />
                             <TextInput 
                                 className={classes.labelBlock}  
                                 source="name2" 
                                 label="#2"
-                                defaultValue={ this.state.name2 } 
+                                defaultValue={ this.state.name2 }
+                                validate={ maxLength(75) }  
                             />
+                            <CharacterCount limit={ 75 } form={ form } formItem="name2" show={ this.showCount("name2") } />
                             <LongTextInput 
                                 className={classes.labelBlock} 
                                 source="description2" 
                                 label="Description #2" 
                                 fullWidth
-                                defaultValue={ this.state.description2 } 
+                                defaultValue={ this.state.description2 }
+                                validate={ maxLength(500) } 
                             />
+                            <CharacterCount limit={ 500 } form={ form } formItem="description2" show={ this.showCount("description2") } />
                             <TextInput 
                                 className={classes.labelBlock}  
                                 source="name3" 
                                 label="#3"
-                                defaultValue={ this.state.name3 } 
+                                defaultValue={ this.state.name3 }
+                                validate={ maxLength(75) }  
                             />
+                            <CharacterCount limit={ 75 } form={ form } formItem="name3" show={ this.showCount("name3") } />
                             <LongTextInput 
                                 className={classes.labelBlock} 
                                 source="description3" 
                                 label="Description #3" 
                                 fullWidth
-                                defaultValue={ this.state.description3 } 
+                                defaultValue={ this.state.description3 }
+                                validate={ maxLength(500) } 
                             />
+                            <CharacterCount limit={ 500 } form={ form } formItem="description3" show={ this.showCount("description3") } />
                             <TextInput className={classes.labelBlock} source="author" label="Author" defaultValue={localStorage.getItem('username')} disabled={true} fullWidth />
                             <DateInput className={classes.labelBlock} source="dateCreated" label="Date" defaultValue={moment().format('MM/DD/YYYY')} disabled={true} fullWidth />
                         </SimpleForm>
                     </Create>
                 </Grid>
             </React.Fragment>
-            // <CreateTemplate blockTitle="Problems / Issues" {...rest}>
-            //     <TextInput 
-            //         className={classes.labelBlock}  
-            //         source="name1" 
-            //         label="#1"
-            //         defaultValue={ this.state.name1 } 
-            //     />
-            //     <LongTextInput 
-            //         className={classes.labelBlock} 
-            //         source="description1" 
-            //         label="Description #1" 
-            //         fullWidth
-            //         defaultValue={ this.state.description1 } 
-            //     />
-            //     <TextInput 
-            //         className={classes.labelBlock}  
-            //         source="name2" 
-            //         label="#2"
-            //         defaultValue={ this.state.name2 } 
-            //     />
-            //     <LongTextInput 
-            //         className={classes.labelBlock} 
-            //         source="description2" 
-            //         label="Description #2" 
-            //         fullWidth
-            //         defaultValue={ this.state.description2 } 
-            //     />
-            //     <TextInput 
-            //         className={classes.labelBlock}  
-            //         source="name3" 
-            //         label="#3"
-            //         defaultValue={ this.state.name3 } 
-            //     />
-            //     <LongTextInput 
-            //         className={classes.labelBlock} 
-            //         source="description3" 
-            //         label="Description #3" 
-            //         fullWidth
-            //         defaultValue={ this.state.description3 } 
-            //     />
-            //     <TextInput className={classes.labelBlock} source="author" label="Author" defaultValue={localStorage.getItem('username')} disabled={true} fullWidth />
-            //     <DateInput className={classes.labelBlock} source="dateCreated" label="Date" defaultValue={moment().format('MM/DD/YYYY')} disabled={true} fullWidth />
-            // </CreateTemplate>
         );
     }
 }
@@ -169,6 +169,8 @@ const mapStateToProps = state => {
 
     const props = get(state, ['custom', 'top3ThingsSynopsis', 'data'], []);
     
+    const form = get(state, ['form', 'record-form'], null);
+
     const latestTopThreeThings = {
         
     };
@@ -177,7 +179,7 @@ const mapStateToProps = state => {
         latestTopThreeThings.id = props[0].sourceId;
     }
 
-    return Object.assign({}, { latestTopThreeThings });
+    return Object.assign({}, { latestTopThreeThings }, { form });
 };
 
 const mapDispatchToProps = dispatch => {
@@ -193,6 +195,4 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopThreeThingsCreate);
-
-//export default TopThreeThingsCreate;
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TopThreeThingsCreate));

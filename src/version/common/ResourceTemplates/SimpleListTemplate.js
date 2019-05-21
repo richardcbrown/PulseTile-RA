@@ -1,30 +1,17 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Route } from "react-router";
 import {
     List,
-    Filter,
-    TextInput,
-    Datagrid,
-    TextField
+    Datagrid
 } from "react-admin";
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import FilterIcon from '@material-ui/icons/FilterList';
-import SearchIcon from '@material-ui/icons/Search';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/Input';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExpandArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 
 import Breadcrumbs from "../../../core/common/Breadcrumbs";
 import TableHeader from "../../../core/common/TableHeader";
-import ListToolbar from "../../../core/common/Toolbars/ListToolbar";
+import SimpleListToolbar from "../../common/Toolbars/SimpleListToolbar";
 import EmptyListBlock from "../../../core/common/ResourseTemplates/EmptyListBlock";
 import { ITEMS_PER_PAGE } from "../../../core/config/styles";
 
@@ -114,11 +101,14 @@ class ListTemplate extends Component {
     };
 
     render() {
-        const { create, resourceUrl, title, children, classes, history, currentList } = this.props;
-        const { key, filterText } = this.state;
+        const { resourceUrl, title, children, classes, history, currentList } = this.props;
+        const { key } = this.state;
+
         const breadcrumbsResource = [
-            { url: "/" + resourceUrl, title: title, isActive: false },
+            { url: "/" + resourceUrl, title: title, isActive: true },
+            { url: "/top3Things/history", title: "History", isActive: false }
         ];
+        
         const currentListArray = Object.values(currentList);
         const idsNumber = currentListArray.length > 0 ? currentListArray.length : 0;
         return (
@@ -136,12 +126,12 @@ class ListTemplate extends Component {
                         <List
                             resource={resourceUrl}
                             key={key}
-                            filter={{ filterText: filterText }}
                             title={title}
                             perPage={ITEMS_PER_PAGE}
                             actions={null}
                             bulkActions={false}
-                            pagination={<ListToolbar resourceUrl={resourceUrl} history={history} isCreatePage={false} createPath={""} />}
+                            pagination={<SimpleListToolbar resourceUrl={resourceUrl} history={history} />}
+                            sort={ { field: 'dateCreated', order: 'DESC' } }
                             {...this.props}
                         >
                             { (idsNumber > 0) ?

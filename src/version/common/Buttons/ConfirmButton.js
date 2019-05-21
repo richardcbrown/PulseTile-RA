@@ -8,7 +8,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 const styles = theme => ({
     createButton: {
         display: "block",
-        width: 100,
+        width: "auto",
+        paddingLeft: "5px",
+        paddingRight: "5px",
         height: 40,
         margin: 8,
         padding: 0,
@@ -26,19 +28,19 @@ const styles = theme => ({
 });
 
 /**
- * This component returns Edit button
+ * This component returns Confirm button
  *
  * @author Richard Brown
  * @param {shape}  classes
- * @param {shape}  history
- * @param {string} redirectPath
+ * @param {func}   onClick
+ * @param {string} label
  */
-const AcceptButton = ({ classes, onClick }) => (
-    <Tooltip title="Accept">
-        <IconButton aria-label="Accept" className={classes.createButton} onClick={() => { console.log("click"); onClick() }}>
-            <AddIcon /> Accept
+const ConfirmButton = ({ classes, onClick, label }) => (
+    <Tooltip title={ label }>
+        <IconButton aria-label={ label } className={classes.createButton} onClick={onClick}>
+            <AddIcon /> { label }
         </IconButton>
     </Tooltip>
 );
 
-export default withStyles(styles)(AcceptButton);
+export default withStyles(styles)(ConfirmButton);
