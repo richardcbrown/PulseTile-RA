@@ -3,6 +3,7 @@ import get from "lodash/get";
 
 import { domainName } from "../token";
 import { INITIALIZE_ACTION, initializeAction } from "../actions/initializeAction";
+import { userLogout } from 'ra-core';
 
 export default takeEvery(INITIALIZE_ACTION.REQUEST, function*(action) {
     const url = domainName + '/api/initialise';
@@ -19,7 +20,9 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function*(action) {
                 const redirectUrl = get(response, 'redirectURL', null);
                 const status = get(response, 'status', null);
 
-                if (redirectUrl) {
+                if (response.error) {
+                    return false;
+                } else if (redirectUrl) {
                     window.location.href = redirectUrl;
                 } else if (status === 'sign_terms') {
                     window.location.href = '/#/terms';
@@ -29,7 +32,12 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function*(action) {
 
                 return response;
             });
-        yield put(initializeAction.success(result));
+
+        if (result === false) {
+            yield put(userLogout());
+        } else {
+            yield put(initializeAction.success(result));
+        }
     } catch(e) {
         yield put(initializeAction.error(e));
     }

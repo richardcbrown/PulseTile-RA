@@ -27,13 +27,16 @@ const styles = {
     policyContainer: {
         flexGrow: 1,
         marginBottom: "24px",
-        padding: "12px"
+        padding: "12px",
+        maxHeight: "500px",
+        overflowY: "auto"
     },
     policyAcceptContainer: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
-        alignItems: "center"
+        alignItems: "center",
+        width: "100%"
     },
     contentContainer: {
         display: "flex",
@@ -54,12 +57,20 @@ const styles = {
     },
     policyAndAcceptContainer: {
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        alignItems: "flex-end",
+        justifyContent: "center"
     },
     continueContainer: {
         alignSelf: "flex-end",
         margin: 0,
         width: "100%"
+    },
+    continue: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        padding: "10px"
     }
 };
 
@@ -97,13 +108,12 @@ class Terms extends Component {
                                             <Card className={ classes.policyContainer }>
                                                 <div className={ classes.declarationContainer }>
                                                     <Typography>
-                                                        { p.narrative }
+                                                        <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
                                                     </Typography>
                                                 </div>
                                             </Card>
                                             <Card className={ classes.policyAcceptContainer }>
                                                 <Checkbox
-                                                    //className={classes.checkbox}
                                                     checked={this.policyAccepted(p)}
                                                     color="primary"
                                                     onChange={() => this.acceptPolicy(p)}
@@ -118,7 +128,7 @@ class Terms extends Component {
                         <Grid container spacing={24} className={ classes.continueContainer }>
                             {
                                 <Grid item xs={12}>
-                                    <Card>
+                                    <Card className={ classes.continue }>
                                         <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
                                         <a href="https://myhelm.org">
                                             <Typography>I do not want to use Helm ></Typography>
@@ -188,8 +198,6 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     
-    console.log(state)
-
     const policies = state.custom.terms.data;
     
     return {

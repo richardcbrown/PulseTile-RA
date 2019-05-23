@@ -3,6 +3,7 @@ import get from "lodash/get";
 
 import { domainName, token } from "../../core/token";
 import { ACCEPT_TERMS_ACTION, acceptTermsAction } from "../actions/acceptTermsAction";
+import { userLogout } from 'ra-core';
 
 export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function*(action) {
     const url = domainName + '/api/initialise/terms/accept';
@@ -21,6 +22,11 @@ export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function*(
     try {
         const result = yield fetch(url, options).then(res => res.json())
             .then(response => {
+
+                if (response.status !== 200) {
+                    return false;
+                }
+
                 const redirectUrl = get(response, 'redirectURL', null);
                 const status = get(response, 'status', null);
 
@@ -30,9 +36,15 @@ export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function*(
                 } else if (status === 'login') {
                     window.location.href = '/#/login';
                 }
+                
                 return response;
             });
-        yield put(acceptTermsAction.success(result))
+
+        if (result === false) {
+            yield put(userLogout());
+        } else {    
+            yield put(acceptTermsAction.success(result));
+        }
     } catch(e) {
         yield put(acceptTermsAction.error(e))
     }

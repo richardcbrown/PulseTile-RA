@@ -106,7 +106,7 @@ class ListTemplate extends Component {
 
         const breadcrumbsResource = [
             { url: "/" + resourceUrl, title: title, isActive: true },
-            { url: "/top3Things/history", title: "History", isActive: false }
+            { url: `/${resourceUrl}/history`, title: "History", isActive: false }
         ];
         
         const currentListArray = Object.values(currentList);
@@ -130,7 +130,7 @@ class ListTemplate extends Component {
                             perPage={ITEMS_PER_PAGE}
                             actions={null}
                             bulkActions={false}
-                            pagination={<SimpleListToolbar resourceUrl={resourceUrl} history={history} />}
+                            pagination={<SimpleListToolbar resourceUrl={`${resourceUrl}/history`} history={history} sort={ { field: 'dateCreated', order: 'DESC' } } />}
                             sort={ { field: 'dateCreated', order: 'DESC' } }
                             {...this.props}
                         >

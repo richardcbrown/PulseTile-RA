@@ -67,9 +67,14 @@ class CustomPaginator extends Component {
         this.setState(
             { page: page },
             () => {
-                const { resourceUrl, history, itemsPerPage } = this.props;
+                const { resourceUrl, history, itemsPerPage, sort } = this.props;
                 const { page} = this.state;
-                history.push("/" + resourceUrl + "?page=" + page + "&perPage=" + itemsPerPage)
+
+                if (sort) {
+                    history.push("/" + resourceUrl + "?page=" + page + "&perPage=" + itemsPerPage + "&sort=" + sort.field + "&order=" + sort.order);
+                } else {
+                    history.push("/" + resourceUrl + "?page=" + page + "&perPage=" + itemsPerPage);
+                }
             }
         );
     };

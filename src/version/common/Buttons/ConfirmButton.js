@@ -4,28 +4,34 @@ import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
+import { getCurrentTheme } from "../../../core/config/styles";
 
-const styles = theme => ({
-    createButton: {
-        display: "block",
-        width: "auto",
-        paddingLeft: "5px",
-        paddingRight: "5px",
-        height: 40,
-        margin: 8,
-        padding: 0,
-        backgroundColor: "white",
-        color: theme.palette.mainColor,
-        border: `1px solid ${theme.palette.mainColor}`,
-        borderRadius: 25,
-        fontSize: 16,
-        fontWeight: 800,
-        "&:hover": {
-            backgroundColor: theme.palette.mainColor,
-            color: "white",
+const styles = theme => {
+
+    theme = theme.palette.mainColor ? theme : getCurrentTheme();
+
+    return {
+        createButton: {
+            display: "block",
+            width: "auto",
+            paddingLeft: "5px",
+            paddingRight: "5px",
+            height: 40,
+            margin: 8,
+            padding: 0,
+            backgroundColor: "white",
+            color: theme.palette.mainColor,
+            border: `1px solid ${theme.palette.mainColor}`,
+            borderRadius: 25,
+            fontSize: 16,
+            fontWeight: 800,
+            "&:hover": {
+                backgroundColor: theme.palette.mainColor,
+                color: "white",
+            }
         }
     }
-});
+};
 
 /**
  * This component returns Confirm button
@@ -35,10 +41,11 @@ const styles = theme => ({
  * @param {func}   onClick
  * @param {string} label
  */
-const ConfirmButton = ({ classes, onClick, label }) => (
+const ConfirmButton = ({ classes, onClick, label, hideIcon, disabled }) => (
     <Tooltip title={ label }>
-        <IconButton aria-label={ label } className={classes.createButton} onClick={onClick}>
-            <AddIcon /> { label }
+        <IconButton disabled={ disabled } aria-label={ label } className={classes.createButton} onClick={onClick}>
+            { hideIcon && <AddIcon /> }            
+            { label }
         </IconButton>
     </Tooltip>
 );

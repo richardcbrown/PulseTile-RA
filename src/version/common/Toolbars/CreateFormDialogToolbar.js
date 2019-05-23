@@ -60,7 +60,7 @@ class CreateFormDialogToolbar extends Component {
 
                     <Tooltip title="Update">
                         <IconButton disabled={ disabled } aria-label="Update" className={classes.createButton} onClick={() => this.setState({ showDialog: true })}>
-                            <AddIcon /> Update
+                            Update
                         </IconButton>
                     </Tooltip>
 

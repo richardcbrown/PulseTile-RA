@@ -23,9 +23,9 @@ const styles = {
  * @param {shape}   history
  * @param {number}  total
  */
-const SimpleListToolbar = ({ classes, resourceUrl, history, total }) => (
+const SimpleListToolbar = ({ classes, resourceUrl, history, total, sort }) => (
     <div className={classes.paginationBlock}>
-        <CustomPaginator resourceUrl={resourceUrl} history={history} itemsPerPage={10} total={total} />
+        <CustomPaginator resourceUrl={resourceUrl} history={history} itemsPerPage={10} total={total} sort={ sort } />
     </div>
 );
 
