@@ -40,7 +40,7 @@ const convertDataRequestToHTTP = (type, resource, params) => {
             if (resource === 'patients') {
                 url = `${domainName}/api/${resource}`;
             } else {
-                url = `${domainName}/${apiPatientsUser}/${patientID}/${resource}`;
+                url = `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
             }
             if (!options.headers) {
                 options.headers = new Headers({ Accept: 'application/json' });
@@ -283,6 +283,7 @@ const dataProvider = (type, resource, params) => {
                 responseInfo += '|' + get(res, 'error', null);
                 throw new HttpError(responseInfo);
             }
+
             return convertHTTPResponse(res, type, resource, params)
         })
         .catch(err => {

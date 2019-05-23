@@ -25,9 +25,9 @@ const TopThreeThingsList = ({ classes, ...rest }) => (
       {...rest}
     >
         <DateField source="dateCreated" label="Date created"  />
-        <TextField source="name1" label="Issue #1" />
-        <TextField source="name2" label="Issue #2" />
-        <TextField source="name3" label="Issue #3" />
+        <TextField source="name1" label="#1" />
+        <TextField source="name2" label="#2" />
+        <TextField source="name3" label="#3" />
         <TextField source="source" label="Source" />
     </ListTemplate>
 );
