@@ -78,12 +78,6 @@ class GeneralDialog extends Component {
                         </Typography>
                         <Typography className={classes.description}>{message}</Typography>
                         <div className={classes.toolbar}>
-                            {/* <Button aria-label="Close" onClick={() => this.closeModal()}>Close</Button>
-                            { isJwtOld
-                                ? <CustomLogoutButton title="Login again" hideIcon={true} />
-                                : <Button aria-label="Reload page" className={classes.reloadButton} onClick={() => window.location.reload()}>Reload page</Button>
-                            } */}
-
                             {  
                                 options.map((o) => (o))
                             }
