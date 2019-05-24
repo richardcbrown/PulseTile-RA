@@ -10,6 +10,7 @@ import TopBarNoUser from "../../common/TopBarNoUser";
 import backgroundImage from "../../images/Artboard.png";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
+import GeneralDialog from "../../common/Dialogs/GeneralDialog";
 
 const styles = {
     termsBackground: {
@@ -90,8 +91,8 @@ class Terms extends Component {
     
     render() {
 
-        const { policies, classes } = this.props;
-        
+        const { policies, classes, error } = this.props;
+        const { closeDialog } = this;
         const allAccepted = this.allPoliciesAccepted();
 
         return (
@@ -102,6 +103,20 @@ class Terms extends Component {
                     <Grid container spacing={24} className={ classes.contentContainer }>
                         <Grid container spacing={24} className={ classes.policiesContainer }>
                             {
+                                error ?
+                                
+                                <GeneralDialog 
+                                    open={ true } 
+                                    onClose={ closeDialog } 
+                                    title={ error.title } 
+                                    message={ error.message }
+                                    options={ [
+                                        <ConfirmButton label="Ok" onClick={() => this.closeDialog() } />
+                                    ]}
+                                />
+
+                                :
+
                                 policies.map((p, key) => {
                                     return (
                                         <Grid item xs={12} sm={12} md={6} lg={6} key={key} className={ classes.policyAndAcceptContainer }>
@@ -130,7 +145,7 @@ class Terms extends Component {
                                 <Grid item xs={12}>
                                     <Card className={ classes.continue }>
                                         <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
-                                        <a href="https://myhelm.org">
+                                        <a href="#" onClick={ () => this.closeDialog() }>
                                             <Typography>I do not want to use Helm ></Typography>
                                         </a>
                                     </Card>
@@ -183,6 +198,16 @@ class Terms extends Component {
 
         return true;
     }
+
+    closeDialog = () => {
+        document.cookie = 'JSESSIONID=;';
+        document.cookie = 'META=;'
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+
+        window.location.href = 'http://myhelm.org';
+    }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -198,10 +223,12 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     
-    const policies = state.custom.terms.data;
+    const { terms } = state.custom;
+    const policies = state.custom.terms.data || [];
     
     return {
-        policies
+        policies,
+        error: terms.error
     };
 };
 

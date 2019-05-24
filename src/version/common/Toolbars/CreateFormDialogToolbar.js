@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import GeneralDialog from "../Dialogs/GeneralDialog";
 import { Typography } from "@material-ui/core";
