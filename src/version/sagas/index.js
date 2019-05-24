@@ -5,6 +5,7 @@ import {
 } from "../actions/synopsisActions";
 import { acceptTermsSaga } from "./acceptTermsSagas";
 import { getTermsSaga } from "./getTermsSagas";
+import { checkTermsSaga } from "./checkTermsSagas";
 
 /**
  * This componenr returns array of version sagas
@@ -16,5 +17,6 @@ export default [
     createSynopsisSagas(SYNOPSIS_VACCINATIONS_ACTION, synopsisVaccinationsAction, 'vaccinations'),
     createSynopsisSagas(SYNOPSIS_TOP_THREE_THINGS_ACTION, synopsisTopThreeThingsAction, 'top3Things'),
     acceptTermsSaga,
-    getTermsSaga
+    getTermsSaga,
+    checkTermsSaga
 ];

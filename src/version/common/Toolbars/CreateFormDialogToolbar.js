@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import GeneralDialog from "../Dialogs/GeneralDialog";
 import { Typography } from "@material-ui/core";
@@ -73,7 +72,7 @@ class CreateFormDialogToolbar extends Component {
                     open={ this.state.showDialog }
                     onClose={ () => this.setState({ showDialog: false }) }
                     title="Don’t forget:"
-                    message="Do not enter anything that requires assistance or urgent attention. If you need urgent medical attention please contact your GP surgery, ring 111 or 999. You remain responsible for acting on the health concerns you may have.
+                    message="Do not enter anything that requires assistance or urgent attention. <span style='color:#da534f'>If you need urgent medical attention please contact your GP surgery, ring 111 or 999</span>. You remain responsible for acting on the health concerns you may have.
                     The information you enter here will be shared with health and care practitioners involved in your care." 
                     options={[
                         <Button aria-label="Cancel" onClick={() => this.setState({ showDialog: false })}>Cancel</Button>,

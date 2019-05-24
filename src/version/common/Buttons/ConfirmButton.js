@@ -14,6 +14,7 @@ const styles = theme => {
         createButton: {
             display: "block",
             width: "auto",
+            minWidth: "100px",
             paddingLeft: "5px",
             paddingRight: "5px",
             height: 40,

@@ -2,11 +2,11 @@ import { takeEvery, put } from 'redux-saga/effects';
 import { domainName, token } from "../../core/token";
 import get from "lodash/get";
 
-import { GET_TERMS_ACTION, getTermsAction } from "../actions/getTermsAction";
+import { CHECK_TERMS_ACTION, checkTermsAction } from "../actions/checkTermsAction";
 import { userLogout } from 'ra-core';
 
-export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function * (action) {
-    const url = domainName + '/api/initialise/terms';
+export const checkTermsSaga = takeEvery(CHECK_TERMS_ACTION.REQUEST, function * (action) {
+    const url = domainName + '/api/initialise/terms/check';
     let options = {
         method: 'GET'
     };
@@ -50,20 +50,32 @@ export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function * (acti
                 const status = get(response, 'status', null);
 
                 if (status === 'login') {
-                    window.location.href = '/#/login';
-                    return;
+                    window.location.href = '/';
+                    return true;
+                } 
+
+                if (status === 'sign_terms') {
+                    window.location.href = '/#/terms'
+                    return true;
                 }
 
-                return response.resources;
+                if (status === 'patient_notfound') {
+                    return {
+                        title: 'Error',
+                        message: 'You are not currently enrolled to use Helm, please try again later.'
+                    };
+                }
+
+                return response;
             });
 
-            if (result.message) {
-                yield put(getTermsAction.error(result))
-            } else {
-                yield put(getTermsAction.success(result));
-            }
+        if (result === true) { 
+            yield put(checkTermsAction.success(result));
+        } else {
+            yield put(checkTermsAction.error(result));
+        }
 
     } catch (e) {
-        yield put(getTermsAction.error(e));
+        yield put(checkTermsAction.error(e));
     }
 });
