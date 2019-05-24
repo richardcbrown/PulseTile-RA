@@ -28,7 +28,7 @@ const FetchLogin = (resolve, reject) => {
             if (get(response, 'status', null) !== 'loading_data') {
                 const decodeToken = jwt.decode(token);
                 const userName = get(decodeToken, 'openid.firstName', null) + ' ' + get(decodeToken, 'openid.lastName', null);
-                const role = ('phrUser' === get(decodeToken, 'openid.role', null)) ? 'PHR' : 'IDCR';
+                const role = 'PHR';
                 localStorage.setItem('userId', decodeToken.nhsNumber);
                 localStorage.setItem('username', userName);
                 localStorage.setItem('role', role);

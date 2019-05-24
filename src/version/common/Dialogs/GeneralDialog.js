@@ -78,7 +78,9 @@ class GeneralDialog extends Component {
                         <Typography className={classes.titleBlock}>
                             { title }
                         </Typography>
-                        <Typography className={classes.description}>{message}</Typography>
+                        <Typography className={classes.description}>
+                            <div dangerouslySetInnerHTML={ { __html: message } }></div>
+                        </Typography>
                         <div className={classes.toolbar}>
                             {  
                                 options.map((o) => (o))
