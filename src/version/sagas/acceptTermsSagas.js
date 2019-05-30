@@ -23,28 +23,20 @@ export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function*(
         const result = yield fetch(url, options).then(res => res.json())
             .then(response => {
 
-                if (response.status !== 200) {
-                    return false;
-                }
-
                 const redirectUrl = get(response, 'redirectURL', null);
                 const status = get(response, 'status', null);
 
                 if (redirectUrl) {
                     window.location.href = redirectUrl;
                     return response
-                } else if (status === 'login') {
+                } else if (status === 'login' || response.status !== 200) {
                     window.location.href = '/#/login';
                 }
                 
                 return response;
             });
-
-        if (result === false) {
-            yield put(userLogout());
-        } else {    
+            
             yield put(acceptTermsAction.success(result));
-        }
     } catch(e) {
         yield put(acceptTermsAction.error(e))
     }

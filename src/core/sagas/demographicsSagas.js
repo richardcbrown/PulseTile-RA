@@ -36,6 +36,10 @@ export default takeEvery(DEMOGRAPHICS_ACTION.REQUEST, function*(action) {
                     return null;
                 }
 
+                if (res.demographics.name) {
+                    localStorage.setItem('username', res.demographics.name);
+                }
+
                 return res;
             });
 
