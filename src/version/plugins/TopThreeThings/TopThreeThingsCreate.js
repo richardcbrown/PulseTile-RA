@@ -66,11 +66,34 @@ class TopThreeThingsCreate extends Component {
         }
     }
 
+    formChanged = (form) => {
+        if (!form) {
+            return false;
+        }
+
+        for (const prop in form.values) {
+            if (form.values.hasOwnProperty(prop)) {
+                const initialValue = form.initial[prop];
+                const currentValue = form.values[prop];
+
+                if (!initialValue && currentValue) {
+                    return true;
+                }
+
+                if (initialValue && currentValue !== initialValue) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    } 
+
     handleSave = () => {
 
         const { form } = this.props;
 
-        if (form.anyTouched && !form.syncErrors) {
+        if (this.formChanged(form) && !form.syncErrors) {
             this.refs.formRef.props.save(form.values, '/top3Things');
         }
     }
@@ -100,7 +123,7 @@ class TopThreeThingsCreate extends Component {
                     <Create {...rest}>
                         <SimpleForm 
                             className={classes.createForm}
-                            toolbar={<CreateFormToolbar { ...rest } handleSave={ this.handleSave } disabled={ !form || !form.anyTouched || form.syncErrors } />}
+                            toolbar={<CreateFormToolbar { ...rest } handleSave={ this.handleSave } disabled={ !form || !this.formChanged(form) || form.syncErrors } />}
                             onSubmit={ this.submit }
                             ref="formRef"
                         >
