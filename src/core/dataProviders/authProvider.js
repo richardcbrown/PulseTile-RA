@@ -43,7 +43,10 @@ const FetchLogin = (resolve, reject) => {
 export default async (type, params) => {
 
     if (type === AUTH_LOGOUT) {
-        if ((localStorage.getItem('userId') && token)) {
+        if (localStorage.getItem('userId') && 
+            token && 
+            localStorage.getItem('logout')) 
+        {
             const urlLogout = domainName + '/api/auth/logout';
             fetch(urlLogout, options)
                 .then(res => res.json())
@@ -53,6 +56,7 @@ export default async (type, params) => {
                     localStorage.removeItem('userId');
                     localStorage.removeItem('username');
                     localStorage.removeItem('role');
+                    localStorage.removeItem('logout');
                     window.location = get(response, 'redirectURL', '/#/login');
                 });
         }

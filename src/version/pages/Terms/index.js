@@ -145,7 +145,7 @@ class Terms extends Component {
                                 <Grid item xs={12}>
                                     <Card className={ classes.continue }>
                                         <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
-                                        <a href="#" onClick={ () => this.closeDialog() }>
+                                        <a href="https://myhelm.org" onClick={ () => this.closeDialog() }>
                                             <Typography>I do not want to use Helm ></Typography>
                                         </a>
                                     </Card>
@@ -200,13 +200,13 @@ class Terms extends Component {
     }
 
     closeDialog = () => {
+
         document.cookie = 'JSESSIONID=;';
         document.cookie = 'META=;'
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         localStorage.removeItem('role');
-
-        window.location.href = 'http://myhelm.org';
+        return false;
     }
 }
 
