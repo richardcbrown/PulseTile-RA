@@ -51,7 +51,9 @@ const Breadcrumbs = ({ classes, resource }) => {
                         <div key={key} className={classes.breadcrumbsItem}>
                             <div className={classes.separator}></div>
                             {item.isActive
-                                ? <Link to={item.url} className={classes.link} color="inherit" aria-label={item.title}>{item.title}</Link>
+                                ?   <Link to={item.url} className={classes.link} color="inherit" aria-label={item.title}>
+                                        <Typography className={classes.link}>{item.title}</Typography>
+                                    </Link>
                                 : <Typography>{item.title}</Typography>
                             }
                         </div>

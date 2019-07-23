@@ -38,11 +38,23 @@ const App = () => {
         >
             {
                 plugins.map(item => {
+
+                    const resourceProps = {};
+
+                    if (item.create) {
+                        resourceProps.create = item.create;
+                    }
+
+                    if (item.edit) {
+                        resourceProps.edit = item.edit;
+                    }
+
                     return (
                         <Resource
                             name={item.name}
                             options={{ label: item.label }}
                             list={item.list}
+                            { ...resourceProps }
                         />
                     );
                 })

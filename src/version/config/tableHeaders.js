@@ -11,7 +11,7 @@ export default {
     //     description: "A record of the immunisations/vaccines you have had to help you avoid ill health",
     // },
     top3Things: {
-        title: "Top 3 Things",
-        description: "A place to record the top 3 issues that concern you today",
+        title: "Top 3 Things About Me",
+        description: "Three things that you feel would be useful for health and care professionals to know about you",
     }
 };

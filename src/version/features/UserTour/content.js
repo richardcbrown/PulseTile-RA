@@ -17,6 +17,7 @@ function getStepsArray(steps) {
                 placement: item.placement,
                 disableOverlayClicks: true,
                 showSkipButton: true,
+                disableBeacon: item.disableBeacon
         }
     }
     return result;
@@ -38,13 +39,14 @@ const steps = [
         target: '#icon-tour',
         content: '',
         placement: 'bottom',
+        disableBeacon: true
     },
     {
         title: 'Guided Step 1',
         lowTitle: 'Select the home button at any time...',
         target: '#icon-home',
         content: 'Press the home button at any time to return to your dashboard.',
-        placement: 'bottom',
+        placement: 'bottom'
     },
     {
         title: 'Guided Step 2',

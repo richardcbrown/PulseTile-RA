@@ -20,14 +20,19 @@ const FetchLogin = (resolve, reject) => {
     fetch(url, options)
         .then(res => res.json())
         .then(response => {
+            
+            if (get(response, 'status', null) === 'sign_terms') {
+                return resolve('/#/terms');
+            }
+
             if (get(response, 'status', null) !== 'loading_data') {
                 const decodeToken = jwt.decode(token);
                 const userName = get(decodeToken, 'openid.firstName', null) + ' ' + get(decodeToken, 'openid.lastName', null);
-                const role = ('phrUser' === get(decodeToken, 'openid.role', null)) ? 'PHR' : 'IDCR';
+                const role = 'PHR';
                 localStorage.setItem('userId', decodeToken.nhsNumber);
                 localStorage.setItem('username', userName);
                 localStorage.setItem('role', role);
-                return resolve(true);
+                return resolve('/');
             }
             const isNewPatient = get(response, 'new_patient', false);
             const delay = isNewPatient ? NEW_PATIENT_DELAY : OLD_PATIENT_DELAY;
@@ -38,16 +43,21 @@ const FetchLogin = (resolve, reject) => {
 export default async (type, params) => {
 
     if (type === AUTH_LOGOUT) {
-        if (localStorage.getItem('userId') && token) {
-            const urlLogout = domainName + '/api/logout';
+        if (localStorage.getItem('userId') && 
+            token && 
+            localStorage.getItem('logout')) 
+        {
+            const urlLogout = domainName + '/api/auth/logout';
             fetch(urlLogout, options)
                 .then(res => res.json())
                 .then(response => {
                     document.cookie = 'JSESSIONID=;';
+                    document.cookie = 'META=;'
                     localStorage.removeItem('userId');
                     localStorage.removeItem('username');
                     localStorage.removeItem('role');
-                    window.location = get(response, 'redirectURL', '');
+                    localStorage.removeItem('logout');
+                    window.location = get(response, 'redirectURL', '/#/login');
                 });
         }
         return Promise.resolve();
@@ -62,7 +72,7 @@ export default async (type, params) => {
             return Promise.resolve();
         } else if (token) {
             new Promise(FetchLogin).then(res => {
-                window.location.href = '/';
+                window.location.href = res;
             });
         }
         return Promise.reject();
