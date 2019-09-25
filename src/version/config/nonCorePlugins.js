@@ -5,6 +5,7 @@ import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate
 
 // LEEDS REPOSITORY
 import  { DirectoryList } from "../plugins/Directory/DirectoryList";
+import Directory from "../pages/Directory";
 
 export default [
     {
@@ -15,6 +16,6 @@ export default [
     {
         name: "directory",
         label: "Leeds Directory",
-        list: DirectoryList
+        list: Directory
     }
 ];

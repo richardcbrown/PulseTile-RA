@@ -28,7 +28,7 @@ const patientID = localStorage.getItem('patientId') ? localStorage.getItem('pati
 const urlSelector = (resource, queryProps) => {
     switch(resource) {
         case 'directory': {
-            return `${domainName}/api/repository${ queryProps ? `?${queryString.stringify(queryProps.filter)}` : ""}`;
+            return `${domainName}/api/repository${ queryProps ? `?${queryString.stringify(queryProps)}` : ""}`;
         }
         case 'patients': {
             return `${domainName}/api/${resource}`;
