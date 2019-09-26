@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { Card, Typography, Grid, CardContent, Chip, TextField } from "@material-ui/core"
-import { List, Filter, TextInput } from "react-admin"
+import { Card, Typography, Grid, CardContent, Chip, TextField, Collapse, CardActions, IconButton } from "@material-ui/core"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { withStyles } from "@material-ui/core/styles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPhone, faUser, faAt } from "@fortawesome/free-solid-svg-icons"
@@ -9,7 +9,7 @@ import customDataProvider from "../../../core/dataProviders/dataProvider"
 import DirectoryPagination from "./fragments/DirectoryPagination"
 import TableHeader from "../../../core/common/TableHeader"
 
-const styles = {
+const styles = theme => ({
     container: {
         width: "100%",
         height: "100%",
@@ -25,8 +25,18 @@ const styles = {
     chipItem: {
         marginRight: "4px",
         marginBottom: "4px"
+    },
+    cardHeader: {
+        backgroundColor: theme.palette.mainColor,
+        color: theme.palette.common.white
+    },
+    cardContact: {
+        display: "flex"
+    },
+    cardVideo: {
+        padding: 0
     }
-}
+})
 
 const TagDisplay = ({ tags, tagSelected, onDelete, classes }) => {
     return (
@@ -61,65 +71,146 @@ const TagDisplay = ({ tags, tagSelected, onDelete, classes }) => {
     )
 }
 
-const YouTubeCard = ({ resource, tagSelected, classes }) => {
-    
-    const { embeddedLink } = resource
-    
-    return (
-        <Card>
-            <CardContent>
-                <Typography variant="subheading">
-                    { resource.name }
-                </Typography>
-                <Typography>
-                    { resource.intro }    
-                </Typography>
-                { embeddedLink && 
-                    <div>
-                        <iframe height="200" src={embeddedLink} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div> 
+class YouTubeCard extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            expanded: false
+        }
+    }
+
+    handleExpandClick = () => {
+        const { expanded } = this.state
+
+        this.setState({ expanded: !expanded })
+    }
+
+    render() {
+        const { resource, tagSelected, classes } = this.props
+        const { embeddedLink } = resource
+        const { expanded } = this.state
+
+        resource.category_taxonomies = resource.category_taxonomies || []
+
+        return (
+            <Card>
+                <CardContent className={classes.cardHeader}>
+                    <Typography variant="h5" className>
+                        { resource.name }
+                    </Typography>
+                </CardContent>
+                <CardContent className={classes.cardVideo}>
+                    { embeddedLink && 
+                            <iframe width="100%" height="250" src={embeddedLink} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    }
+                </CardContent>
+                { 
+                    resource.intro &&
+                    <CardContent>
+                        <Typography>
+                            { resource.description }    
+                        </Typography>
+                    </CardContent>
                 }
-                <TagDisplay tags={resource.category_taxonomies} tagSelected={tagSelected} classes={classes} /> 
-            </CardContent>        
-        </Card>
-    )
+                <CardContent>
+                    <TagDisplay tags={resource.category_taxonomies.slice(0, 3)} tagSelected={tagSelected} classes={classes} /> 
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton
+                        onClick={this.handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                    </CardContent>
+                </Collapse>        
+            </Card>
+        )
+    }
 }
 
-const DefaultCard = ({ resource, tagSelected, classes }) => {
-    return (
-        <Card>
-            <CardContent>
-                <Typography variant="subheading">
-                    { resource.name }
-                </Typography>
-                <Typography>
-                    { resource.intro }    
-                </Typography>
-                {   
-                    resource.contact_name && 
-                    <div>
-                        <FontAwesomeIcon icon={faUser} size="2x" style={{ height: 20 }} />
-                        <Typography>{ resource.contact_name }</Typography>
-                    </div>
-                }
-                {
-                    resource.contact_phone &&
-                    <div>
-                        <FontAwesomeIcon icon={faPhone} size="2x" style={{ height: 20 }} />
-                        <Typography>{ resource.contact_phone }</Typography>
-                    </div>
-                }
-                {
-                    resource.contact_email &&
-                    <div>
-                        <FontAwesomeIcon icon={faAt} size="2x" style={{ height: 20 }} />
-                        <Typography>{ resource.contact_email }</Typography>
-                    </div>
-                }
-                <TagDisplay tags={resource.category_taxonomies} tagSelected={tagSelected} classes={classes} /> 
-            </CardContent>        
-        </Card>
-    )
+class DefaultCard extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            expanded: false
+        }
+    }
+
+    handleExpandClick = () => {
+        const { expanded } = this.state
+
+        this.setState({ expanded: !expanded })
+    }
+
+    render() {
+        const { resource, tagSelected, classes } = this.props
+        const { expanded } = this.state
+
+        resource.category_taxonomies = resource.category_taxonomies || []
+
+        return (
+            <Card>
+                <CardContent className={classes.cardHeader}>
+                    <Typography variant="h5">
+                        { resource.name }
+                    </Typography>
+                </CardContent>
+                <CardContent>
+                    <Typography>
+                        { resource.description }      
+                    </Typography>
+                </CardContent>
+                <CardContent>
+                    {   
+                        resource.contact_name && 
+                        <div className={classes.cardContact}>
+                            <FontAwesomeIcon icon={faUser} size="2x" style={{ height: 20 }} />
+                            <Typography>{ resource.contact_name }</Typography>
+                        </div>
+                    }
+                    {
+                        resource.contact_phone &&
+                        <div className={classes.cardContact}>
+                            <FontAwesomeIcon icon={faPhone} size="2x" style={{ height: 20 }} />
+                            <Typography>{ resource.contact_phone }</Typography>
+                        </div>
+                    }
+                    {
+                        resource.contact_email &&
+                        <div className={classes.cardContact}>
+                            <FontAwesomeIcon icon={faAt} size="2x" style={{ height: 20 }} />
+                            <Typography>{ resource.contact_email }</Typography>
+                        </div>
+                    }
+                </CardContent>
+                <CardContent>
+                    <TagDisplay tags={resource.category_taxonomies.slice(0, 3)} tagSelected={tagSelected} classes={classes} /> 
+                </CardContent>
+                <CardActions disableSpacing>
+                    <IconButton
+                        onClick={this.handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                    </CardContent>
+                </Collapse>         
+            </Card>
+        )
+    }
 }
 
 const getTileForType = (serviceOrResource, tagSelected, classes) => {
@@ -141,7 +232,7 @@ const DirectoryGrid = ({ data, classes, tagSelected }) => {
         {
             data.map((d) => {
                 return (
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <Grid item xs={12} sm={6} md={4}>
                         {getTileForType(d, tagSelected, classes)}
                     </Grid>
                 )
@@ -149,89 +240,6 @@ const DirectoryGrid = ({ data, classes, tagSelected }) => {
         }
         </Grid>
     )
-}
-
-// const TestInput = (props) => {
-
-//     console.log(props)
-
-//     const handleChange = eventOrValue => {
-//         props.input.onChange(eventOrValue);
-//     };
-
-//     handleChange(props.tags.map((t) => t.label).join(','))
-
-//     return (
-//         <div>
-//             {/* <TextInput source="tags" style={{ display: "none" }} alwaysOn value={props.tags.join(',')} /> */}
-//             <div>{JSON.stringify(props)}</div>
-//             <TagDisplay tags={props.tags} />
-//         </div>
-//     )
-// }
-
-class TestInput extends Component {
-    
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            tags: []
-        }
-    }
-
-    stateHandler = (tags) => {
-        this.setState({ tags }, () => this.state.tags.map((t) => t.label).join(','))
-    }
-    
-    render() {
-        return (
-            <div>
-                {/* <TextInput source="tags" style={{ display: "none" }} alwaysOn value={props.tags.join(',')} /> */}
-                <div>{JSON.stringify(this.state.tags)}</div>
-                <TagDisplay tags={this.state.tags} />
-            </div>
-        )
-    }
-}
-
-// const DirectoryFilter = (props) => {
-//     return (
-//         <Filter {...props}>
-//             <TextInput label="Search" source="q" alwaysOn />
-//             <TestInput label="Search Tags" source="tags" alwaysOn tags={props.tags} />
-//         </Filter>
-//     )
-// }
-
-class DirectoryFilter extends Component {
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            tags: []
-        }
-
-        this.inputRef = React.createRef();
-    }
-
-    stateHandler = (tags) => {
-        this.setState({ tags }, () => {
-            if(this.inputRef && this.inputRef.current && this.inputRef.current.stateHandler) {
-                this.inputRef.current.stateHandler(this.state.tags)
-            }
-        })
-    }
-
-    render() {
-        return (
-            <Filter {...this.props}>
-                <TextInput label="Search" source="q" alwaysOn />
-                <TestInput label="Search Tags" source="tags" alwaysOn tags={this.state.tags} ref={this.inputRef} />
-            </Filter>
-        )  
-    }
 }
 
 class DirectoryList extends Component {
@@ -246,7 +254,8 @@ class DirectoryList extends Component {
         this.state = {
             serviceOrResourceName: "",
             tags: fixedTags,
-            results: []
+            page: 1,
+            searchResults: {}
         }
     }
 
@@ -283,18 +292,26 @@ class DirectoryList extends Component {
     }
 
     tagChanged = (tags) => {
-        this.setState({ tags }, () => this.searchParametersChanged())
+        this.setState({ tags, page: 1 }, () => this.searchParametersChanged())
+    }
+
+    pageSelected = (page) => {
+        this.setState({ page }, () => this.searchParametersChanged())
     }
 
     searchParametersChanged = () => {
-        const { tags, serviceOrResourceName } = this.state
+        const { tags, serviceOrResourceName, page } = this.state
 
-        customDataProvider("GET_LIST", "directory", { q: serviceOrResourceName, tags: tags.map((t) => t.id).join(",") })
+        customDataProvider("GET_LIST", "directory", { 
+                q: serviceOrResourceName, 
+                tags: tags.map((t) => t.id).join(","),
+                page: page
+            })
             .then(res => {
                 this.setState(prevState => {
                     return {
                         ...prevState,
-                        results: res.data
+                        searchResults: res
                     }
                 })
             });
@@ -304,7 +321,8 @@ class DirectoryList extends Component {
         this.setState((prevState) => {
             return {
                 ...prevState,
-                serviceOrResourceName
+                serviceOrResourceName,
+                page: 1
             }
         }, () => {       
             if (this.timeout) {
@@ -316,8 +334,12 @@ class DirectoryList extends Component {
     }
 
     render() {
-        const { tags, serviceOrResourceName, results } = this.state
+        const { tags, serviceOrResourceName, searchResults, page } = this.state
         const { classes } = this.props
+
+        const results = searchResults.data || []
+
+        const { lastPage } = searchResults
 
         return (
             <Grid className={classes.container} >
@@ -335,11 +357,8 @@ class DirectoryList extends Component {
 
                 <DirectoryGrid classes={classes} data={results} tagSelected={this.tagSelected} />
 
-                { results.length && <DirectoryPagination /> }
+                { results.length && <DirectoryPagination page={page} pageSelected={this.pageSelected} lastPage={lastPage} /> }
             </Grid>
-            // <List {...this.props} tags={tags} filterDefaultValues={{ tags }} filters={<DirectoryFilter tags={tags} ref={this.filterRef} />}>
-            //     <DirectoryGrid classes={this.props.classes} tagSelected={this.tagSelected} />
-            // </List>
         )
     }
 }

@@ -245,6 +245,9 @@ const convertHTTPResponse = (response, type, resource, params) => {
     switch (type) {
 
         case GET_LIST:
+            if (resource === "directory") {
+                return response.results
+            }
 
             const pageNumber = get(params, 'pagination.page', 1);
             const numberPerPage = get(params, 'pagination.perPage', 10);

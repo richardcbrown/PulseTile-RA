@@ -29,6 +29,9 @@ const styles = theme => ({
         height: "100%",
         background: theme.patientSummaryPanel.container.background,
         backgroundSize: "cover",
+        margin: 0,
+        display: "block",
+        padding: "8px"
     },
     topBlock: {
         display: "flex",
@@ -57,13 +60,16 @@ const styles = theme => ({
         fontSize: 20,
         fontWeight: 800,
         zIndex: 99999999,
+    },
+    cardContainer: {
+        alignSelf: "baseline"
     }
 });
 
 const DirectoryCard = (props) => {
     const { id, classes, title, icon, onPageSelected } = props;
     return (
-        <Grid item xs={12} sm={6} md={6} lg={3}>
+        <Grid className={classes.cardContainer} item xs={12} sm={6} md={6} lg={3}>
             <Card className={classes.card} onClick={() => onPageSelected()}>
                 <div id={id} className={classes.topBlock} aria-label={title}>
                     <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
@@ -101,7 +107,7 @@ class Directory extends Component {
             return <DirectoryList fixedTags={page.fixedTags} />
         } else {
             return (
-                <Grid>
+                <Grid container spacing={2} className={classes.container}>
                     <Grid container spacing={16}>
                         {
                             directoryPages.map((page, key) => {
