@@ -52,11 +52,6 @@ const convertDataRequestToHTTP = (type, resource, params) => {
     const options = {};
     switch (type) {
         case GET_LIST: {
-            // if (resource === 'patients') {
-            //     url = `${domainName}/api/${resource}`;
-            // } else {
-            //     url = `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
-            // }
             url = urlSelector(resource, params)
 
             if (!options.headers) {

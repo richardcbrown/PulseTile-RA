@@ -53,11 +53,6 @@ class CustomPaginator extends Component {
         const { classes, page, pageSelected, lastPage } = this.props;
         return (
             <div className={classes.paginatorRoot}>
-                <Tooltip title="First page">
-                    <IconButton onClick={() => pageSelected(1)} className={classes.button} disabled={page === 1} aria-label="First page">
-                        <FirstPageIcon />
-                    </IconButton>
-                </Tooltip>
                 <Tooltip title="Previous page">
                     <IconButton onClick={() => pageSelected(page - 1)} className={classes.button} disabled={page === 1} aria-label="Previous page">
                         <KeyboardArrowLeft />

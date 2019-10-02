@@ -8,6 +8,7 @@ import backgroundImage from "../../images/Artboard.png"
 import customDataProvider from "../../../core/dataProviders/dataProvider"
 import DirectoryPagination from "./fragments/DirectoryPagination"
 import TableHeader from "../../../core/common/TableHeader"
+import clsx from "clsx"
 
 const styles = theme => ({
     container: {
@@ -31,10 +32,49 @@ const styles = theme => ({
         color: theme.palette.common.white
     },
     cardContact: {
-        display: "flex"
+        display: "flex",
+        marginBottom: "8px",
+        alignItems: "center"
     },
     cardVideo: {
         padding: 0
+    },
+    searchField: {
+        marginBottom: "8px"
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    viewButton: {
+        display: "flex",
+        width: 110,
+        height: 40,
+        padding: 0,
+        backgroundColor: "white",
+        color: theme.palette.mainColor,
+        border: `1px solid ${theme.palette.mainColor}`,
+        borderRadius: 25,
+        fontSize: 16,
+        fontWeight: 800,
+        "&:hover": {
+            backgroundColor: theme.palette.mainColor,
+            color: "white",
+        },
+        textDecorationLine: "none",
+        fontFamily: theme.typography.fontFamily,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    cardActions: {
+        flexDirection: "row-reverse",
+        justifyContent: "space-between"
     }
 })
 
@@ -92,6 +132,7 @@ class YouTubeCard extends Component {
         const { expanded } = this.state
 
         resource.category_taxonomies = resource.category_taxonomies || []
+        const hasAdditionalTags = resource.category_taxonomies.length > 3
 
         return (
             <Card>
@@ -109,14 +150,14 @@ class YouTubeCard extends Component {
                     resource.intro &&
                     <CardContent>
                         <Typography>
-                            { resource.description }    
+                            { resource.intro }    
                         </Typography>
                     </CardContent>
                 }
                 <CardContent>
                     <TagDisplay tags={resource.category_taxonomies.slice(0, 3)} tagSelected={tagSelected} classes={classes} /> 
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing className={classes.cardActions}>
                     <IconButton
                         onClick={this.handleExpandClick}
                         aria-expanded={expanded}
@@ -127,8 +168,16 @@ class YouTubeCard extends Component {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                        <Typography>
+                            { resource.description }    
+                        </Typography>
                     </CardContent>
+                    {
+                        hasAdditionalTags &&
+                        <CardContent>
+                            <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                        </CardContent>
+                    }
                 </Collapse>        
             </Card>
         )
@@ -156,6 +205,9 @@ class DefaultCard extends Component {
 
         resource.category_taxonomies = resource.category_taxonomies || []
 
+        const hasContact = !!(resource.contact_name || resource.contact_phone || resource.contact_email)
+        const hasAdditionalTags = resource.category_taxonomies.length > 3
+
         return (
             <Card>
                 <CardContent className={classes.cardHeader}>
@@ -165,49 +217,73 @@ class DefaultCard extends Component {
                 </CardContent>
                 <CardContent>
                     <Typography>
-                        { resource.description }      
+                        { resource.intro }      
                     </Typography>
                 </CardContent>
-                <CardContent>
-                    {   
-                        resource.contact_name && 
-                        <div className={classes.cardContact}>
-                            <FontAwesomeIcon icon={faUser} size="2x" style={{ height: 20 }} />
-                            <Typography>{ resource.contact_name }</Typography>
-                        </div>
-                    }
-                    {
-                        resource.contact_phone &&
-                        <div className={classes.cardContact}>
-                            <FontAwesomeIcon icon={faPhone} size="2x" style={{ height: 20 }} />
-                            <Typography>{ resource.contact_phone }</Typography>
-                        </div>
-                    }
-                    {
-                        resource.contact_email &&
-                        <div className={classes.cardContact}>
-                            <FontAwesomeIcon icon={faAt} size="2x" style={{ height: 20 }} />
-                            <Typography>{ resource.contact_email }</Typography>
-                        </div>
-                    }
-                </CardContent>
+                {
+                    hasContact && 
+                    <CardContent>
+                        {   
+                            resource.contact_name && 
+                            <div className={classes.cardContact}>
+                                <FontAwesomeIcon icon={faUser} size="2x" style={{ height: 20 }} />
+                                <Typography>{ resource.contact_name }</Typography>
+                            </div>
+                        }
+                        {
+                            resource.contact_phone &&
+                            <div className={classes.cardContact}>
+                                <FontAwesomeIcon icon={faPhone} size="2x" style={{ height: 20 }} />
+                                <Typography>{ resource.contact_phone }</Typography>
+                            </div>
+                        }
+                        {
+                            resource.contact_email &&
+                            <div className={classes.cardContact}>
+                                <FontAwesomeIcon icon={faAt} size="2x" style={{ height: 20 }} />
+                                <Typography>{ resource.contact_email }</Typography>
+                            </div>
+                        }
+                    </CardContent>
+                }
                 <CardContent>
                     <TagDisplay tags={resource.category_taxonomies.slice(0, 3)} tagSelected={tagSelected} classes={classes} /> 
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing className={classes.cardActions}>
                     <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: expanded,
+                        })}
                         onClick={this.handleExpandClick}
                         aria-expanded={expanded}
                         aria-label="show more"
                     >
                         <ExpandMoreIcon />
                     </IconButton>
-                </CardActions>
+                    {
+                        resource.url &&
+                        <a href={resource.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            aria-label="View Website" 
+                            className={classes.viewButton}>
+                            <span>View Website</span>
+                        </a>
+                    }
+                </CardActions>                              
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                        <Typography>
+                            { resource.description }      
+                        </Typography>
                     </CardContent>
-                </Collapse>         
+                    {
+                        hasAdditionalTags &&
+                        <CardContent>
+                            <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                        </CardContent>
+                    }  
+                </Collapse>       
             </Card>
         )
     }
@@ -351,13 +427,29 @@ class DirectoryList extends Component {
                         onChange={(e) => this.debounceNameSearch(e.target.value)} 
                         label="Search Service or Resource name"
                         fullWidth
+                        className={classes.searchField}
                     />
-                    <TagDisplay tags={tags} onDelete={this.tagRemoved} classes={classes} />
+
+                    {
+                        (results.length &&
+                        <Typography aria-label="Select one or more tags from results to refine your search" className={classes.searchField} variant="caption">
+                            Select one or more tags from results to refine your search
+                        </Typography>) || null
+                    }
+
+                    {
+                        tags && tags.length ?
+                        <div>
+                            <Typography className={classes.searchField} variant="caption" aria-label="Applied Tags">Applied Tags</Typography> 
+                            <TagDisplay tags={tags} onDelete={this.tagRemoved} classes={classes} />
+                        </div>
+                        : null
+                    }
                 </div>
 
                 <DirectoryGrid classes={classes} data={results} tagSelected={this.tagSelected} />
 
-                { results.length && <DirectoryPagination page={page} pageSelected={this.pageSelected} lastPage={lastPage} /> }
+                { results.length ? <DirectoryPagination page={page} pageSelected={this.pageSelected} lastPage={lastPage} /> : null }
             </Grid>
         )
     }

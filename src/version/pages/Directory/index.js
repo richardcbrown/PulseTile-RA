@@ -2,6 +2,12 @@ import React, { Component } from "react"
 import { Grid, withStyles, Card, Typography } from "@material-ui/core"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { DirectoryList } from "../../plugins/Directory/DirectoryList"
+import Breadcrumbs from "../../../core/common/Breadcrumbs"
+import { themeImages } from "../../config/theme.config"
+import get from "lodash/get"
+import { faSearch } from "@fortawesome/free-solid-svg-icons"
+
+const cardBackgroundImage = get(themeImages, 'cardBackgroundImage', null)
 
 const directoryPages = [
     {
@@ -45,6 +51,18 @@ const styles = theme => ({
         '&:hover': {
             cursor: "pointer",
         },
+        '&:before': {
+            content: '""',
+            position: "absolute",
+            width: 300,
+            height: 300,
+            left: 0,
+            right: 0,
+            zIndex: 999999,
+            background: `url(${cardBackgroundImage}) 0 0 repeat`,
+            backgroundSize: "contain",
+            transform: 'translate(-5px, -98px)',
+        }
     },
     icon: {
         marginBottom: 10,
@@ -88,41 +106,78 @@ class Directory extends Component {
     
     constructor(props) {
         super(props)
-
-        this.state = {
-            page: null
-        }
     }
 
     pageSelected = (pageIndex) => {
-        this.setState({ page: directoryPages[pageIndex] })
+        const page = directoryPages[pageIndex]
+        this.props.history.push(`/directory/${page.title.toLowerCase().split(' ').join('-')}`)
     }
     
+    getPage = () => {
+        const pageFragments = window.location.hash.split('/')
+        const lastFragment = pageFragments[pageFragments.length -1]
+
+        if (lastFragment === "directory") {
+            return null
+        }
+
+        for (const page of directoryPages) {
+            const slug = page.title.toLowerCase().split(' ').join('-')
+
+            if (slug === lastFragment) {
+                return page
+            }
+        }
+
+        return null
+    }
+
     render() {
         const { classes } = this.props
 
-        const { page } = this.state
+        const page = this.getPage()
+
+        const resourceUrl="directory"
+        const title="Leeds Directory"
 
         if (page) {
-            return <DirectoryList fixedTags={page.fixedTags} />
-        } else {
+            const breadcrumbsResource = [
+                { url: "/" + resourceUrl, title: title, isActive: true },
+                { url: `/${resourceUrl}`, title: page.title, isActive: false }
+            ]
+
             return (
-                <Grid container spacing={2} className={classes.container}>
-                    <Grid container spacing={16}>
-                        {
-                            directoryPages.map((page, key) => {
-                                return (
-                                    <DirectoryCard
-                                        key={key} 
-                                        title={page.title}
-                                        classes={classes}
-                                        onPageSelected={() => this.pageSelected(key)}
-                                    />
-                                )
-                            })
-                        }
+                <React.Fragment>
+                    <Breadcrumbs resource={breadcrumbsResource} />
+                    <DirectoryList fixedTags={page.fixedTags} />
+                </React.Fragment>
+            )
+        } else {
+            const breadcrumbsResource = [
+                { url: "/" + resourceUrl, title: title, isActive: false },
+            ]
+
+            return (
+                <React.Fragment>
+                    <Breadcrumbs resource={breadcrumbsResource} />
+                    <Grid container spacing={2} className={classes.container}>
+                        <Grid container spacing={16}>
+                            {
+                                directoryPages.map((page, key) => {
+                                    return (
+                                        <DirectoryCard
+                                            key={key} 
+                                            title={page.title}
+                                            icon={faSearch}
+                                            classes={classes}
+                                            onPageSelected={() => this.pageSelected(key)}
+                                        />
+                                    )
+                                })
+                            }
+                        </Grid>
                     </Grid>
-                </Grid>
+                </React.Fragment>
             )
         }
     }
