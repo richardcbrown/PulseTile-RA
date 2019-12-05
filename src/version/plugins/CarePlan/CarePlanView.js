@@ -11,11 +11,26 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import moment from "moment";
 import backgroundImage from "../../images/Artboard.png";
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
 
 const styles = {
     mainBackground: {
         padding: "24px",
-        background: `url(${backgroundImage}) 0 0 repeat`
+        background: `url(${backgroundImage}) 0 0 repeat`,
+        margin: 0
+    },
+    padded: {
+        padding: "24px",
+        boxShadow: "none"
+    },
+    heading: {
+        fontWeight: "bold"
+    },
+    checkboxLabel: {
+        display: "inline-block"
     }
 };
 
@@ -86,39 +101,49 @@ class CarePlanView extends Component {
                 <Breadcrumbs resource={breadcrumbsResource} />
                 <TableHeader resource={resourceUrl} />
 
-                <Grid item xs={12} sm={12} className={classes.mainBackground}>
-                { 
-                    stage === stages[0] ?
-                    <React.Fragment>
-                        <CarePlanTestResultsView 
-                            testResults={text.testResults}
-                            questionnaires={questionnaires}
-                            questionnaireUpdated={(questionnaire) => this.updateQuestionnaire(questionnaire)}
-                            questions={text.tests} 
-                            data={careplan}
-                        />
-                        <Button onClick={() => this.setState({ stage: stages[1] })}>Next</Button>
-                    </React.Fragment>
-                    : null  
-                }
+                <Grid container spacing={16} item xs={12} className={classes.mainBackground}>
+                    <Grid item xs={8}>
+                        { 
+                            stage === stages[0] ?
+                            <React.Fragment>
+                                <CarePlanTestResultsView 
+                                    testResults={text.testResults}
+                                    questionnaires={questionnaires}
+                                    questionnaireUpdated={(questionnaire) => this.updateQuestionnaire(questionnaire)}
+                                    questions={text.tests} 
+                                    data={careplan}
+                                    classes={classes}
+                                />
+                                <Button onClick={() => this.setState({ stage: stages[1] })}>Next</Button>
+                            </React.Fragment>
+                            : null  
+                        }
 
-                {
-                    stage === stages[1] ? 
-                    <React.Fragment>
-                        <CarePlanConcernsAndGoals
-                            questionnaires={questionnaires}
-                            questionnaireUpdated={(questionnaire) => this.updateQuestionnaire(questionnaire)} 
-                            concerns={text.concerns}
-                            matters={text.matters}
-                            goal={goal}
-                            goalDetails={text.goalDetails}
-                            goalUpdated={(goal) => this.goalUpdated(goal)} 
-                        />
-                        <Button onClick={() => this.setState({ stage: stages[0] })}>Back</Button>
-                        <Button onClick={() => this.saveCarePlan()}>Save</Button>
-                    </React.Fragment>
-                    : null
-                }
+                        {
+                            stage === stages[1] ? 
+                            <React.Fragment>
+                                <CarePlanConcernsAndGoals
+                                    questionnaires={questionnaires}
+                                    questionnaireUpdated={(questionnaire) => this.updateQuestionnaire(questionnaire)} 
+                                    concerns={text.concerns}
+                                    matters={text.matters}
+                                    goal={goal}
+                                    goalDetails={text.goalDetails}
+                                    goalUpdated={(goal) => this.goalUpdated(goal)}
+                                    classes={classes} 
+                                />
+                                <Button onClick={() => this.setState({ stage: stages[0] })}>Back</Button>
+                                <Button onClick={() => this.saveCarePlan()}>Save</Button>
+                            </React.Fragment>
+                            : null
+                        }
+                    </Grid>
+
+                    <Grid item xs={4}>
+                        <Paper className={classes.padded}>
+                            <VerticalLinearStepper classes={classes} activeStep={stages.findIndex((s) => s === this.state.stage)} />
+                        </Paper>
+                    </Grid>
                 </Grid>
             </React.Fragment>
         )
@@ -160,17 +185,55 @@ class CarePlanView extends Component {
     }
 }
 
+  
+function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return `These are the results from your information gathering appointment.
+                These will be discussed at your care planning appointment.`;
+      case 1:
+        return 'Some questions to help you think ahead and plan what you would like to discuss at your appointment';
+      default:
+        return 'Unknown step';
+    }
+  }
+  
+function VerticalLinearStepper(props) {
+
+    const { classes, activeStep } = props
+
+    const steps = ["Test results", "What matters to you"]
+
+    return (
+        <div className={classes.root}>
+            <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((label, index) => (
+                <Step key={label}>
+                    <StepLabel className={classes.heading}>{label}</StepLabel>
+                    <StepContent>
+                        <Typography>{getStepContent(index)}</Typography>
+                    </StepContent>
+                </Step>
+            ))}
+            </Stepper>
+        </div>
+    );
+}
+
 class QuestionnaireQuestion extends Component {
     constructor(props) {
         super(props);
     }
 
     getInputForType(questionItem, responseItem, onResponseChanged) {
+        
+        const { classes } = this.props;
+        
         if (questionItem.type === "string") {
 
             const value = (responseItem && responseItem.answer && responseItem.answer[0].valueString) || ""
 
-            return <TextField multiline value={value} onChange={(event) => {
+            return <TextField multiline fullWidth value={value} onChange={(event) => {
                 let response = responseItem
 
                 if (!response) {
@@ -231,7 +294,7 @@ class QuestionnaireQuestion extends Component {
             const value = (responseItem && responseItem.answer && responseItem.answer[0].valueBoolean) || false
 
             return (
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                     <Checkbox
                         checked={value}
                         color="primary"
@@ -256,7 +319,7 @@ class QuestionnaireQuestion extends Component {
                             onResponseChanged(questionItem, response);
                         }}
                     />
-                    <Typography>{questionItem.text}</Typography>
+                    <Typography className={classes.checkboxLabel}>{questionItem.text}</Typography>
                 </Grid>
             )
         }
@@ -264,7 +327,7 @@ class QuestionnaireQuestion extends Component {
 
     render() {
 
-        const { questionnaire, question, questionnaireUpdated } = this.props;
+        const { questionnaire, question, questionnaireUpdated, classes } = this.props;
 
         const questionItem = questionnaire.questionnaire.item.find((item) => item.linkId === question);
 
@@ -286,7 +349,7 @@ class QuestionnaireQuestion extends Component {
 
         return (
             <React.Fragment>
-                <Typography>{ questionItem.text }</Typography>
+                <Typography className={classes.heading} variant="subheading">{ questionItem.text }</Typography>
 
                 {
                     this.getInputForType(questionItem, responseItem, questionResponseChanged)
@@ -302,7 +365,7 @@ class QuestionnaireQuestions extends Component {
     }
 
     render() {
-        const { questionnaire, questions, questionnaireUpdated } = this.props;
+        const { questionnaire, questions, questionnaireUpdated, classes } = this.props;
 
         return (
             <React.Fragment>
@@ -311,7 +374,8 @@ class QuestionnaireQuestions extends Component {
                         return <QuestionnaireQuestion 
                             questionnaire={questionnaire} 
                             question={q}
-                            questionnaireUpdated={questionnaireUpdated} 
+                            questionnaireUpdated={questionnaireUpdated}
+                            classes={classes} 
                         />
                     })
                 }
@@ -326,7 +390,7 @@ class CarePlanTestResultsView extends Component {
     }
 
     render() {
-        const { testResults, data, questionnaires, questions, questionnaireUpdated } = this.props;
+        const { testResults, data, questionnaires, questions, questionnaireUpdated, classes } = this.props;
 
         const { title, tests } = testResults;
 
@@ -335,27 +399,32 @@ class CarePlanTestResultsView extends Component {
         return (
             <Grid container spacing={16}>
                 <Grid item xs={12}>
-                    <Paper>
-                        <Typography>{ title }</Typography>
+                    <Paper className={classes.padded}>
+                        <Grid item xs={12}>
+                            <Typography className={classes.heading} variant="subheading">{ title }</Typography>
+                        </Grid>
                     </Paper>
                 </Grid>
                 {
                     tests.map((test) => {
                         return (
                             <Grid item xs={12}>
-                               <CarePlanTestResult test={test} data={data} />
+                               <CarePlanTestResult classes={classes} test={test} data={data} />
                             </Grid>
                         ) 
                     })
                 }
 
                 <Grid item xs={12}>
-                    <Paper>
-                        <QuestionnaireQuestions 
-                            questions={questions.questions} 
-                            questionnaire={questionnaire}
-                            questionnaireUpdated={questionnaireUpdated} 
-                        />
+                    <Paper className={classes.padded}>                       
+                        <Grid item xs={12}>
+                            <QuestionnaireQuestions 
+                                questions={questions.questions} 
+                                questionnaire={questionnaire}
+                                questionnaireUpdated={questionnaireUpdated}
+                                classes={classes} 
+                            />
+                        </Grid>
                     </Paper>
                 </Grid>
             </Grid>
@@ -470,7 +539,8 @@ class ReadingDisplay extends Component {
             subCodes, 
             readingsCount,
             readingsFormatter,
-            data
+            data,
+            classes
         } = this.props;
         
         const readings = getReadingsForDisplay(mainCode, subCodes, readingsCount, readingsFormatter, data);
@@ -481,7 +551,9 @@ class ReadingDisplay extends Component {
                     readings.map((reading) => {
                         return (
                             <Grid item xs={12}>
-                                <Typography>- { reading.value } ({ reading.date })</Typography>
+                                <Typography style={{ display: 'inline-block', paddingRight: "8px" }}>-</Typography>
+                                <Typography style={{ display: 'inline-block', paddingRight: "8px" }} className={classes.heading}>{ reading.value }</Typography> 
+                                <Typography style={{ display: 'inline-block' }}> ({ reading.date })</Typography>
                             </Grid>
                         )
                     })
@@ -504,7 +576,8 @@ class CarePlanConcernsAndGoals extends Component {
             goalDetails, 
             goal, 
             questionnaireUpdated,
-            goalUpdated 
+            goalUpdated,
+            classes 
         } = this.props
 
         const concernsQuestionnaire = questionnaires.find((q) => concerns.questionnaire === q.questionnaire.name);
@@ -514,27 +587,40 @@ class CarePlanConcernsAndGoals extends Component {
         return (
             <Grid container spacing={16}>
                 <Grid item xs={12}>
-                    <Paper>
-                        <QuestionnaireQuestions 
-                            questions={matters.questions} 
-                            questionnaire={mattersQuestionnaire} 
-                            questionnaireUpdated={questionnaireUpdated} 
-                        />
+                    <Paper className={classes.padded}>
+                        <Grid item xs={12}>
+                            <QuestionnaireQuestions 
+                                questions={matters.questions} 
+                                questionnaire={mattersQuestionnaire} 
+                                questionnaireUpdated={questionnaireUpdated}
+                                classes={classes} 
+                            />
+                        </Grid>
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
-                    <Paper>
-                        <QuestionnaireQuestions 
-                            questions={concerns.questions} 
-                            questionnaire={concernsQuestionnaire} 
-                            questionnaireUpdated={questionnaireUpdated} 
-                        />
+                    <Paper className={classes.padded}>
+                        <Grid item xs={12}>
+                            <QuestionnaireQuestions 
+                                questions={concerns.questions} 
+                                questionnaire={concernsQuestionnaire} 
+                                questionnaireUpdated={questionnaireUpdated}
+                                classes={classes}  
+                            />
+                        </Grid>
                     </Paper>
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Paper>
-                        <CarePlanGoal goalDetails={goalDetails} goal={goal} goalUpdated={goalUpdated} />
+                    <Paper className={classes.padded}>
+                        <Grid item xs={12}>
+                            <CarePlanGoal 
+                                classes={classes} 
+                                goalDetails={goalDetails} 
+                                goal={goal} 
+                                goalUpdated={goalUpdated} 
+                            />
+                        </Grid>
                     </Paper>
                 </Grid>
             </Grid>
@@ -548,7 +634,7 @@ class CarePlanGoal extends Component {
     }
 
     render() {
-        const { goalDetails, goal, goalUpdated } = this.props;
+        const { goalDetails, goal, goalUpdated, classes } = this.props;
         const { titles, subTitles } = goalDetails;
 
         const goalText = (goal && goal.description && goal.description.text) || ""
@@ -559,7 +645,7 @@ class CarePlanGoal extends Component {
                     (titles && titles.map((title) => {
                         return (
                             <Grid item xs={12}>
-                                <Typography>{title}</Typography>
+                                <Typography className={classes.heading} variant="subheading">{title}</Typography>
                             </Grid>
                         )
                     })) || null
@@ -575,7 +661,7 @@ class CarePlanGoal extends Component {
                 }
 
                 <Grid item xs={12}>
-                    <TextField multiline value={goalText} onChange={(event) => {
+                    <TextField multiline fullWidth value={goalText} onChange={(event) => {
                         const text = event.target.value;
 
                         let updatedGoal = goal;
@@ -613,10 +699,10 @@ class CarePlanTestResult extends Component {
             readingsCount, 
             readingsFormatter,
             mainCode,
-            subCodes 
+            subCodes
         } = this.props.test;
 
-        const { data } = this.props
+        const { data, classes  } = this.props
 
         return (
             <div>
@@ -626,7 +712,7 @@ class CarePlanTestResult extends Component {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography>{ title }</Typography>
+                        <Typography className={classes.heading} variant="subheading">{ title }</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Grid container spacing={16}>
@@ -636,17 +722,20 @@ class CarePlanTestResult extends Component {
                                 })
                             }
 
-                            <Grid item xs={12}>
-                                <Typography>{readingsTitle}</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ReadingDisplay 
-                                    mainCode={mainCode} 
-                                    subCodes={subCodes} 
-                                    readingsCount={readingsCount}
-                                    readingsFormatter={readingsFormatter}
-                                    data={data} 
-                                />
+                            <Grid item xs={12}  style={{ backgroundColor: "#e5e5e5" }}>
+                                <Grid item xs={12}>
+                                    <Typography>{readingsTitle}</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ReadingDisplay 
+                                        mainCode={mainCode} 
+                                        subCodes={subCodes} 
+                                        readingsCount={readingsCount}
+                                        readingsFormatter={readingsFormatter}
+                                        data={data}
+                                        classes={classes} 
+                                    />
+                                </Grid>
                             </Grid>
                         </Grid>
                     </ExpansionPanelDetails>
