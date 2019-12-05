@@ -6,6 +6,9 @@ import VaccinationsList from "../plugins/Vaccinations/VaccinationsList";
 // TOP THREE THINGS
 import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate";
 
+// CarePlan
+import CarePlanView from "../plugins/CarePlan/CarePlanView";
+
 export default [
     {
         name: "vaccinations",
@@ -17,4 +20,9 @@ export default [
         label: "Top Three Things",
         list: TopThreeThingsCreate
     },
+    {
+        name: "CarePlan",
+        label: "My Care Plan",
+        list: CarePlanView
+    }
 ];
