@@ -4,7 +4,7 @@ import get from "lodash/get";
 import TableHeader from "../../../core/common/TableHeader";
 import Breadcrumbs from "../../../core/common/Breadcrumbs";
 import { myCarePlanAction, saveMyCarePlanAction } from "../../actions/myCarePlanAction";
-import { Typography, Grid, TextField, Checkbox, Button, withStyles, Paper } from "@material-ui/core";
+import { Typography, Grid, TextField, Checkbox, withStyles, Paper } from "@material-ui/core";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -15,6 +15,13 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
+import Button from '@material-ui/core/Button';
+
+import { CarePlanCandlestickChart } from './CarePlanResultsCharts';
+import { CarePlanResultsTable } from './CarePlanResultsTable';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartBar } from '@fortawesome/free-solid-svg-icons';
 
 const styles = {
     mainBackground: {
@@ -31,6 +38,19 @@ const styles = {
     },
     checkboxLabel: {
         display: "inline-block"
+    },
+    linkButton: {
+        textDecoration: "underline",
+        backgroundColor: "initial",
+        color: "#3596f4",
+        textTransform: "none",
+        "&:hover": {
+            backgroundColor: "initial"
+        }
+    },
+    linkButtonIcon: {
+        paddingRight: 8,
+        color: "#000"
     }
 };
 
@@ -127,6 +147,8 @@ class CarePlanView extends Component {
                                     questionnaireUpdated={(questionnaire) => this.updateQuestionnaire(questionnaire)} 
                                     concerns={text.concerns}
                                     matters={text.matters}
+                                    considerations={text.considerations}
+                                    achievements={text.achievements}
                                     goal={goal}
                                     goalDetails={text.goalDetails}
                                     goalUpdated={(goal) => this.goalUpdated(goal)}
@@ -159,7 +181,7 @@ class CarePlanView extends Component {
             questionnaireResources.push(q.response);
         })
 
-        const resources = [this.state.goal, ...questionnaireResources];
+        const resources = [...questionnaireResources];
 
         this.props.saveCarePlan(resources);
 
@@ -473,8 +495,10 @@ function matchCoding(
     });
 }
 
-function formatBloodPressureReadings(readings, bloodPressureCodes) {
+function formatBloodPressureReadings(readings, bloodPressureCodes, readingsCount) {
     const formatted = [];
+    const tableReadings = [];
+    const chartReadings = [];
 
     readings.forEach((reading) => {
         const { component, effectiveDateTime } = reading;
@@ -501,9 +525,26 @@ function formatBloodPressureReadings(readings, bloodPressureCodes) {
             value: `${values[0].value}/${values[1].value} ${values[0].unit}`,
             date: moment(effectiveDateTime).format('Do MMM YY')
         });
+
+        tableReadings.push({
+            value: `${values[0].value}/${values[1].value} ${values[0].unit}`,
+            date: effectiveDateTime
+        });
+
+        chartReadings.push({
+            x: new Date(effectiveDateTime).getTime(),
+            y: values[1].value,
+            y0: values[0].value
+        });
     });
 
-    return formatted;
+    return {
+        displayReadings: formatted.slice(0, readingsCount),
+        tableReadings,
+        chartReadings: {
+            dataPoints: chartReadings
+        }
+    }
 }
 
 function getReadingsForDisplay(mainCode, subCodes, readingsCount, readingsFormatter, data) {
@@ -515,11 +556,9 @@ function getReadingsForDisplay(mainCode, subCodes, readingsCount, readingsFormat
             return new Date(b.effectiveDateTime) - new Date(a.effectiveDateTime);
         });
 
-    const displayReadings = matchingObservations.slice(0, readingsCount);
-
     switch (readingsFormatter) {
         case "bloodpressure": {
-            return formatBloodPressureReadings(displayReadings, subCodes);
+            return formatBloodPressureReadings(matchingObservations, subCodes, readingsCount);
         }
         default: {
             throw Error("not implemented");
@@ -530,6 +569,10 @@ function getReadingsForDisplay(mainCode, subCodes, readingsCount, readingsFormat
 class ReadingDisplay extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            showData: false
+        };
     }
 
     render() {
@@ -539,24 +582,56 @@ class ReadingDisplay extends Component {
             subCodes, 
             readingsCount,
             readingsFormatter,
+            readingsTitle,
             data,
             classes
         } = this.props;
         
         const readings = getReadingsForDisplay(mainCode, subCodes, readingsCount, readingsFormatter, data);
 
+        const { displayReadings, chartReadings, tableReadings } = readings;
+
+        const { showData } = this.state;
+
         return (
             <React.Fragment>
+                <Grid container item xs={12}  style={{ backgroundColor: "#e5e5e5" }}>
+                    <Grid item xs={12}>
+                        <Typography>{readingsTitle}</Typography>
+                    </Grid>
+
+                    <Grid item xs={8}>
+                        {
+                            displayReadings.map((reading) => {
+                                return (
+                                    <Grid item xs={12}>
+                                        <Typography style={{ display: 'inline-block', paddingRight: "8px" }}>-</Typography>
+                                        <Typography style={{ display: 'inline-block', paddingRight: "8px" }} className={classes.heading}>{ reading.value }</Typography> 
+                                        <Typography style={{ display: 'inline-block' }}> ({ reading.date })</Typography>
+                                    </Grid>
+                                )
+                            })
+                        }
+                    </Grid>
+                    <Grid item xs={4} style={{ flexDirection: "row-reverse", display: "flex" }}>
+                        <Button className={classes.linkButton} onClick={() => this.setState({ showData: !showData })}>
+                            <FontAwesomeIcon className={classes.linkButtonIcon} icon={faChartBar} size="2x" />
+
+                            { showData ? "Hide previous results" : "Show previous results" }
+                        </Button>
+                    </Grid>
+                </Grid>
+
                 {
-                    readings.map((reading) => {
-                        return (
-                            <Grid item xs={12}>
-                                <Typography style={{ display: 'inline-block', paddingRight: "8px" }}>-</Typography>
-                                <Typography style={{ display: 'inline-block', paddingRight: "8px" }} className={classes.heading}>{ reading.value }</Typography> 
-                                <Typography style={{ display: 'inline-block' }}> ({ reading.date })</Typography>
-                            </Grid>
-                        )
-                    })
+                    showData && 
+                    <React.Fragment>
+                        <Grid item xs={6} style={{ paddingLeft: 0 }}>
+                            <CarePlanResultsTable carePlanTableData={tableReadings} />
+                        </Grid>
+                        <Grid item xs={6} style={{ paddingRight: 0 }}>
+                            <CarePlanCandlestickChart carePlanChartData={chartReadings} />
+                        </Grid>
+                    </React.Fragment>
                 }
             </React.Fragment>
         )
@@ -571,7 +646,9 @@ class CarePlanConcernsAndGoals extends Component {
     render() {
         const { 
             concerns, 
-            matters, 
+            matters,
+            considerations,
+            achievements, 
             questionnaires, 
             goalDetails, 
             goal, 
@@ -581,11 +658,24 @@ class CarePlanConcernsAndGoals extends Component {
         } = this.props
 
         const concernsQuestionnaire = questionnaires.find((q) => concerns.questionnaire === q.questionnaire.name);
-
         const mattersQuestionnaire = questionnaires.find((q) => matters.questionnaire === q.questionnaire.name);
+        const considerationsQuestionnaire = questionnaires.find((q) => considerations.questionnaire === q.questionnaire.name);
+        const achievementsQuestionnaire = questionnaires.find((q) => achievements.questionnaire === q.questionnaire.name);
 
         return (
             <Grid container spacing={16}>
+                <Grid item xs={12}>
+                    <Paper className={classes.padded}>
+                        <Grid item xs={12}>
+                            <QuestionnaireQuestions 
+                                questions={considerations.questions} 
+                                questionnaire={considerationsQuestionnaire} 
+                                questionnaireUpdated={questionnaireUpdated}
+                                classes={classes}  
+                            />
+                        </Grid>
+                    </Paper>
+                </Grid>
                 <Grid item xs={12}>
                     <Paper className={classes.padded}>
                         <Grid item xs={12}>
@@ -610,8 +700,19 @@ class CarePlanConcernsAndGoals extends Component {
                         </Grid>
                     </Paper>
                 </Grid>
-
                 <Grid item xs={12}>
+                    <Paper className={classes.padded}>
+                        <Grid item xs={12}>
+                            <QuestionnaireQuestions 
+                                questions={achievements.questions} 
+                                questionnaire={achievementsQuestionnaire} 
+                                questionnaireUpdated={questionnaireUpdated}
+                                classes={classes}  
+                            />
+                        </Grid>
+                    </Paper>
+                </Grid>
+                {/* <Grid item xs={12}>
                     <Paper className={classes.padded}>
                         <Grid item xs={12}>
                             <CarePlanGoal 
@@ -622,7 +723,7 @@ class CarePlanConcernsAndGoals extends Component {
                             />
                         </Grid>
                     </Paper>
-                </Grid>
+                </Grid> */}
             </Grid>
         )
     }
@@ -722,21 +823,16 @@ class CarePlanTestResult extends Component {
                                 })
                             }
 
-                            <Grid item xs={12}  style={{ backgroundColor: "#e5e5e5" }}>
-                                <Grid item xs={12}>
-                                    <Typography>{readingsTitle}</Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <ReadingDisplay 
-                                        mainCode={mainCode} 
-                                        subCodes={subCodes} 
-                                        readingsCount={readingsCount}
-                                        readingsFormatter={readingsFormatter}
-                                        data={data}
-                                        classes={classes} 
-                                    />
-                                </Grid>
-                            </Grid>
+
+                            <ReadingDisplay 
+                                mainCode={mainCode} 
+                                subCodes={subCodes}
+                                readingsTitle={readingsTitle}
+                                readingsCount={readingsCount}
+                                readingsFormatter={readingsFormatter}
+                                data={data}
+                                classes={classes} 
+                            />
                         </Grid>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
