@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { Grid } from "@material-ui/core";
 
 export default class NhsWidgetDisplay extends Component {
     
@@ -6,7 +8,8 @@ export default class NhsWidgetDisplay extends Component {
         super(props);
 
         this.state = {
-            width: null
+            width: null,
+            loaded: false
         };
 
         this.timeout = null;
@@ -23,6 +26,7 @@ export default class NhsWidgetDisplay extends Component {
 
     updateWidth() {
         const { timeout, containerRef } = this;
+        const { loaded } = this.state
 
         if (timeout) {
             window.clearTimeout(timeout);
@@ -30,27 +34,56 @@ export default class NhsWidgetDisplay extends Component {
         }
 
         this.timeout = window.setTimeout(() => {
-            this.setState({ width: (containerRef.current && containerRef.current.offsetWidth) || 0 });
+            this.setState({ width: (containerRef.current && containerRef.current.offsetWidth) || 0 }, () => {
+                if (!loaded) {
+                    this.setState({ loaded: true })
+                }
+            });
             this.timeout = null;
         } , 500);
     }
 
     render() {
 
-        const { height, src } = this.props;
-        const { width } = this.state;
+        const { height, src, id } = this.props;
+        const { width, loaded } = this.state;
 
         const resolvedWidth = width || 500;
 
         return (
-            <div ref={this.containerRef} style={{ width: "100%", height }}>
-                <iframe 
-                    src={`${src}&h=${height}&w=${width}`} 
-                    style={{ borderStyle: "none", height, width: resolvedWidth }}
-                    onLoad={() => this.updateWidth()}
-                >
-                </iframe>
-            </div>
+            <Grid 
+                container 
+                spacing={16} 
+                style={{ margin: 0, width: "100%", position: "relative", overflow: "hidden" }}
+            >
+                {!loaded &&
+                    <div style={{ 
+                        position: "absolute", 
+                        top: 0, 
+                        left: 0, 
+                        bottom: 0, 
+                        right: 0, 
+                        background: "white",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#3596f4" 
+                    }}>
+                        <CircularProgress size={70} color="inherit" />
+                    </div>
+                }
+                <Grid item xs={12}>
+                    <div ref={this.containerRef} style={{ width: "100%", height }}>
+                        <iframe
+                            key={`iframe-${id}`} 
+                            src={`${src}&h=${height}&w=${width}`} 
+                            style={{ borderStyle: "none", height, width: resolvedWidth }}
+                            onLoad={() => this.updateWidth()}
+                        >
+                        </iframe>
+                    </div>
+                </Grid>
+            </Grid>
         )
     }
 }

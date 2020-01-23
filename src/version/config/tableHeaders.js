@@ -14,8 +14,8 @@ export default {
         title: "Top 3 Things About Me",
         description: "Three things that you feel would be useful for health and care professionals to know about you",
     },
-    nhs: {
-        title: "NHS",
-        description: "Search NHS services"
+    "help-and-advice": {
+        title: "Help and Advice",
+        description: ""
     }
 };

@@ -8,13 +8,13 @@ import PatientSummary from "../../core/pages/PatientSummary";
 export const themeShortMenu = [
     { url: '/summary', label: 'Patient Summary' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/nhs', label: 'NHS' }
+    { url: '/help-and-advice', label: 'Help and Advice' }
 ];
 
 export const themeFullMenu = [
     { url: '/summary', label: 'Patient Summary' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/nhs', label: 'NHS' }
+    { url: '/help-and-advice', label: 'Help and Advice' }
 ];
 
 export const themeCommonElements = {
