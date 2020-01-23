@@ -76,7 +76,7 @@ export default class NhsWidgetDisplay extends Component {
                     <div ref={this.containerRef} style={{ width: "100%", height }}>
                         <iframe
                             key={`iframe-${id}`} 
-                            src={`${src}&h=${height}&w=${width}`} 
+                            src={`${src}`} 
                             style={{ borderStyle: "none", height, width: resolvedWidth }}
                             onLoad={() => this.updateWidth()}
                         >
