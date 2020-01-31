@@ -8,7 +8,7 @@ export const getNhsServicesSaga = takeEvery(SYNOPSIS_NHSSERVICES_ACTION.REQUEST,
         heading: "nhs",
         synopsis: [
             {
-                text: "NHS Choices Live well Widget",
+                text: "NHS Live Well",
             }, 
             {
                 text: "A-Z"

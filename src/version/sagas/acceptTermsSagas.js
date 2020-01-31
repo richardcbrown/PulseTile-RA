@@ -9,7 +9,8 @@ export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function*(
     const url = domainName + '/api/initialise/terms/accept';
     let options = {
         method: 'POST',
-        body: JSON.stringify(action.data)
+        body: JSON.stringify(action.data),
+        credentials: "same-origin"
     };
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });

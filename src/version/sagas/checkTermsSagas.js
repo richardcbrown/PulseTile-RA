@@ -8,7 +8,8 @@ import { userLogout } from 'ra-core';
 export const checkTermsSaga = takeEvery(CHECK_TERMS_ACTION.REQUEST, function * (action) {
     const url = domainName + '/api/initialise/terms/check';
     let options = {
-        method: 'GET'
+        method: 'GET',
+        credentials: "same-origin"
     };
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });

@@ -1,8 +1,18 @@
 import React, { Component } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Grid } from "@material-ui/core";
+import { withStyles } from '@material-ui/core/styles';
 
-export default class NhsWidgetDisplay extends Component {
+const styles = {
+    container: {
+        width: "100%", 
+        "-webkit-overflow-scrolling": "touch",
+        overflowY: "auto",
+        overflowX: "hidden"
+    }
+}
+
+class NhsWidgetDisplay extends Component {
     
     constructor(props) {
         super(props);
@@ -45,7 +55,7 @@ export default class NhsWidgetDisplay extends Component {
 
     render() {
 
-        const { height, src, id } = this.props;
+        const { height, src, id, classes } = this.props;
         const { width, loaded } = this.state;
 
         const resolvedWidth = width || 500;
@@ -73,7 +83,7 @@ export default class NhsWidgetDisplay extends Component {
                     </div>
                 }
                 <Grid item xs={12}>
-                    <div ref={this.containerRef} style={{ width: "100%", height }}>
+                    <div ref={this.containerRef} className={classes.container} style={{ height: height + 4 }}>
                         <iframe
                             key={`iframe-${id}`} 
                             src={`${src}`} 
@@ -87,3 +97,5 @@ export default class NhsWidgetDisplay extends Component {
         )
     }
 }
+
+export default withStyles(styles)(NhsWidgetDisplay)

@@ -12,7 +12,9 @@ export default function createCustomSagas(actionName, actionType, pluginName) {
         if (pluginName === 'top3Things') {
             url = domainName + '/api/patients/' + localStorage.getItem('patientId') + '/synopsis/' + pluginName + '/latest';
         }
-        let options = {};
+        let options = {
+            credentials: "same-origin"
+        };
         options.method = "GET";
         if (!options.headers) {
             options.headers = new Headers({Accept: 'application/json'});
