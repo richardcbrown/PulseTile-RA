@@ -36,6 +36,17 @@ const CharacterCount = ({ form, formItem, limit, show }) => {
     )
 }
 
+const conditionalRequired = (message, target) => (value,  allValues) => {
+    
+    const targetValue = allValues[target];
+
+    if (targetValue && !value) {
+        return message;
+    }
+
+    return undefined
+}
+
 /**
  * This component returns TopThreeThings creation form
  *
@@ -47,6 +58,10 @@ class TopThreeThingsCreate extends Component {
 
     constructor(props) {
         super(props);
+
+        this.nameOneValidator = conditionalRequired("Subject is required", "description1");
+        this.nameTwoValidator = conditionalRequired("Subject is required", "description2");
+        this.nameThreeValidator = conditionalRequired("Subject is required", "description3");
 
         this.state = {
             loaded: false
@@ -133,7 +148,7 @@ class TopThreeThingsCreate extends Component {
                                 source="name1" 
                                 label="#1"
                                 defaultValue={ this.state.name1 }
-                                validate={ maxLength(75) } 
+                                validate={ [this.nameOneValidator, maxLength(75)] } 
                             />
                             <CharacterCount limit={ 75 } form={ form } formItem="name1" show={ this.showCount("name1") } />
                             <LongTextInput 
@@ -150,7 +165,7 @@ class TopThreeThingsCreate extends Component {
                                 source="name2" 
                                 label="#2"
                                 defaultValue={ this.state.name2 }
-                                validate={ maxLength(75) }  
+                                validate={ [this.nameTwoValidator, maxLength(75)] }  
                             />
                             <CharacterCount limit={ 75 } form={ form } formItem="name2" show={ this.showCount("name2") } />
                             <LongTextInput 
@@ -167,7 +182,7 @@ class TopThreeThingsCreate extends Component {
                                 source="name3" 
                                 label="#3"
                                 defaultValue={ this.state.name3 }
-                                validate={ maxLength(75) }  
+                                validate={ [this.nameThreeValidator, maxLength(75)] }  
                             />
                             <CharacterCount limit={ 75 } form={ form } formItem="name3" show={ this.showCount("name3") } />
                             <LongTextInput 

@@ -10,6 +10,7 @@ import helmLogo from "../../../images/helm-logo.png";
 import nhsLogo from "../../../images/nhs.png";
 import UserTour from "../../../features/UserTour";
 import ContrastMode from "../../../features/ContrastMode";
+import FeedbackButton from "./FeedbackButton";
 import UserPanelButton from "./UserPanelButton";
 
 const styles = theme => ({
@@ -120,6 +121,7 @@ const TopPart = ({ classes, logout, location }) => {
                 image={nhsLogo}
                 title="Pulse Tile"
             />
+            <FeedbackButton classes={classes} />
             <UserTour classes={classes} location={location} />
             <ContrastMode classes={classes} />
             <UserPanelButton classes={classes} />
