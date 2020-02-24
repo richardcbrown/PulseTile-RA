@@ -9,6 +9,7 @@ import LowPart from "./fragments/LowPart";
 const styles = {
     appBar: {
         boxShadow: "none",
+        width: "auto"
     }
 };
 
