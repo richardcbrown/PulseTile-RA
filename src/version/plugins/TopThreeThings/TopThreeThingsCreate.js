@@ -16,7 +16,8 @@ import { Typography } from "@material-ui/core";
 const styles = {
     createBlock: {
         padding: "24px",
-        background: `url(${backgroundImage}) 0 0 repeat`
+        background: `url(${backgroundImage})`,
+        backgroundSize: "cover"
     }
 };
 

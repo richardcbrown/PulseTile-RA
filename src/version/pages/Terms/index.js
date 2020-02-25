@@ -17,7 +17,8 @@ const styles = {
         width: "100%",
         display: "flex",
         flexGrow: 1,
-        background: `url(${backgroundImage}) 0 0 repeat` 
+        background: `url(${backgroundImage}) 0 0 repeat`,
+        overflowY: "auto" 
     },
     termsContainer: {
         height: "100%",
@@ -43,7 +44,9 @@ const styles = {
         display: "flex",
         flexGrow: 1,
         flexDirection: "column",
-        margin: 0
+        margin: 0,
+        flexWrap: "nowrap",
+        height: "100%"
     },
     policiesContainer: {
         display: "flex",
@@ -51,7 +54,8 @@ const styles = {
         alignItems: "stretch",
         margin: 0,
         flexGrow: 1,
-        width: "100%"
+        width: "100%",
+        flexWrap: "wrap"
     },
     declarationContainer: {
         overflowY: "auto"
