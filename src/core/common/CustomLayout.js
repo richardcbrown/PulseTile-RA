@@ -17,13 +17,16 @@ const styles = {
         zIndex: 1,
         minHeight: '100vh',
         position: 'relative',
+        maxWidth: "100% !important",
+        minWidth: "100% !important",
         '& > div': {
             minHeight: '100vh',
             overflowX: 'hidden !important',
         },
         '& main > div': {
             padding: 0,
-        },
+            width: "100%"
+        }
     },
 };
 

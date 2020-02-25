@@ -9,7 +9,9 @@ let responseInfo = {};
 
 export default takeEvery(DEMOGRAPHICS_ACTION.REQUEST, function*(action) {
     const url = domainName + '/api/demographics/' + localStorage.getItem('patientId');
-    let options = {};
+    let options = {
+        credentials: "same-origin"
+    };
     options.method = "GET";
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
