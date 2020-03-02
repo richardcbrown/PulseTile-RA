@@ -63,7 +63,6 @@ const styles = {
     policyAndAcceptContainer: {
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-end",
         justifyContent: "center"
     },
     continueContainer: {
