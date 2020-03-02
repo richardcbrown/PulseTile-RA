@@ -87,6 +87,12 @@ class TopThreeThingsCreate extends Component {
             return false;
         }
 
+        form.fields = form.fields || {};
+
+        form.fields["name1"] = { touched: true, visited: true };
+        form.fields["name2"] = { touched: true, visited: true };
+        form.fields["name3"] = { touched: true, visited: true };
+
         for (const prop in form.values) {
             if (form.values.hasOwnProperty(prop)) {
                 const initialValue = form.initial[prop];

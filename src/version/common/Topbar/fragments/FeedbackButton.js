@@ -1,9 +1,18 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-
-import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
 import Tooltip from '@material-ui/core/Tooltip';
+import { ReactComponent as FeedbackIcon } from "../../../images/Feedback-XL.svg";
+import { Typography } from "@material-ui/core";
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => {    
+    return {
+        feedbackText: {
+            [theme.breakpoints.down('sm')]: {
+                display: "none",
+            }
+        }
+    }
+}
 
 /**
  * Thic component returns Feedback button
@@ -13,23 +22,24 @@ import Tooltip from '@material-ui/core/Tooltip';
 class FeedbackButton extends Component {
 
     render() {
-        const { classes } = this.props;
+        const { classes } = this.props
+
         return (
-            <div className={classes.rightBlockItem}>
-                <Tooltip title="Feedback">
-                    <IconButton >
-                    <a
-                        className={classes.rightBlockButton}                        
-                        color="inherit"
-                        aria-label="Feedback"
-                        href="mailto:test@test.com"
-                    >
-                        <CommentIcon />
-                    </a>
-                </Tooltip>
-            </div>
+            <Tooltip title="Feedback">
+                <a
+                    color="inherit"
+                    aria-label="Feedback"
+                    href="mailto:info@myhelm.org?subject=User Feedback from Helm"
+                    style={{ textDecoration: "none" }}
+                >
+                    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <FeedbackIcon width={40} height={40} title="Feedback" />
+                        <Typography className={classes.feedbackText} style={{ marginLeft: 20, fontWeight: "bold" }}>FEEDBACK</Typography>
+                    </div> 
+                </a>
+            </Tooltip>
         );
     }
 };
 
-export default FeedbackButton;
+export default withStyles(styles)(FeedbackButton);
