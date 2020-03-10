@@ -22,7 +22,7 @@ export default {
         title: "My Care Plan",
         description: ""
     },
-    directory: {
+    loop: {
         title: "LOOP",
         description: "Search the Leeds Directory for relevant services and resources"
     }

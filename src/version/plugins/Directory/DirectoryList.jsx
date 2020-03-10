@@ -378,7 +378,7 @@ class DirectoryList extends Component {
     searchParametersChanged = () => {
         const { tags, serviceOrResourceName, page } = this.state
 
-        customDataProvider("GET_LIST", "directory", { 
+        customDataProvider("GET_LIST", "loop", { 
                 q: serviceOrResourceName, 
                 tags: tags.map((t) => t.id).join(","),
                 page: page
@@ -419,7 +419,7 @@ class DirectoryList extends Component {
 
         return (
             <Grid className={classes.container} >
-                <TableHeader resource="directory" />
+                <TableHeader resource="loop" />
 
                 <div className={classes.searchContainer}>
                     <TextField 

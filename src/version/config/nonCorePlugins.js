@@ -8,8 +8,6 @@ import NhsWidgets from "../plugins/NhsWidgets/NhsWidgets";
 // CarePlan
 import CarePlanView from "../plugins/CarePlan/CarePlanView";
 // LEEDS REPOSITORY
-import  { DirectoryList } from "../plugins/Directory/DirectoryList";
-
 import Directory from "../pages/Directory";
 
 export default [
