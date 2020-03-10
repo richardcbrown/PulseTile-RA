@@ -7,7 +7,7 @@ import {
     SYNOPSIS_NHSSERVICES_ACTION,
     SYNOPSIS_LEEDSSERVICES_ACTION
 } from "../actions/synopsisActions";
-
+import { MY_CARE_PLAN_ACTION } from "../actions/myCarePlanAction";
 import createCustomReducer from "../../core/reducers/createCustomReducer";
 
 /**
@@ -21,6 +21,7 @@ export default {
     top3ThingsSynopsis: createCustomReducer(SYNOPSIS_TOP_THREE_THINGS_ACTION, "data.synopsis"),
     "nhs-resourcesSynopsis": createCustomReducer(SYNOPSIS_NHSSERVICES_ACTION, "data.synopsis"),
     "health-and-adviceSynopsis": createCustomReducer(SYNOPSIS_LEEDSSERVICES_ACTION, "data.synopsis"),
+    myCarePlan: createCustomReducer(MY_CARE_PLAN_ACTION, "data"),
     contrastMode,
     selectedFeedsList,
     terms

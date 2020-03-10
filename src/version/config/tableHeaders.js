@@ -17,5 +17,9 @@ export default {
     "help-and-advice": {
         title: "Help and Advice",
         description: ""
+    },
+    myCarePlan: {
+        title: "My Care Plan",
+        description: ""
     }
 };
