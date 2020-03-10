@@ -1,8 +1,5 @@
 // NON-CORE PLUGINS CONFIGURATION LIST
 
-// VACCINATIONS
-import VaccinationsList from "../plugins/Vaccinations/VaccinationsList";
-
 // TOP THREE THINGS
 import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate";
 
@@ -10,13 +7,12 @@ import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate
 import NhsWidgets from "../plugins/NhsWidgets/NhsWidgets";
 // CarePlan
 import CarePlanView from "../plugins/CarePlan/CarePlanView";
+// LEEDS REPOSITORY
+import  { DirectoryList } from "../plugins/Directory/DirectoryList";
+
+import Directory from "../pages/Directory";
 
 export default [
-    {
-        name: "vaccinations",
-        label: "Vaccinations",
-        list: VaccinationsList,
-    },
     {
         name: "top3Things",
         label: "Top Three Things",
@@ -31,5 +27,10 @@ export default [
         name: "CarePlan",
         label: "My Care Plan",
         list: CarePlanView
+    },
+    {
+        name: "loop",
+        label: "LOOP",
+        list: Directory
     }
 ];

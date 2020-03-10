@@ -9,14 +9,16 @@ export const themeShortMenu = [
     { url: '/summary', label: 'Patient Summary' },
     { url: '/top3Things', label: 'TopThreeThings' },
     { url: '/nhs-resources', label: 'NHS Resources' },
-    { url: '/careplan', label: 'My Care Plan' }
+    { url: '/careplan', label: 'My Care Plan' },
+    { url: '/loop', label: 'LOOP' }
 ];
 
 export const themeFullMenu = [
     { url: '/summary', label: 'Patient Summary' },
     { url: '/top3Things', label: 'TopThreeThings' },
     { url: '/nhs-resources', label: 'NHS Resources' },
-    { url: '/careplan', label: 'My Care Plan' }
+    { url: '/careplan', label: 'My Care Plan' },
+    { url: '/loop', label: 'LOOP' }
 ];
 
 export const themeCommonElements = {

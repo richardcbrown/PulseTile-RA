@@ -21,5 +21,9 @@ export default {
     myCarePlan: {
         title: "My Care Plan",
         description: ""
+    },
+    directory: {
+        title: "LOOP",
+        description: "Search the Leeds Directory for relevant services and resources"
     }
 };

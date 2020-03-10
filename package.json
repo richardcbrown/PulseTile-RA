@@ -10,6 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@material-ui/core": "^1.5.0",
     "axios": "^0.18.1",
+    "clsx": "^1.0.4",
     "cors-anywhere": "^0.4.1",
     "deepmerge": "^3.2.0",
     "jsonwebtoken": "^8.4.0",
