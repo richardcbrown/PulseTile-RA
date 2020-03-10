@@ -14,8 +14,8 @@ export default [
         list: TopThreeThingsCreate
     },
     {
-        name: "directory",
-        label: "Leeds Directory",
+        name: "loop",
+        label: "LOOP",
         list: Directory
     }
 ];

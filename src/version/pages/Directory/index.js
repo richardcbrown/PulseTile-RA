@@ -110,14 +110,14 @@ class Directory extends Component {
 
     pageSelected = (pageIndex) => {
         const page = directoryPages[pageIndex]
-        this.props.history.push(`/directory/${page.title.toLowerCase().split(' ').join('-')}`)
+        this.props.history.push(`/loop/${page.title.toLowerCase().split(' ').join('-')}`)
     }
     
     getPage = () => {
         const pageFragments = window.location.hash.split('/')
         const lastFragment = pageFragments[pageFragments.length -1]
 
-        if (lastFragment === "directory") {
+        if (lastFragment === "loop") {
             return null
         }
 
@@ -137,8 +137,8 @@ class Directory extends Component {
 
         const page = this.getPage()
 
-        const resourceUrl="directory"
-        const title="Leeds Directory"
+        const resourceUrl="loop"
+        const title="LOOP"
 
         if (page) {
             const breadcrumbsResource = [

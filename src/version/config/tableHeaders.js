@@ -14,8 +14,8 @@ export default {
         title: "Top 3 Things About Me",
         description: "Three things that you feel would be useful for health and care professionals to know about you",
     },
-    directory: {
-        title: "Leeds Directory",
+    loop: {
+        title: "LOOP",
         description: "Search the Leeds Directory for relevant services and resources"
     }
 };

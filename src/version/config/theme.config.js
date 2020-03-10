@@ -13,7 +13,7 @@ export const themeShortMenu = [
     // { url: '/allergies', label: 'Allergies' },
     // { url: '/contacts', label: 'Contacts' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/directory', label: 'Leeds Directory' }
+    { url: '/loop', label: 'LOOP' }
 ];
 
 export const themeFullMenu = [
@@ -24,7 +24,7 @@ export const themeFullMenu = [
     // { url: '/allergies', label: 'Allergies' },
     // { url: '/contacts', label: 'Contacts' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/directory', label: 'Leeds Directory' }
+    { url: '/loop', label: 'LOOP' }
 ];
 
 export const themeCommonElements = {
