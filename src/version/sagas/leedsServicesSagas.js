@@ -8,7 +8,7 @@ export const getLeedsServicesSaga = takeEvery(SYNOPSIS_LEEDSSERVICES_ACTION.REQU
         heading: "Leeds",
         synopsis: [
             {
-                text: <a href="https://www.commlinks.co.uk/?service=linking-leeds" noopener noreferrer target="_blank">Linking Leeds</a>
+                text: <a href="https://www.commlinks.co.uk/?service=linking-leeds" noopener noreferrer target="_blank">Social Prescribing</a>
             }, 
             {
                 text: <a href="https://www.mindwell-leeds.org.uk" noopener noreferrer target="_blank">Mindwell</a>
