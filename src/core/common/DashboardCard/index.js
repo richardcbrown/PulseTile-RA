@@ -55,7 +55,7 @@ const ListBlock = ({ classes, items, list, history }) => {
  * @constructor
  */
 export default props => {
-    const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings } = props;
+    const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings, hideList } = props;
     if (Object.values(showHeadings).indexOf(list) === -1) {
         return null;
     }
@@ -70,7 +70,7 @@ export default props => {
                         </Typography>
                     </h1>
                 </div>
-                { (showMode === SHOW_ALL || !showMode) &&
+                { ((showMode === SHOW_ALL || !showMode) && !hideList) &&
                 <ListBlock loading={loading} classes={classes} items={items} list={list} history={history} />
                 }
             </Card>

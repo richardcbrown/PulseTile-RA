@@ -13,7 +13,7 @@ export const themeShortMenu = [
     // { url: '/allergies', label: 'Allergies' },
     // { url: '/contacts', label: 'Contacts' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/CarePlan', label: 'My Care Plan' }
+    { url: '/careplan', label: 'My Care Plan' }
 ];
 
 export const themeFullMenu = [
@@ -24,7 +24,7 @@ export const themeFullMenu = [
     // { url: '/allergies', label: 'Allergies' },
     // { url: '/contacts', label: 'Contacts' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/CarePlan', label: 'My Care Plan' }
+    { url: '/careplan', label: 'My Care Plan' }
 ];
 
 export const themeCommonElements = {

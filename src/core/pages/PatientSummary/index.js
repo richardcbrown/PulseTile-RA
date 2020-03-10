@@ -114,6 +114,7 @@ class PatientSummaryInfo extends Component {
                                     id={item.id}
                                     title={item.title}
                                     list={item.list}
+                                    hideList={!!item.hideList}
                                     loading={loading}
                                     items={get(this.props, item.list, [])}
                                     icon={item.icon}
