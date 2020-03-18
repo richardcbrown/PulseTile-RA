@@ -11,7 +11,7 @@ import { checkTermsSaga } from "./checkTermsSagas";
 import { topThreeThingsSaga } from "./topThreeThingsSagas";
 import { getNhsServicesSaga } from "./nhsServicesSagas";
 import { getLeedsServicesSaga } from "./leedsServicesSagas";
-
+import { getCareplanSaga } from "./myCarePlanSynopsisSagas";
 
 /**
  * This componenr returns array of version sagas
@@ -24,6 +24,7 @@ export default [
     createSynopsisSagas(SYNOPSIS_TOP_THREE_THINGS_ACTION, synopsisTopThreeThingsAction, 'top3Things'),
     createCarePlanSagas(MY_CARE_PLAN_ACTION, myCarePlanAction, 'myCarePlan'),
     createCarePlanPutSagas(SAVE_MY_CARE_PLAN_ACTION, saveMyCarePlanAction, 'myCarePlan'),
+    getCareplanSaga,
     acceptTermsSaga,
     getTermsSaga,
     checkTermsSaga,
