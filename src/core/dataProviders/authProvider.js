@@ -8,7 +8,9 @@ const OLD_PATIENT_DELAY = 1000;
 const NEW_PATIENT_DELAY = 5000;
 
 const url = domainName + '/api/initialise';
-let options = {};
+let options = {
+    credentials: "same-origin"
+};
 if (!options.headers) {
     options.headers = new Headers({ Accept: 'application/json' });
 }

@@ -7,7 +7,9 @@ import { userLogout } from 'ra-core';
 
 export default takeEvery(INITIALIZE_ACTION.REQUEST, function*(action) {
     const url = domainName + '/api/initialise';
-    let options = {};
+    let options = {
+        credentials: "same-origin"
+    };
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }

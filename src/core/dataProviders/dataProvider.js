@@ -49,7 +49,9 @@ const urlSelector = (resource, queryProps) => {
  */
 const convertDataRequestToHTTP = (type, resource, params) => {
     let url = "";
-    const options = {};
+    const options = {
+        credentials: "same-origin"
+    };
     switch (type) {
         case GET_LIST: {
             url = urlSelector(resource, params)
