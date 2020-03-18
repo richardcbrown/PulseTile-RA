@@ -9,6 +9,9 @@ import customDataProvider from "../../../core/dataProviders/dataProvider"
 import DirectoryPagination from "./fragments/DirectoryPagination"
 import TableHeader from "../../../core/common/TableHeader"
 import clsx from "clsx"
+import { httpErrorAction } from '../../../core/actions/httpErrorAction'
+import { connect } from 'react-redux'
+import get from "lodash/get"
 
 const styles = theme => ({
     container: {
@@ -331,7 +334,9 @@ class DirectoryList extends Component {
             serviceOrResourceName: "",
             tags: fixedTags,
             page: 1,
-            searchResults: {}
+            searchResults: {},
+            searching: false,
+            firstLoad: true
         }
     }
 
@@ -376,21 +381,41 @@ class DirectoryList extends Component {
     }
 
     searchParametersChanged = () => {
+        this.setState({ searching: true })
+        
         const { tags, serviceOrResourceName, page } = this.state
+        const { onError } = this.props
 
         customDataProvider("GET_LIST", "loop", { 
-                q: serviceOrResourceName, 
-                tags: tags.map((t) => t.id).join(","),
-                page: page
+            q: serviceOrResourceName, 
+            tags: tags.map((t) => t.id).join(","),
+            page: page
+        })
+        .then(res => {
+            this.setState(prevState => {
+                return {
+                    ...prevState,
+                    searchResults: res,
+                    searching: false,
+                    firstLoad: false
+                }
             })
-            .then(res => {
-                this.setState(prevState => {
-                    return {
-                        ...prevState,
-                        searchResults: res
-                    }
-                })
-            });
+        }).catch((error) => {
+            const errorTrim = error.message.replace('Error:', '').trim();
+            const errorArray = errorTrim.split('|');
+            const data = {
+                status: get(errorArray, [0], null),
+                message: get(errorArray, [1], null)
+            };
+
+            this.setState({
+                searchResults: {},
+                searching: false,
+                firstLoad: false
+            })
+
+            onError(data);
+        });
     }
 
     debounceNameSearch = (serviceOrResourceName) => {
@@ -410,7 +435,7 @@ class DirectoryList extends Component {
     }
 
     render() {
-        const { tags, serviceOrResourceName, searchResults, page } = this.state
+        const { tags, serviceOrResourceName, searchResults, page, searching, firstLoad } = this.state
         const { classes } = this.props
 
         const results = searchResults.data || []
@@ -445,6 +470,12 @@ class DirectoryList extends Component {
                         </div>
                         : null
                     }
+
+                    {
+                        !firstLoad && !searching && !results.length && <div>
+                            <Typography>No results, please try another search</Typography> 
+                        </div>
+                    }
                 </div>
 
                 <DirectoryGrid classes={classes} data={results} tagSelected={this.tagSelected} />
@@ -455,6 +486,12 @@ class DirectoryList extends Component {
     }
 }
 
-const styled = withStyles(styles)(DirectoryList)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onError: (error) => dispatch(httpErrorAction.save(error))
+    }
+}
+
+const styled = connect(null, mapDispatchToProps)(withStyles(styles)(DirectoryList))
 
 export { styled as DirectoryList }

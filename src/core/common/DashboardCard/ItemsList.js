@@ -26,9 +26,9 @@ const ItemsList = ({ classes, items, list, history }) => {
         return (
             <List className={classes.list}>
                 {items.map((item, key) => {
-                    const showRoute = "/" + list + "/" + item.sourceId + "/show";
+                    const onClick = list && item.sourceId ?  () => history.push("/" + list + "/" + item.sourceId + "/show") : () => {};
                     return (
-                        <li key={key} className={classes.listItem} onClick={() => history.push(showRoute)}>
+                        <li key={key} className={classes.listItem} onClick={onClick}>
                             <Typography noWrap={true}>
                                 {item.text}
                             </Typography>

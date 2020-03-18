@@ -1,11 +1,12 @@
 import { faSearch , faUserMd, faAddressBook } from '@fortawesome/free-solid-svg-icons';
 
-import { synopsisVaccinationsAction, synopsisTopThreeThingsAction, synopsisNhsServicesAction } from "../actions/synopsisActions";
+import { synopsisVaccinationsAction, synopsisTopThreeThingsAction, synopsisNhsServicesAction, synopsisLoopServicesAction } from "../actions/synopsisActions";
 
 export const nonCoreSynopsisActions = [
     // synopsisVaccinationsAction,
     synopsisTopThreeThingsAction,
-    synopsisNhsServicesAction
+    synopsisNhsServicesAction,
+    synopsisLoopServicesAction
 ];
 
 export const nonCoreSynopsisData = [
