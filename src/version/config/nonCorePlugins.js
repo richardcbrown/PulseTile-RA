@@ -31,10 +31,5 @@ export default [
         name: "loop",
         label: "LOOP",
         list: Directory,
-    },
-    {
-        name: "help-and-advice",
-        label: "Help and Advice",
-        list: NhsWidgets
     }
 ];

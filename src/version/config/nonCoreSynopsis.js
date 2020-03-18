@@ -1,10 +1,11 @@
 import { faFileMedical, faCommentMedical, faUserMd, faAddressBook, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { synopsisLeedsServicesAction, synopsisTopThreeThingsAction, synopsisNhsServicesAction } from "../actions/synopsisActions";
-
-import { synopsisVaccinationsAction, synopsisTopThreeThingsAction, synopsisNhsServicesAction, synopsisCareplanAction } from "../actions/synopsisActions";
-import { faSearch , faUserMd, faAddressBook } from '@fortawesome/free-solid-svg-icons';
-
-import { synopsisVaccinationsAction, synopsisTopThreeThingsAction, synopsisNhsServicesAction, synopsisLoopServicesAction } from "../actions/synopsisActions";
+import { 
+    synopsisLeedsServicesAction, 
+    synopsisTopThreeThingsAction, 
+    synopsisNhsServicesAction, 
+    synopsisCareplanAction, 
+    synopsisLoopServicesAction 
+} from "../actions/synopsisActions";
 
 export const nonCoreSynopsisActions = [
     synopsisLeedsServicesAction,

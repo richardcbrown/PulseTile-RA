@@ -31,8 +31,8 @@ const ItemsList = ({ classes, items, list, history, listOnly }) => {
                     const clickHandler = listOnly || !(list && item.sourceId) ? () => {} : () => history.push(showRoute);
 
                     return (
-                        <li key={key} className={classes.listItem} onClick={onClick}>
-                            <Typography noWrap={true}>
+                        <li key={key} className={classes.listItem} onClick={clickHandler}>
+                            <Typography>
                                 {item.text}
                             </Typography>
                         </li>

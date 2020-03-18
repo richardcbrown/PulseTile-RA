@@ -1,5 +1,6 @@
 import React from "react";
 import { takeEvery, put } from 'redux-saga/effects';
+import { Typography } from "@material-ui/core";
 
 import { SYNOPSIS_LEEDSSERVICES_ACTION, synopsisLeedsServicesAction } from "../actions/synopsisActions";
 
@@ -8,16 +9,28 @@ export const getLeedsServicesSaga = takeEvery(SYNOPSIS_LEEDSSERVICES_ACTION.REQU
         heading: "Leeds",
         synopsis: [
             {
-                text: <a href="https://www.commlinks.co.uk/?service=linking-leeds" noopener noreferrer target="_blank">Social Prescribing</a>
+                text:   (<React.Fragment>
+                            <a href="https://www.commlinks.co.uk/?service=linking-leeds" rel="noopener noreferrer" target="_blank">Social Prescribing</a>
+                            <Typography>Connecting people to services and activities in their local community within Leeds</Typography>
+                        </React.Fragment>)
             }, 
             {
-                text: <a href="https://www.mindwell-leeds.org.uk" noopener noreferrer target="_blank">Mindwell</a>
+                text:   (<React.Fragment>
+                            <a href="https://www.mindwell-leeds.org.uk" rel="noopener noreferrer" target="_blank">Mindwell</a>
+                            <Typography>Mental health information and support for everyone in Leeds</Typography>
+                        </React.Fragment>) 
             }, 
             {
-                text: <a href="https://www.mindmate.org.uk" noopener noreferrer target="_blank">Mindmate</a>
+                text:   (<React.Fragment>
+                            <a href="https://www.mindmate.org.uk" rel="noopener noreferrer" target="_blank">Mindmate</a>
+                            <Typography>Mental health information and support specially designed for young people in Leeds</Typography>
+                        </React.Fragment>)
             },
             {
-                text: <a href="https://leeds.omnitherapy.org" noopener noreferrer target="_blank">Omnihealth</a>
+                text:   (<React.Fragment>
+                            <a href="https://leeds.omnitherapy.org" rel="noopener noreferrer" target="_blank">Omnihealth</a>
+                            <Typography>Online mental health therapy available to anyone over the age of 17 and registered with a GP in Leeds</Typography>
+                        </React.Fragment>)
             }
         ]
     }));
