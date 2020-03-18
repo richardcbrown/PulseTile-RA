@@ -15,7 +15,10 @@ export default {
         description: "Three things that you feel would be useful for health and care professionals to know about you",
     },
     myCarePlan: {
-        title: "My Care Plan",
+        title: "My Care Plan"
+    },
+    "help-and-advice": {
+        title: "Help and Advice",
         description: ""
     }
 };

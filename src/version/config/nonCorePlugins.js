@@ -8,6 +8,8 @@ import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate
 
 // CarePlan
 import CarePlanView from "../plugins/CarePlan/CarePlanView";
+// NHS WIDGETS
+import NhsWidgets from "../plugins/NhsWidgets/NhsWidgets";
 
 export default [
     {
@@ -24,5 +26,10 @@ export default [
         name: "CarePlan",
         label: "My Care Plan",
         list: CarePlanView
+    },
+    {
+        name: "help-and-advice",
+        label: "Help and Advice",
+        list: NhsWidgets
     }
 ];

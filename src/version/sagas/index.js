@@ -9,6 +9,7 @@ import { acceptTermsSaga } from "./acceptTermsSagas";
 import { getTermsSaga } from "./getTermsSagas";
 import { checkTermsSaga } from "./checkTermsSagas";
 import { topThreeThingsSaga } from "./topThreeThingsSagas";
+import { getNhsServicesSaga } from "./nhsServicesSagas";
 
 /**
  * This componenr returns array of version sagas
@@ -24,5 +25,6 @@ export default [
     acceptTermsSaga,
     getTermsSaga,
     checkTermsSaga,
-    topThreeThingsSaga
+    topThreeThingsSaga,
+    getNhsServicesSaga
 ];

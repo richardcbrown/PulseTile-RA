@@ -7,24 +7,16 @@ import PatientSummary from "../../core/pages/PatientSummary";
 
 export const themeShortMenu = [
     { url: '/summary', label: 'Patient Summary' },
-    // { url: '/problems', label: 'Problems / Issues' },
-    // { url: '/medications', label: 'Medications' },
-    // { url: '/vaccinations', label: 'Vaccinations' },
-    // { url: '/allergies', label: 'Allergies' },
-    // { url: '/contacts', label: 'Contacts' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/careplan', label: 'My Care Plan' }
+    { url: '/careplan', label: 'My Care Plan' },
+    { url: '/help-and-advice', label: 'Help and Advice' }
 ];
 
 export const themeFullMenu = [
     { url: '/summary', label: 'Patient Summary' },
-    // { url: '/problems', label: 'Problems / Issues' },
-    // { url: '/medications', label: 'Medications' },
-    // { url: '/vaccinations', label: 'Vaccinations' },
-    // { url: '/allergies', label: 'Allergies' },
-    // { url: '/contacts', label: 'Contacts' },
     { url: '/top3Things', label: 'TopThreeThings' },
-    { url: '/careplan', label: 'My Care Plan' }
+    { url: '/careplan', label: 'My Care Plan' },
+    { url: '/help-and-advice', label: 'Help and Advice' }
 ];
 
 export const themeCommonElements = {
