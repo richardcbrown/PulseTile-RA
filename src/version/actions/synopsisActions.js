@@ -5,6 +5,7 @@ export const SYNOPSIS_VACCINATIONS_ACTION = createRequestTypes('SYNOPSIS_VACCINA
 export const SYNOPSIS_NHSSERVICES_ACTION = createRequestTypes('SYNOPSIS_NHSSERVICES_ACTION');
 export const SYNOPSIS_LEEDSSERVICES_ACTION = createRequestTypes('SYNOPSIS_LEEDSSERVICES_ACTION');
 export const SYNOPSIS_CAREPLAN_ACTION = createRequestTypes('SYNOPSIS_CAREPLAN_ACTION');
+export const SYNOPSIS_LOOPSERVICES_ACTION = createRequestTypes('SYNOPSIS_LOOPSERVICES_ACTION');
 
 export const synopsisLeedsServicesAction = {
     request: data => ({ type: SYNOPSIS_LEEDSSERVICES_ACTION.REQUEST, data }),
@@ -22,6 +23,12 @@ export const synopsisCareplanAction = {
     request: data => ({ type: SYNOPSIS_CAREPLAN_ACTION.REQUEST, data }),
     success: data => ({ type: SYNOPSIS_CAREPLAN_ACTION.SUCCESS, data }),
     error:   error => ({ type: SYNOPSIS_CAREPLAN_ACTION.FAILURE, error }),
+};
+
+export const synopsisLoopServicesAction = {
+    request: data => ({ type: SYNOPSIS_LOOPSERVICES_ACTION.REQUEST, data }),
+    success: data => ({ type: SYNOPSIS_LOOPSERVICES_ACTION.SUCCESS, data }),
+    error:   error => ({ type: SYNOPSIS_LOOPSERVICES_ACTION.FAILURE, error }),
 };
 
 export const synopsisTopThreeThingsAction = {
