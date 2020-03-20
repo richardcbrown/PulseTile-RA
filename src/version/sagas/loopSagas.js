@@ -7,16 +7,14 @@ import { SYNOPSIS_LOOPSERVICES_ACTION, synopsisLoopServicesAction } from "../act
 
 export const getLoopServicesSaga = takeEvery(SYNOPSIS_LOOPSERVICES_ACTION.REQUEST, function * (action) {
     yield put(synopsisLoopServicesAction.success({
-        heading: "loop",
+        heading: "leeds-information",
         synopsis: [
             {
-                text:   (<Typography>
-                            <Link to="/loop/search-whole-directory" color="inherit" aria-label="Search Whole Directory">Search Whole Directory</Link>
-                        </Typography>)
+                text:  "Local service information and resources to support your health and care."
             }, 
             {
                 text:   (<Typography>
-                            <Link to="/loop/search-diabetes" color="inherit" aria-label="Search Diabetes">Search Diabetes</Link>
+                            <Link to="/leeds-information" color="inherit" aria-label="Search">Search</Link>
                         </Typography>)
             }
         ]

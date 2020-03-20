@@ -10,7 +10,7 @@ export const themeShortMenu = [
     { url: '/top3Things', label: 'TopThreeThings' },
     { url: '/nhs-resources', label: 'NHS Resources' },
     { url: '/careplan', label: 'My Care Plan' },
-    { url: '/loop', label: 'LOOP' }
+    { url: '/leeds-information', label: 'Leeds Information' }
 ];
 
 export const themeFullMenu = [
@@ -18,7 +18,7 @@ export const themeFullMenu = [
     { url: '/top3Things', label: 'TopThreeThings' },
     { url: '/nhs-resources', label: 'NHS Resources' },
     { url: '/careplan', label: 'My Care Plan' },
-    { url: '/loop', label: 'LOOP' }
+    { url: '/leeds-information', label: 'Leeds Information' }
 ];
 
 export const themeCommonElements = {

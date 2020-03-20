@@ -11,7 +11,7 @@ const cardBackgroundImage = get(themeImages, 'cardBackgroundImage', null)
 
 const directoryPages = [
     {
-        title: "Search Whole Directory",
+        title: "Search",
         fixedTags: []
     },
     {
@@ -110,15 +110,15 @@ class Directory extends Component {
 
     pageSelected = (pageIndex) => {
         const page = directoryPages[pageIndex]
-        this.props.history.push(`/loop/${page.title.toLowerCase().split(' ').join('-')}`)
+        this.props.history.push(`/leeds-information/${page.title.toLowerCase().split(' ').join('-')}`)
     }
     
     getPage = () => {
         const pageFragments = window.location.hash.split('/')
         const lastFragment = pageFragments[pageFragments.length -1]
 
-        if (lastFragment === "loop") {
-            return null
+        if (lastFragment === "leeds-information") {
+            return directoryPages[0]
         }
 
         for (const page of directoryPages) {
@@ -137,8 +137,8 @@ class Directory extends Component {
 
         const page = this.getPage()
 
-        const resourceUrl="loop"
-        const title="LOOP"
+        const resourceUrl="leeds-information"
+        const title="Leeds Information"
 
         if (page) {
             const breadcrumbsResource = [

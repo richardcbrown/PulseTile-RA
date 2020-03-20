@@ -22,8 +22,8 @@ export default {
         title: "My Care Plan",
         description: ""
     },
-    loop: {
-        title: "LOOP",
-        description: "Search the Leeds Directory for relevant services and resources"
+    "leeds-information": {
+        title: "Leeds Information",
+        description: "Local service information and resources to support your health and care."
     }
 };

@@ -25,7 +25,7 @@ export default {
     "health-and-adviceSynopsis": createCustomReducer(SYNOPSIS_LEEDSSERVICES_ACTION, "data.synopsis"),
     myCarePlan: createCustomReducer(MY_CARE_PLAN_ACTION, "data"),
     careplanSynopsis: createCustomReducer(SYNOPSIS_CAREPLAN_ACTION, "data.synopsis"),
-    "loopSynopsis": createCustomReducer(SYNOPSIS_LOOPSERVICES_ACTION, "data.synopsis"),
+    "leeds-informationSynopsis": createCustomReducer(SYNOPSIS_LOOPSERVICES_ACTION, "data.synopsis"),
     contrastMode,
     selectedFeedsList,
     terms
