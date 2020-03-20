@@ -386,7 +386,7 @@ class DirectoryList extends Component {
         const { tags, serviceOrResourceName, page } = this.state
         const { onError } = this.props
 
-        customDataProvider("GET_LIST", "loop", { 
+        customDataProvider("GET_LIST", "leeds-information", { 
             q: serviceOrResourceName, 
             tags: tags.map((t) => t.id).join(","),
             page: page
@@ -444,7 +444,7 @@ class DirectoryList extends Component {
 
         return (
             <Grid className={classes.container} >
-                <TableHeader resource="loop" />
+                <TableHeader resource="leeds-information" />
 
                 <div className={classes.searchContainer}>
                     <TextField 
