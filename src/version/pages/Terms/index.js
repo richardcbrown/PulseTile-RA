@@ -15,7 +15,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Hidden, Button, Paper } from "@material-ui/core";
+import { Hidden, Paper } from "@material-ui/core";
 
 const styles = {
     termsBackground: {
@@ -23,7 +23,7 @@ const styles = {
         display: "flex",
         flexGrow: 1,
         background: `url(${backgroundImage}) 0 0 repeat`,
-        overflowY: "auto" 
+        flexDirection: "column"
     },
     termsContainer: {
         height: "100%",
@@ -51,7 +51,9 @@ const styles = {
         flexDirection: "column",
         margin: 0,
         flexWrap: "nowrap",
-        height: "100%"
+        height: "100%",
+        width: "100%",
+        overflowY: "auto"
     },
     policiesContainer: {
         display: "flex",
@@ -80,6 +82,10 @@ const styles = {
         flexDirection: "column",
         alignItems: "flex-end",
         padding: "10px"
+    },
+    mobileHeader: {
+        width: "100%",
+        margin: 0
     }
 };
 
@@ -110,62 +116,116 @@ class Terms extends Component {
                 <TopBarNoUser />
 
                 <div className={ classes.termsBackground }>
-                    <Grid container spacing={24}>
-                        <Grid item xs={12}>
-                            <Paper>
-                                <Typography>
-                                    Important, please read to ensure you understand how your information will be processed 
-                                </Typography>
-                            </Paper>
-                        </Grid>
+                    <Grid container spacing={24}  className={ classes.contentContainer }>
+                        <Hidden mdUp>
+                            <Grid container spacing={24} style={{ display: "block", margin: 0, width: "100%" }}>
+                                <Grid item xs={12}>
+                                    <Paper>
+                                        <Grid container spacing={16} style={{ width: "100%", margin: 0 }}>
+                                            <Grid item xs={12}>
+                                                <Typography>
+                                                    Important, please read to ensure you understand how your information will be processed 
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
 
-                        <Grid item xs={12}></Grid>
-                        <Button onClick={() => this.setState({ expandedPolicies: {} })}>
-                            Collapse All
-                        </Button>
-                    </Grid>
+                                {
+                                    error ?
+                                    
+                                    <GeneralDialog 
+                                        open={ true } 
+                                        onClose={ closeDialog } 
+                                        title={ error.title } 
+                                        message={ error.message }
+                                        options={ [
+                                            <ConfirmButton label="Ok" onClick={() => this.closeDialog() } />
+                                        ]}
+                                    />
 
-                    <Grid container spacing={24} className={ classes.contentContainer }>
-                        <Grid container spacing={24} className={ classes.policiesContainer }>
-                            {
-                                error ?
-                                
-                                <GeneralDialog 
-                                    open={ true } 
-                                    onClose={ closeDialog } 
-                                    title={ error.title } 
-                                    message={ error.message }
-                                    options={ [
-                                        <ConfirmButton label="Ok" onClick={() => this.closeDialog() } />
-                                    ]}
-                                />
+                                    :
 
-                                :
+                                    policies.map((p, key) => {
+                                        const shouldShow = !!expandedPolicies[key] || Object.values(expandedPolicies).every((val) => !!!val)
 
-                                policies.map((p, key) => {
-                                    return (
-                                        <Grid item xs={12} sm={12} md={6} lg={6} key={key} className={ classes.policyAndAcceptContainer }>
-                                            <Hidden mdUp>
-                                                <ExpansionPanel 
-                                                    style={{ borderRadius: 4, marginBottom: 16 }} 
-                                                    expanded={expandedPolicies[key] === true} 
-                                                    onChange={() => this.handleExpand(key)}>
-                                                    <ExpansionPanelSummary
-                                                        expandIcon={<ExpandMoreIcon />}
-                                                        aria-controls={`panel-${key}-content`}
-                                                        id={`panel-${key}-header`}
-                                                    >
-                                                        <Typography className={classes.heading}>{p.name}</Typography>
-                                                    </ExpansionPanelSummary>
-                                                    <ExpansionPanelDetails style={{ maxHeight: 500, overflowY: "auto" }}>
-                                                        <Typography>
-                                                            <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
-                                                        </Typography>
-                                                    </ExpansionPanelDetails>
-                                                </ExpansionPanel>
-                                            </Hidden>
+                                        return (
+                                            <React.Fragment>
+                                                {
+                                                    shouldShow &&
 
-                                            <Hidden smDown>
+                                                    <Grid item xs={12}>
+                                                        <ExpansionPanel 
+                                                            style={{ borderRadius: 4, marginBottom: 16 }} 
+                                                            expanded={expandedPolicies[key] === true} 
+                                                            onChange={() => this.handleExpand(key)}>
+                                                            <ExpansionPanelSummary
+                                                                expandIcon={<ExpandMoreIcon />}
+                                                                aria-controls={`panel-${key}-content`}
+                                                                id={`panel-${key}-header`}
+                                                            >
+                                                                <Typography className={classes.heading}>{p.name}</Typography>
+                                                            </ExpansionPanelSummary>
+                                                            <div  style={{ overflowY: "auto", height: 200 }}>
+                                                                <ExpansionPanelDetails>
+                                                                    <Typography>
+                                                                        <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
+                                                                    </Typography>
+                                                                </ExpansionPanelDetails>
+                                                            </div>
+                                                        </ExpansionPanel>
+
+                                                        <Card className={ classes.policyAcceptContainer }>
+                                                            <Checkbox
+                                                                checked={this.policyAccepted(p)}
+                                                                color="primary"
+                                                                onChange={() => this.acceptPolicy(p)}
+                                                            />
+                                                            <Typography>I accept</Typography>
+                                                        </Card>
+                                                    </Grid>
+                                                }
+                                            </React.Fragment>
+                                        )
+                                    })
+                                }
+                            </Grid>
+
+                            <Grid container spacing={24} className={ classes.continueContainer } style={{ display: "block" }}>
+                                {
+                                    <Grid item xs={12}>
+                                        <Card className={ classes.continue }>
+                                            <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
+                                            <a href="https://myhelm.org" onClick={ () => this.closeDialog() }>
+                                                <Typography>I do not want to use Helm ></Typography>
+                                            </a>
+                                        </Card>
+                                    </Grid>
+                                }
+                            </Grid>
+                        </Hidden>
+
+                        <Hidden smDown>
+                            <Grid container spacing={24} className={ classes.policiesContainer }>
+                                {
+                                    error ?
+                                    
+                                    <GeneralDialog 
+                                        open={ true } 
+                                        onClose={ closeDialog } 
+                                        title={ error.title } 
+                                        message={ error.message }
+                                        options={ [
+                                            <ConfirmButton label="Ok" onClick={() => this.closeDialog() } />
+                                        ]}
+                                    />
+
+                                    :
+
+                                    policies.map((p, key) => {
+                                        return (
+                                            <Grid item xs={12} sm={12} md={6} lg={6} key={key} className={ classes.policyAndAcceptContainer }>
+                                                
                                                 <Card className={ classes.policyContainer }>
                                                     <div className={ classes.declarationContainer }>
                                                         <Typography>
@@ -173,33 +233,34 @@ class Terms extends Component {
                                                         </Typography>
                                                     </div>
                                                 </Card>
-                                            </Hidden>
 
-                                            <Card className={ classes.policyAcceptContainer }>
-                                                <Checkbox
-                                                    checked={this.policyAccepted(p)}
-                                                    color="primary"
-                                                    onChange={() => this.acceptPolicy(p)}
-                                                />
-                                                <Typography>I accept</Typography>
-                                            </Card>
-                                        </Grid>
-                                    )
-                                })
-                            }
-                        </Grid>
-                        <Grid container spacing={24} className={ classes.continueContainer }>
-                            {
-                                <Grid item xs={12}>
-                                    <Card className={ classes.continue }>
-                                        <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
-                                        <a href="https://myhelm.org" onClick={ () => this.closeDialog() }>
-                                            <Typography>I do not want to use Helm ></Typography>
-                                        </a>
-                                    </Card>
-                                </Grid>
-                            }
-                        </Grid>
+                                                <Card className={ classes.policyAcceptContainer }>
+                                                    <Checkbox
+                                                        checked={this.policyAccepted(p)}
+                                                        color="primary"
+                                                        onChange={() => this.acceptPolicy(p)}
+                                                    />
+                                                    <Typography>I accept</Typography>
+                                                </Card>
+                                            </Grid>
+                                        )
+                                    })
+                                }
+                            </Grid>
+
+                            <Grid container spacing={24} className={ classes.continueContainer }>
+                                {
+                                    <Grid item xs={12}>
+                                        <Card className={ classes.continue }>
+                                            <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
+                                            <a href="https://myhelm.org" onClick={ () => this.closeDialog() }>
+                                                <Typography>I do not want to use Helm ></Typography>
+                                            </a>
+                                        </Card>
+                                    </Grid>
+                                }
+                            </Grid>
+                        </Hidden>                        
                     </Grid>
                 </div>
             </div>
@@ -210,6 +271,12 @@ class Terms extends Component {
         let { expandedPolicies } = this.state;
 
         expandedPolicies[key] = !!!expandedPolicies[key];
+
+        Object.keys(expandedPolicies).forEach((item) => {
+            if (item !== `${key}`) {
+                expandedPolicies[item] = false
+            }
+        })
 
         this.setState({ expandedPolicies });
     }
@@ -226,14 +293,18 @@ class Terms extends Component {
     }
 
     acceptPolicy = (policy) => {
-        const { acceptedPolicies } = this.state;
+        const { acceptedPolicies, expandedPolicies } = this.state;
+
+        Object.keys(expandedPolicies).forEach((item) => {
+            expandedPolicies[item] = false
+        })
 
         if (acceptedPolicies.find((p) => p.id === policy.id)) {
-            this.setState({ acceptedPolicies: acceptedPolicies.filter((p) => p.id !== policy.id) });
+            this.setState({ acceptedPolicies: acceptedPolicies.filter((p) => p.id !== policy.id), expandedPolicies });
             return;
         }
 
-        this.setState({ acceptedPolicies: [ ...acceptedPolicies, policy ] });
+        this.setState({ acceptedPolicies: [ ...acceptedPolicies, policy ], expandedPolicies });
     }
 
     policyAccepted = (policy) => {
