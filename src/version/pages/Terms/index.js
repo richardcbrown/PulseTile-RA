@@ -17,75 +17,87 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Hidden, Paper } from "@material-ui/core";
 
-const styles = {
-    termsBackground: {
-        width: "100%",
-        display: "flex",
-        flexGrow: 1,
-        background: `url(${backgroundImage}) 0 0 repeat`,
-        flexDirection: "column"
-    },
-    termsContainer: {
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        width: "100%"
-    },
-    policyContainer: {
-        flexGrow: 1,
-        marginBottom: "24px",
-        padding: "12px",
-        maxHeight: "500px",
-        overflowY: "auto"
-    },
-    policyAcceptContainer: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        width: "100%"
-    },
-    contentContainer: {
-        display: "flex",
-        flexGrow: 1,
-        flexDirection: "column",
-        margin: 0,
-        flexWrap: "nowrap",
-        height: "100%",
-        width: "100%",
-        overflowY: "auto"
-    },
-    policiesContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "stretch",
-        margin: 0,
-        flexGrow: 1,
-        width: "100%",
-        flexWrap: "wrap"
-    },
-    declarationContainer: {
-        overflowY: "auto"
-    },
-    policyAndAcceptContainer: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center"
-    },
-    continueContainer: {
-        alignSelf: "flex-end",
-        margin: 0,
-        width: "100%"
-    },
-    continue: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-        padding: "10px"
-    },
-    mobileHeader: {
-        width: "100%",
-        margin: 0
+const styles = (theme) => {
+    return {
+        termsBackground: {
+            width: "100%",
+            display: "flex",
+            flexGrow: 1,
+            background: `url(${backgroundImage}) 0 0 repeat`,
+            flexDirection: "column"
+        },
+        termsContainer: {
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%"
+        },
+        policyContainer: {
+            flexGrow: 1,
+            marginBottom: "24px",
+            padding: "12px",
+            maxHeight: "500px",
+            overflowY: "auto"
+        },
+        policyAcceptContainer: {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            width: "100%"
+        },
+        contentContainer: {
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: "column",
+            margin: 0,
+            flexWrap: "nowrap",
+            height: "100%",
+            width: "100%",
+            overflowY: "auto"
+        },
+        policiesContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "stretch",
+            margin: 0,
+            flexGrow: 1,
+            width: "100%",
+            flexWrap: "wrap"
+        },
+        declarationContainer: {
+            overflowY: "auto"
+        },
+        policyAndAcceptContainer: {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center"
+        },
+        [theme.breakpoints.up('md')]: {
+            continueContainer: {
+                flexGrow: 1, 
+                alignItems: "flex-end",
+                margin: 0,
+                width: "100%"
+            }
+        },
+        [theme.breakpoints.down('sm')]: {
+            continueContainer: {
+                margin: 0,
+                width: "100%",
+                display: "block"
+            }
+        },
+        continue: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            padding: "10px"
+        },
+        mobileHeader: {
+            width: "100%",
+            margin: 0
+        }
     }
 };
 
@@ -117,7 +129,7 @@ class Terms extends Component {
 
                 <div className={ classes.termsBackground }>
                     <Grid container spacing={24}  className={ classes.contentContainer }>
-                        <Hidden mdUp>
+                        
                             <Grid container spacing={24} style={{ display: "block", margin: 0, width: "100%" }}>
                                 <Grid item xs={12}>
                                     <Paper>
@@ -166,13 +178,25 @@ class Terms extends Component {
                                                             >
                                                                 <Typography variant="title" className={classes.heading}>{p.name}</Typography>
                                                             </ExpansionPanelSummary>
-                                                            <div  style={{ overflowY: "auto", height: 200 }}>
-                                                                <ExpansionPanelDetails>
-                                                                    <Typography>
-                                                                        <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
-                                                                    </Typography>
-                                                                </ExpansionPanelDetails>
-                                                            </div>
+                                                            
+                                                            <Hidden mdUp>
+                                                                <div  style={{ overflowY: "auto", height: 200 }}>
+                                                                    <ExpansionPanelDetails>
+                                                                        <Typography>
+                                                                            <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
+                                                                        </Typography>
+                                                                    </ExpansionPanelDetails>
+                                                                </div>
+                                                            </Hidden>
+                                                            <Hidden smDown>
+                                                                <div  style={{ overflowY: "auto" }}>
+                                                                    <ExpansionPanelDetails>
+                                                                        <Typography>
+                                                                            <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
+                                                                        </Typography>
+                                                                    </ExpansionPanelDetails>
+                                                                </div>
+                                                            </Hidden>
                                                         </ExpansionPanel>
 
                                                         <Card className={ classes.policyAcceptContainer }>
@@ -181,7 +205,7 @@ class Terms extends Component {
                                                                 color="primary"
                                                                 onChange={() => this.acceptPolicy(p)}
                                                             />
-                                                            <Typography>I accept</Typography>
+                                                            <Typography>{`I Accept ${p.name}`}</Typography>
                                                         </Card>
                                                     </Grid>
                                                 }
@@ -191,7 +215,7 @@ class Terms extends Component {
                                 }
                             </Grid>
 
-                            <Grid container spacing={24} className={ classes.continueContainer } style={{ display: "block" }}>
+                            <Grid container spacing={24} className={ classes.continueContainer } style={{ flexGrow: 1, alignItems: "flex-end" }}>
                                 {
                                     <Grid item xs={12}>
                                         <Card className={ classes.continue }>
@@ -203,9 +227,8 @@ class Terms extends Component {
                                     </Grid>
                                 }
                             </Grid>
-                        </Hidden>
 
-                        <Hidden smDown>
+                        {/* <Hidden smDown>
                             <Grid container spacing={24} className={ classes.policiesContainer }>
                                 {
                                     error ?
@@ -260,7 +283,7 @@ class Terms extends Component {
                                     </Grid>
                                 }
                             </Grid>
-                        </Hidden>                        
+                        </Hidden>                         */}
                     </Grid>
                 </div>
             </div>
