@@ -21,8 +21,8 @@ export default [
         list: TopThreeThingsCreate
     },
     {
-        name: "help-and-advice",
-        label: "Help and Advice",
+        name: "nhs-resources",
+        label: "NHS Resources",
         list: NhsWidgets
     }
 ];

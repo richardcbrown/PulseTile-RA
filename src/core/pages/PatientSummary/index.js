@@ -45,6 +45,16 @@ const styles = theme => ({
             cursor: "pointer",
         },
     },
+    topBlockListOnly: {
+        display: "flex",
+        flexDirection: "column",
+        height: 100,
+        backgroundColor: theme.palette.mainColor,
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+        color: "#fff"
+    },
     icon: {
         marginBottom: 10,
         zIndex: 99999999,
@@ -68,8 +78,7 @@ const styles = theme => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        height: 48,
-        paddingLeft: 15,
+        padding: 15,
         zIndex: 99999999,
         fontSize: "1rem",
         borderLeft: `1px solid ${theme.palette.borderColor}`,
@@ -117,6 +126,7 @@ class PatientSummaryInfo extends Component {
                                     loading={loading}
                                     items={get(this.props, item.list, [])}
                                     icon={item.icon}
+                                    listOnly={item.listOnly}
                                     {...this.props}
                                 />
                             );

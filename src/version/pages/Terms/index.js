@@ -11,70 +11,93 @@ import backgroundImage from "../../images/Artboard.png";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import GeneralDialog from "../../common/Dialogs/GeneralDialog";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Hidden, Paper } from "@material-ui/core";
 
-const styles = {
-    termsBackground: {
-        width: "100%",
-        display: "flex",
-        flexGrow: 1,
-        background: `url(${backgroundImage}) 0 0 repeat`,
-        overflowY: "auto" 
-    },
-    termsContainer: {
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        width: "100%"
-    },
-    policyContainer: {
-        flexGrow: 1,
-        marginBottom: "24px",
-        padding: "12px",
-        maxHeight: "500px",
-        overflowY: "auto"
-    },
-    policyAcceptContainer: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        width: "100%"
-    },
-    contentContainer: {
-        display: "flex",
-        flexGrow: 1,
-        flexDirection: "column",
-        margin: 0,
-        flexWrap: "nowrap",
-        height: "100%"
-    },
-    policiesContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "stretch",
-        margin: 0,
-        flexGrow: 1,
-        width: "100%",
-        flexWrap: "wrap"
-    },
-    declarationContainer: {
-        overflowY: "auto"
-    },
-    policyAndAcceptContainer: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center"
-    },
-    continueContainer: {
-        alignSelf: "flex-end",
-        margin: 0,
-        width: "100%"
-    },
-    continue: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-        padding: "10px"
+const styles = (theme) => {
+    return {
+        termsBackground: {
+            width: "100%",
+            display: "flex",
+            flexGrow: 1,
+            background: `url(${backgroundImage}) 0 0 repeat`,
+            flexDirection: "column"
+        },
+        termsContainer: {
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%"
+        },
+        policyContainer: {
+            flexGrow: 1,
+            marginBottom: "24px",
+            padding: "12px",
+            maxHeight: "500px",
+            overflowY: "auto"
+        },
+        policyAcceptContainer: {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            width: "100%"
+        },
+        contentContainer: {
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: "column",
+            margin: 0,
+            flexWrap: "nowrap",
+            height: "100%",
+            width: "100%",
+            overflowY: "auto"
+        },
+        policiesContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "stretch",
+            margin: 0,
+            flexGrow: 1,
+            width: "100%",
+            flexWrap: "wrap"
+        },
+        declarationContainer: {
+            overflowY: "auto"
+        },
+        policyAndAcceptContainer: {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center"
+        },
+        [theme.breakpoints.up('md')]: {
+            continueContainer: {
+                flexGrow: 1, 
+                alignItems: "flex-end",
+                margin: 0,
+                width: "100%"
+            }
+        },
+        [theme.breakpoints.down('sm')]: {
+            continueContainer: {
+                margin: 0,
+                width: "100%",
+                display: "block"
+            }
+        },
+        continue: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            padding: "10px"
+        },
+        mobileHeader: {
+            width: "100%",
+            margin: 0
+        }
     }
 };
 
@@ -84,7 +107,8 @@ class Terms extends Component {
         super(props);
 
         this.state = {
-            acceptedPolicies: []
+            acceptedPolicies: [],
+            expandedPolicies: {}
         };
     }
 
@@ -97,14 +121,28 @@ class Terms extends Component {
         const { policies, classes, error } = this.props;
         const { closeDialog } = this;
         const allAccepted = this.allPoliciesAccepted();
+        const { expandedPolicies } = this.state;
 
         return (
             <div className={ classes.termsContainer }>
                 <TopBarNoUser />
 
                 <div className={ classes.termsBackground }>
-                    <Grid container spacing={24} className={ classes.contentContainer }>
-                        <Grid container spacing={24} className={ classes.policiesContainer }>
+                    <Grid container spacing={24}  className={ classes.contentContainer }>
+                        
+                        <Grid container spacing={24} style={{ display: "block", margin: 0, width: "100%" }}>
+                            <Grid item xs={12}>
+                                <Paper>
+                                    <Grid container spacing={16} style={{ width: "100%", margin: 0 }}>
+                                        <Grid item xs={12}>
+                                            <Typography>
+                                                Important, please read to ensure you understand how your information will be processed 
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+                            </Grid>
+
                             {
                                 error ?
                                 
@@ -121,29 +159,63 @@ class Terms extends Component {
                                 :
 
                                 policies.map((p, key) => {
+                                    const shouldShow = !!expandedPolicies[key] || Object.values(expandedPolicies).every((val) => !!!val)
+
                                     return (
-                                        <Grid item xs={12} sm={12} md={6} lg={6} key={key} className={ classes.policyAndAcceptContainer }>
-                                            <Card className={ classes.policyContainer }>
-                                                <div className={ classes.declarationContainer }>
-                                                    <Typography>
-                                                        <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
-                                                    </Typography>
-                                                </div>
-                                            </Card>
-                                            <Card className={ classes.policyAcceptContainer }>
-                                                <Checkbox
-                                                    checked={this.policyAccepted(p)}
-                                                    color="primary"
-                                                    onChange={() => this.acceptPolicy(p)}
-                                                />
-                                                <Typography>I accept</Typography>
-                                            </Card>
-                                        </Grid>
+                                        <React.Fragment>
+                                            {
+                                                shouldShow &&
+
+                                                <Grid item xs={12}>
+                                                    <ExpansionPanel 
+                                                        style={{ borderRadius: 4, marginBottom: 16 }} 
+                                                        expanded={expandedPolicies[key] === true} 
+                                                        onChange={() => this.handleExpand(key)}>
+                                                        <ExpansionPanelSummary
+                                                            expandIcon={<ExpandMoreIcon />}
+                                                            aria-controls={`panel-${key}-content`}
+                                                            id={`panel-${key}-header`}
+                                                        >
+                                                            <Typography variant="title" className={classes.heading}>{p.name}</Typography>
+                                                        </ExpansionPanelSummary>
+                                                        
+                                                        <Hidden mdUp>
+                                                            <div  style={{ overflowY: "auto", height: 200 }}>
+                                                                <ExpansionPanelDetails>
+                                                                    <Typography>
+                                                                        <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
+                                                                    </Typography>
+                                                                </ExpansionPanelDetails>
+                                                            </div>
+                                                        </Hidden>
+                                                        <Hidden smDown>
+                                                            <div  style={{ overflowY: "auto" }}>
+                                                                <ExpansionPanelDetails>
+                                                                    <Typography>
+                                                                        <div dangerouslySetInnerHTML={{__html: p.narrative}}></div>
+                                                                    </Typography>
+                                                                </ExpansionPanelDetails>
+                                                            </div>
+                                                        </Hidden>
+                                                    </ExpansionPanel>
+
+                                                    <Card className={ classes.policyAcceptContainer }>
+                                                        <Checkbox
+                                                            checked={this.policyAccepted(p)}
+                                                            color="primary"
+                                                            onChange={() => this.acceptPolicy(p)}
+                                                        />
+                                                        <Typography>{`I Accept ${p.name}`}</Typography>
+                                                    </Card>
+                                                </Grid>
+                                            }
+                                        </React.Fragment>
                                     )
                                 })
                             }
                         </Grid>
-                        <Grid container spacing={24} className={ classes.continueContainer }>
+
+                        <Grid container spacing={24} className={ classes.continueContainer } style={{ flexGrow: 1, alignItems: "flex-end" }}>
                             {
                                 <Grid item xs={12}>
                                     <Card className={ classes.continue }>
@@ -161,6 +233,20 @@ class Terms extends Component {
         )
     }
 
+    handleExpand = (key) => {
+        let { expandedPolicies } = this.state;
+
+        expandedPolicies[key] = !!!expandedPolicies[key];
+
+        Object.keys(expandedPolicies).forEach((item) => {
+            if (item !== `${key}`) {
+                expandedPolicies[item] = false
+            }
+        })
+
+        this.setState({ expandedPolicies });
+    }
+
     accept = () => {
 
         const { acceptedPolicies } = this.state;
@@ -173,14 +259,18 @@ class Terms extends Component {
     }
 
     acceptPolicy = (policy) => {
-        const { acceptedPolicies } = this.state;
+        const { acceptedPolicies, expandedPolicies } = this.state;
+
+        Object.keys(expandedPolicies).forEach((item) => {
+            expandedPolicies[item] = false
+        })
 
         if (acceptedPolicies.find((p) => p.id === policy.id)) {
-            this.setState({ acceptedPolicies: acceptedPolicies.filter((p) => p.id !== policy.id) });
+            this.setState({ acceptedPolicies: acceptedPolicies.filter((p) => p.id !== policy.id), expandedPolicies });
             return;
         }
 
-        this.setState({ acceptedPolicies: [ ...acceptedPolicies, policy ] });
+        this.setState({ acceptedPolicies: [ ...acceptedPolicies, policy ], expandedPolicies });
     }
 
     policyAccepted = (policy) => {

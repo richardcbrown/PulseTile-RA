@@ -3,6 +3,13 @@ import { createRequestTypes } from "../../core/actions/functions";
 export const SYNOPSIS_TOP_THREE_THINGS_ACTION = createRequestTypes('SYNOPSIS_TOP_THREE_THINGS_ACTION');
 export const SYNOPSIS_VACCINATIONS_ACTION = createRequestTypes('SYNOPSIS_VACCINATIONS_ACTION');
 export const SYNOPSIS_NHSSERVICES_ACTION = createRequestTypes('SYNOPSIS_NHSSERVICES_ACTION')
+export const SYNOPSIS_LEEDSSERVICES_ACTION = createRequestTypes('SYNOPSIS_LEEDSSERVICES_ACTION')
+
+export const synopsisLeedsServicesAction = {
+    request: data => ({ type: SYNOPSIS_LEEDSSERVICES_ACTION.REQUEST, data }),
+    success: data => ({ type: SYNOPSIS_LEEDSSERVICES_ACTION.SUCCESS, data }),
+    error:   error => ({ type: SYNOPSIS_LEEDSSERVICES_ACTION.FAILURE, error }),
+};
 
 export const synopsisNhsServicesAction = {
     request: data => ({ type: SYNOPSIS_NHSSERVICES_ACTION.REQUEST, data }),

@@ -24,8 +24,8 @@ class NhsWidgets extends Component {
     render() {
         const { classes } = this.props;
 
-        const resourceUrl="help-and-advice";
-        const title="Help and Advice";
+        const resourceUrl="nhs-resources";
+        const title="NHS Resources";
 
         const breadcrumbsResource = [
             { url: "/" + resourceUrl, title: title, isActive: false },
