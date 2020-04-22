@@ -36,10 +36,10 @@ const LoadingItems = ({ classes }) => {
  * @param {shape}   list
  * @param {shape}   history
  */
-const ListBlock = ({ classes, items, list, history }) => {
+const ListBlock = ({ classes, items, list, history, listOnly }) => {
     if (items) {
         return (
-            <ItemsList classes={classes} items={items} list={list} history={history} />
+            <ItemsList classes={classes} items={items} list={list} history={history} listOnly={listOnly} />
         );
     }
     return (
@@ -55,14 +55,17 @@ const ListBlock = ({ classes, items, list, history }) => {
  * @constructor
  */
 export default props => {
-    const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings } = props;
+    const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings, listOnly } = props;
     if (Object.values(showHeadings).indexOf(list) === -1) {
         return null;
     }
+
+    const clickHandler = listOnly ? () => {} : () => history.push('/' + list)
+
     return (
         <Grid item xs={12} sm={6} md={6} lg={3}>
             <Card className={classes.card}>
-                <div id={id} className={classes.topBlock} aria-label={title} onClick={() => history.push('/' + list)}>
+                <div id={id} className={listOnly ? classes.topBlockListOnly : classes.topBlock} aria-label={title} onClick={clickHandler}>
                     <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
                     <h1 className={classes.mainHeading}>
                         <Typography className={classes.title}>
@@ -70,8 +73,8 @@ export default props => {
                         </Typography>
                     </h1>
                 </div>
-                { (showMode === SHOW_ALL || !showMode) &&
-                <ListBlock loading={loading} classes={classes} items={items} list={list} history={history} />
+                { (showMode === SHOW_ALL || !showMode || listOnly) &&
+                <ListBlock loading={loading} classes={classes} items={items} list={list} history={history} listOnly={listOnly} />
                 }
             </Card>
         </Grid>

@@ -13,7 +13,8 @@ import Typography from "@material-ui/core/Typography";
  * @param {shape}  history
  * @constructor
  */
-const ItemsList = ({ classes, items, list, history }) => {
+const ItemsList = ({ classes, items, list, history, listOnly }) => {
+    
     if (items && items.length === 0) {
         return (
             <List className={classes.list}>
@@ -27,9 +28,10 @@ const ItemsList = ({ classes, items, list, history }) => {
             <List className={classes.list}>
                 {items.map((item, key) => {
                     const showRoute = "/" + list + "/" + item.sourceId + "/show";
+                    const clickHandler = listOnly ? () => {} : () => history.push(showRoute);
                     return (
-                        <li key={key} className={classes.listItem} onClick={() => history.push(showRoute)}>
-                            <Typography noWrap={true}>
+                        <li key={key} className={classes.listItem} onClick={clickHandler}>
+                            <Typography>
                                 {item.text}
                             </Typography>
                         </li>
