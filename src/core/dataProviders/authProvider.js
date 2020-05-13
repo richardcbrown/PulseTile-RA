@@ -49,7 +49,7 @@ export default async (type, params) => {
             token && 
             localStorage.getItem('logout')) 
         {
-            const urlLogout = domainName + '/api/auth/logout';
+            const urlLogout = domainName + '/auth/logout';
             fetch(urlLogout, options)
                 .then(res => res.json())
                 .then(response => {

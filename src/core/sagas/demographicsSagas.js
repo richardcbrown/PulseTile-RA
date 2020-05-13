@@ -8,7 +8,7 @@ import { httpErrorAction } from '../actions/httpErrorAction';
 let responseInfo = {};
 
 export default takeEvery(DEMOGRAPHICS_ACTION.REQUEST, function*(action) {
-    const url = domainName + '/api/demographics/' + localStorage.getItem('patientId');
+    const url = domainName + '/api/demographics'
     let options = {
         credentials: "same-origin"
     };
