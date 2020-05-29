@@ -12,6 +12,7 @@ import TableHeader from "../../../core/common/TableHeader";
 import Breadcrumbs from "../../../core/common/Breadcrumbs";
 import backgroundImage from "../../images/Artboard.png";
 import { Typography } from "@material-ui/core";
+import { flattenComposition, transformComposition } from "../../fhir/composition";
 
 const styles = {
     createBlock: {
@@ -75,9 +76,9 @@ class TopThreeThingsCreate extends Component {
     componentDidUpdate() {
 
         if (!this.state.loaded && this.props.latestTopThreeThings.id) {
-            customDataProvider("GET_ONE", "top3Things", { id: this.props.latestTopThreeThings.id })
+            customDataProvider("GET_ONE", "Composition", { id: this.props.latestTopThreeThings.id })
                 .then(res => {
-                    this.setState({ ...res.data, loaded: true })
+                    this.setState({ ...flattenComposition(res.data), loaded: true })
                 });
         }
     }
@@ -116,7 +117,7 @@ class TopThreeThingsCreate extends Component {
         const { form } = this.props;
 
         if (this.formChanged(form) && !form.syncErrors) {
-            this.refs.formRef.props.save(form.values, '/top3Things');
+            this.refs.formRef.props.save(transformComposition(form.values), '/top3Things');
         }
     }
 
@@ -221,7 +222,7 @@ const mapStateToProps = state => {
     };
 
     if (props && props.length) {
-        latestTopThreeThings.id = props[0].sourceId;
+        latestTopThreeThings.id = props[0].id;
     }
 
     return Object.assign({}, { latestTopThreeThings }, { form });

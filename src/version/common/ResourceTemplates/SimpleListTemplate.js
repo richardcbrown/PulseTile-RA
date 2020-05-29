@@ -151,7 +151,7 @@ class ListTemplate extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        currentList: state.admin.resources[ownProps.resource].list.ids,
+        currentList: state.admin.resources[ownProps.resource] || {},
     };
 };
 

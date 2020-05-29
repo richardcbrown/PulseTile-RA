@@ -1,14 +1,15 @@
-import contrastMode from "./contrastModeReducer";
-import selectedFeedsList from "./selectedFeedsReducer";
-import terms from "./termsReducer";
+import contrastMode from "./contrastModeReducer"
+import selectedFeedsList from "./selectedFeedsReducer"
+import terms from "./termsReducer"
 import {
     SYNOPSIS_TOP_THREE_THINGS_ACTION,
     SYNOPSIS_VACCINATIONS_ACTION,
     SYNOPSIS_NHSSERVICES_ACTION,
-    SYNOPSIS_LEEDSSERVICES_ACTION
-} from "../actions/synopsisActions";
+    SYNOPSIS_LEEDSSERVICES_ACTION,
+} from "../actions/synopsisActions"
 
-import createCustomReducer from "../../core/reducers/createCustomReducer";
+import createCustomReducer from "../../core/reducers/createCustomReducer"
+import fhirReducer from "./fhirReducer"
 
 /**
  * This component returns version reducers
@@ -23,5 +24,6 @@ export default {
     "health-and-adviceSynopsis": createCustomReducer(SYNOPSIS_LEEDSSERVICES_ACTION, "data.synopsis"),
     contrastMode,
     selectedFeedsList,
-    terms
-};
+    terms,
+    fhir: fhirReducer,
+}

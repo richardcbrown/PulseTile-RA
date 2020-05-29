@@ -7,13 +7,13 @@
  */
 export function createRequestTypes(base, optional) {
     for (let index in optional) {
-        optional[index] = base + '_' + index;
+        optional[index] = base + "_" + index
     }
 
     return {
-        REQUEST: base + '_REQUEST',
-        SUCCESS: base + '_SUCCESS',
-        FAILURE: base + '_FAILURE',
+        REQUEST: base + "_REQUEST",
+        SUCCESS: base + "_SUCCESS",
+        FAILURE: base + "_FAILURE",
         ...optional,
-    };
+    }
 }

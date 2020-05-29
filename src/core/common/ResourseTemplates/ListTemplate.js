@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from "react-router";
 import {
     List,
-    Filter,
-    TextInput,
     Datagrid,
-    TextField
 } from "react-admin";
 
 import { withStyles } from "@material-ui/core/styles";

@@ -1,11 +1,10 @@
+import React from "react"
+import { Pagination } from "react-admin"
 
-import React from "react";
-import { Pagination } from 'react-admin';
+import { withStyles } from "@material-ui/core/styles"
 
-import { withStyles } from "@material-ui/core/styles";
-
-import CreateButton from "../../common/Buttons/CreateButton";
-import CustomPaginator from "../../common/Buttons/CustomPaginator";
+import CreateButton from "../../common/Buttons/CreateButton"
+import CustomPaginator from "../../common/Buttons/CustomPaginator"
 
 const styles = {
     paginationBlock: {
@@ -14,7 +13,7 @@ const styles = {
         justifyContent: "space-between",
         marginTop: 45,
     },
-};
+}
 
 /**
  * This component returns toolbar for List
@@ -30,11 +29,8 @@ const styles = {
 const ListToolbar = ({ classes, isCreatePage, resourceUrl, createPath, history, total }) => (
     <div className={classes.paginationBlock}>
         <CustomPaginator resourceUrl={resourceUrl} history={history} itemsPerPage={10} total={total} />
-        {
-            (!isCreatePage && resourceUrl === "top3Things") &&
-                <CreateButton history={history} redirectPath={createPath} />
-        }
+        {!isCreatePage && resourceUrl === "top3Things" && <CreateButton history={history} redirectPath={createPath} />}
     </div>
-);
+)
 
-export default withStyles(styles)(ListToolbar);
+export default withStyles(styles)(ListToolbar)
