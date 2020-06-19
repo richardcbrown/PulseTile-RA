@@ -1,24 +1,25 @@
-import React, { Component } from "react";
-import get from "lodash/get";
-import { connect } from 'react-redux';
+import React, { Component } from "react"
+import get from "lodash/get"
+import { connect } from "react-redux"
 
-import { withStyles } from "@material-ui/core/styles";
-import Grid from '@material-ui/core/Grid';
+import { withStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
 
-import DashboardCard from "../../common/DashboardCard";
+import DashboardCard from "../../common/DashboardCard"
 import {
     synopsisAllergiesAction,
     synopsisContactsAction,
     synopsisMedicationsAction,
-    synopsisProblemsAction } from "../../actions/synopsisActions";
-import { synopsisData, getSynopsisProps } from "./config";
-import SettingsDialog from "./SettingsDialog";
-import Breadcrumbs from "../../common/Breadcrumbs";
-import { themeCommonElements } from "../../../version/config/theme.config";
-import { nonCoreSynopsisActions } from "../../../version/config/nonCoreSynopsis";
-import { getSummaryContainerStyles } from "./functions";
+    synopsisProblemsAction,
+} from "../../actions/synopsisActions"
+import { synopsisData, getSynopsisProps } from "./config"
+import SettingsDialog from "./SettingsDialog"
+import Breadcrumbs from "../../common/Breadcrumbs"
+import { themeCommonElements } from "../../../version/config/theme.config"
+import { nonCoreSynopsisActions } from "../../../version/config/nonCoreSynopsis"
+import { getSummaryContainerStyles } from "./functions"
 
-const styles = theme => ({
+const styles = (theme) => ({
     summaryContainer: getSummaryContainerStyles(synopsisData),
     card: {
         borderRadius: 0,
@@ -41,7 +42,7 @@ const styles = theme => ({
         alignItems: "center",
         position: "relative",
         color: "#fff",
-        '&:hover': {
+        "&:hover": {
             cursor: "pointer",
         },
     },
@@ -53,7 +54,7 @@ const styles = theme => ({
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        color: "#fff"
+        color: "#fff",
     },
     icon: {
         marginBottom: 10,
@@ -92,84 +93,77 @@ const styles = theme => ({
         borderRight: `1px solid ${theme.palette.borderColor}`,
         borderBottom: `1px solid ${theme.palette.borderColor}`,
     },
-});
+})
 
 class PatientSummaryInfo extends Component {
-
     componentDidMount() {
-        if (localStorage.getItem('userId') && localStorage.getItem('username')) {
-            this.props.getPatientSynopsis();
+        if (localStorage.getItem("userId") && localStorage.getItem("username")) {
+            this.props.getPatientSynopsis()
         }
     }
 
     render() {
-        const { classes, loading, showMode, showHeadings, location } = this.props;
-        const breadcrumbsResource = [
-            { url: location.pathname, title: "Patient Summary", isActive: false }
-        ];
-        const FeedsPanels = get(themeCommonElements, 'feedsPanels', false);
+        const { classes, loading, showMode, showHeadings, location } = this.props
+        const breadcrumbsResource = [{ url: location.pathname, title: "Patient Summary", isActive: false }]
+        const FeedsPanels = get(themeCommonElements, "feedsPanels", false)
         return (
-            <Grid className={classes.container} >
+            <Grid className={classes.container}>
                 <Breadcrumbs resource={breadcrumbsResource} />
                 <SettingsDialog className={classes.settingsIcon} />
                 <Grid className={classes.summaryContainer} spacing={16} container>
-                    {
-                        synopsisData.map((item, key) => {
-                            return (
-                                <DashboardCard
-                                    key={key}
-                                    showMode={showMode}
-                                    showHeadings={showHeadings}
-                                    id={item.id}
-                                    title={item.title}
-                                    list={item.list}
-                                    loading={loading}
-                                    items={get(this.props, item.list, [])}
-                                    icon={item.icon}
-                                    listOnly={item.listOnly}
-                                    {...this.props}
-                                />
-                            );
-                        })
-                    }
-                    { FeedsPanels && <FeedsPanels /> }
+                    {synopsisData.map((item, key) => {
+                        return (
+                            <DashboardCard
+                                key={key}
+                                showMode={showMode}
+                                showHeadings={showHeadings}
+                                id={item.id}
+                                title={item.title}
+                                list={item.list}
+                                loading={loading}
+                                items={get(this.props, item.list, [])}
+                                icon={item.icon}
+                                listOnly={item.listOnly}
+                                {...this.props}
+                            />
+                        )
+                    })}
+                    {FeedsPanels && <FeedsPanels />}
                 </Grid>
             </Grid>
-        );
+        )
     }
 }
 
-const mapStateToProps = state => {
-
+const mapStateToProps = (state) => {
     const patientSummaryProps = {
         loading: state.custom.demographics.loading,
         showMode: state.custom.showMode.data,
         showHeadings: state.custom.showHeadings.data,
-    };
+    }
 
-    const synopsisProps = getSynopsisProps(state);
+    const synopsisProps = getSynopsisProps(state)
 
-    return Object.assign({}, patientSummaryProps, synopsisProps);
-};
+    return Object.assign({}, patientSummaryProps, synopsisProps)
+}
 
-const mapDispatchToProps = dispatch => {
-
+const mapDispatchToProps = (dispatch) => {
     const coreSynopsisActions = [
         // synopsisAllergiesAction,
         // synopsisContactsAction,
         // synopsisProblemsAction,
         // synopsisMedicationsAction,
-    ];
+    ]
 
-    const synopsisActions = coreSynopsisActions.concat(nonCoreSynopsisActions);
+    const synopsisActions = coreSynopsisActions.concat(nonCoreSynopsisActions)
 
     return {
         getPatientSynopsis() {
-            synopsisActions.map(item => {
-                return dispatch(item.request());
-            });
-        }
+            synopsisActions.map((item) => {
+                return dispatch(item.request())
+            })
+        },
     }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PatientSummaryInfo));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PatientSummaryInfo))
