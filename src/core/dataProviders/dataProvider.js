@@ -27,7 +27,7 @@ const patientID = localStorage.getItem('patientId') ? localStorage.getItem('pati
 
 const urlSelector = (resource, queryProps) => {
     switch(resource) {
-        case 'loop': {
+        case 'leeds-information': {
             return `${domainName}/api/repository${ queryProps ? `?${queryString.stringify(queryProps)}` : ""}`;
         }
         case 'patients': {
@@ -242,7 +242,7 @@ const convertHTTPResponse = (response, type, resource, params) => {
     switch (type) {
 
         case GET_LIST:
-            if (resource === "loop") {
+            if (resource === "leeds-information") {
                 return response.results
             }
 

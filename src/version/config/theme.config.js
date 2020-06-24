@@ -9,14 +9,14 @@ export const themeShortMenu = [
     { url: '/summary', label: 'Patient Summary' },
     { url: '/top3Things', label: 'TopThreeThings' },
     { url: '/nhs-resources', label: 'NHS Resources' },
-    { url: '/loop', label: 'LOOP' }
+    { url: '/leeds-information', label: 'Leeds Information' }
 ];
 
 export const themeFullMenu = [
     { url: '/summary', label: 'Patient Summary' },
     { url: '/top3Things', label: 'TopThreeThings' },
     { url: '/nhs-resources', label: 'NHS Resources' },
-    { url: '/loop', label: 'LOOP' }
+    { url: '/leeds-information', label: 'Leeds Information' }
 ];
 
 export const themeCommonElements = {

@@ -16,8 +16,8 @@ export default [
         list: TopThreeThingsCreate
     },
     {
-        name: "loop",
-        label: "LOOP",
+        name: "leeds-information",
+        label: "Leeds Information",
         list: Directory,
     },
     {
