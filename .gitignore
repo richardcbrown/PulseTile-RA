@@ -6,3 +6,5 @@ logs/
 #IDE generated
 .idea/
 
+default.conf
+nginx.conf
