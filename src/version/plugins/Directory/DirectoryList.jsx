@@ -220,7 +220,7 @@ class DefaultCard extends Component {
                 </CardContent>
                 <CardContent>
                     <Typography>
-                        { resource.intro }      
+                        { resource.description }      
                     </Typography>
                 </CardContent>
                 {
@@ -268,16 +268,16 @@ class DefaultCard extends Component {
                         <a href={resource.url} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            aria-label="View Website" 
+                            aria-label="View" 
                             className={classes.viewButton}>
-                            <span>View Website</span>
+                            <span>View</span>
                         </a>
                     }
                 </CardActions>                              
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
                         <Typography>
-                            { resource.description }      
+                            { resource.intro }      
                         </Typography>
                     </CardContent>
                     {

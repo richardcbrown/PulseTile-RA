@@ -30,7 +30,7 @@ const ItemsList = ({ classes, items, list, history, listOnly }) => {
                     const onClick = list && item.sourceId ?  () => history.push("/" + list + "/" + item.sourceId + "/show") : () => {};
                     return (
                         <li key={key} className={classes.listItem} onClick={onClick}>
-                            <Typography noWrap={true}>
+                            <Typography>
                                 {item.text}
                             </Typography>
                         </li>

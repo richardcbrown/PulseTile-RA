@@ -146,7 +146,12 @@ class InitializePage extends Component {
 
     componentDidUpdate() {
 
-        const { status } = this.props
+        const { status, error } = this.props
+
+        if (error) {
+            clearInterval(this.interval)
+            return
+        }
 
         if (token && status === "found") {
             clearInterval(this.interval)
@@ -168,6 +173,10 @@ class InitializePage extends Component {
                 title: "Record not found",
                 message: "Helm was unable to find your record online. Please check back later."
             }
+        }
+
+        if (error) {
+            clearInterval(this.interval)
         }
 
         return (
