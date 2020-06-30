@@ -1,5 +1,6 @@
 import get from "lodash/get"
 import moment from "moment"
+import queryString from "querystring"
 import { GET_LIST, GET_ONE, CREATE, UPDATE, HttpError } from "react-admin"
 import sort, { ASC, DESC } from "sort-array-objects"
 
@@ -11,6 +12,20 @@ import { httpErrorAction } from "../actions/httpErrorAction"
 
 const apiPatientsUser = "api/patient/fhir"
 const patientID = localStorage.getItem("patientId") ? localStorage.getItem("patientId") : localStorage.getItem("userId")
+
+const urlSelector = (resource, queryProps) => {
+    switch(resource) {
+        case 'leeds-information': {
+            return `${domainName}/api/repository${ queryProps ? `?${queryString.stringify(queryProps)}` : ""}`;
+        }
+        case 'patients': {
+            return `${domainName}/api/${resource}`;
+        }
+        default: {
+            return `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
+        }
+    }
+}
 
 /**
  * This constant prepare data for requests (URL and options)
@@ -27,11 +42,8 @@ const convertDataRequestToHTTP = (type, resource, params) => {
     }
     switch (type) {
         case GET_LIST: {
-            if (resource === "patients") {
-                url = `${domainName}/api/${resource}`
-            } else {
-                url = `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`
-            }
+            url = urlSelector(resource, params)
+
             if (!options.headers) {
                 options.headers = new Headers({ Accept: "application/json" })
             }
@@ -224,14 +236,18 @@ function getSortedResults(results, params) {
 const convertHTTPResponse = (response, type, resource, params) => {
     switch (type) {
         case GET_LIST:
-            const pageNumber = get(params, "pagination.page", 1)
-            const numberPerPage = get(params, "pagination.perPage", 10)
-            const results = getResultsFromResponse(resource, response, params)
-            const resultsFiltering = getFilterResults(resource, results, params)
-            const resultsSorting = getSortedResults(resultsFiltering, params)
-            const startItem = (pageNumber - 1) * numberPerPage
-            const endItem = pageNumber * numberPerPage
-            const paginationResults = resultsSorting.slice(startItem, endItem)
+            if (resource === "leeds-information") {
+                return response.results
+            }
+
+            const pageNumber = get(params, 'pagination.page', 1);
+            const numberPerPage = get(params, 'pagination.perPage', 10);
+            const results = getResultsFromResponse(resource, response, params);
+            const resultsFiltering = getFilterResults(resource, results, params);
+            const resultsSorting = getSortedResults(resultsFiltering, params);
+            const startItem = (pageNumber - 1) * numberPerPage;
+            const endItem = pageNumber * numberPerPage;
+            const paginationResults = resultsSorting.slice(startItem, endItem);
             return {
                 data: paginationResults,
                 total: resultsSorting.length,

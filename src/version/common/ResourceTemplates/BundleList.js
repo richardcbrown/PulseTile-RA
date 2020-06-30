@@ -34,9 +34,7 @@ class BundleList extends Component {
 
     /** @returns {JSX.Element | null} */
     render() {
-        const props = this.props
-
-        const { bundle, resourceType, componentKey, getBundle, rowProvider, headProvider, query } = props
+        const { bundle, resourceType, componentKey, getBundle, rowProvider, headProvider, query, tableClass } = this.props
 
         if (!bundle) {
             return null
@@ -45,8 +43,8 @@ class BundleList extends Component {
         const resources = getFromBundle(bundle, resourceType)
 
         return (
-            <React.Fragment>
-                <Table>
+            <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <Table className={tableClass}>
                     {headProvider()}
                     <TableBody>{resources.map((resource) => rowProvider(resource))}</TableBody>
                 </Table>
@@ -55,7 +53,7 @@ class BundleList extends Component {
                     bundle={bundle}
                     pageSelected={(query) => getBundle(componentKey, resourceType, querystring.stringify(query))}
                 />
-            </React.Fragment>
+            </div>
         )
     }
 }

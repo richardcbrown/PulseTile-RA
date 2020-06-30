@@ -1,24 +1,24 @@
 // NON-CORE PLUGINS CONFIGURATION LIST
 
-// VACCINATIONS
-import VaccinationsList from "../plugins/Vaccinations/VaccinationsList";
-
 // TOP THREE THINGS
 import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate";
 
+// LEEDS REPOSITORY
+import  { DirectoryList } from "../plugins/Directory/DirectoryList";
+import Directory from "../pages/Directory";
 // NHS WIDGETS
 import NhsWidgets from "../plugins/NhsWidgets/NhsWidgets";
 
 export default [
     {
-        name: "vaccinations",
-        label: "Vaccinations",
-        list: VaccinationsList,
-    },
-    {
         name: "top3Things",
         label: "Top Three Things",
         list: TopThreeThingsCreate
+    },
+    {
+        name: "leeds-information",
+        label: "Leeds Information",
+        list: Directory,
     },
     {
         name: "nhs-resources",

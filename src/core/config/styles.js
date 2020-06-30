@@ -84,6 +84,11 @@ export function getCurrentTheme(isContrastMode) {
                 background: getBackground(isContrastMode, palette.mainColor, 'cardBackgroundImage'),
             }
         },
+        cardBackground: {
+            topBlock: {
+                background: getBackground(isContrastMode, palette.mainColor, 'cardBackgroundImage'),
+            }
+        },
         overrides: {
             MuiInput: {
                 root: {

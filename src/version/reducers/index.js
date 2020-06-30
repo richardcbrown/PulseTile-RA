@@ -6,7 +6,8 @@ import {
     SYNOPSIS_VACCINATIONS_ACTION,
     SYNOPSIS_NHSSERVICES_ACTION,
     SYNOPSIS_LEEDSSERVICES_ACTION,
-} from "../actions/synopsisActions"
+    SYNOPSIS_LOOPSERVICES_ACTION
+} from "../actions/synopsisActions";
 
 import createCustomReducer from "../../core/reducers/createCustomReducer"
 import fhirReducer from "./fhirReducer"
@@ -22,6 +23,7 @@ export default {
     top3ThingsSynopsis: createCustomReducer(SYNOPSIS_TOP_THREE_THINGS_ACTION, "data.synopsis"),
     "nhs-resourcesSynopsis": createCustomReducer(SYNOPSIS_NHSSERVICES_ACTION, "data.synopsis"),
     "health-and-adviceSynopsis": createCustomReducer(SYNOPSIS_LEEDSSERVICES_ACTION, "data.synopsis"),
+    "leeds-informationSynopsis": createCustomReducer(SYNOPSIS_LOOPSERVICES_ACTION, "data.synopsis"),
     contrastMode,
     selectedFeedsList,
     terms,
