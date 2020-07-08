@@ -237,7 +237,7 @@ const convertHTTPResponse = (response, type, resource, params) => {
     switch (type) {
         case GET_LIST:
             if (resource === "leeds-information") {
-                return response.results
+                return response
             }
 
             const pageNumber = get(params, 'pagination.page', 1);
