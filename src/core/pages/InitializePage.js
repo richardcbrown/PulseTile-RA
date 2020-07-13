@@ -171,7 +171,7 @@ class InitializePage extends Component {
         if (status === "notfound") {
             error = {
                 title: "Record not found",
-                message: "Helm was unable to find your record online. Please check back later."
+                message: "<span>There is an issue with setting up your Helm account, please try again or contact <a href='mailto:info@myhelm.org?subject=Helm Account Setup Issue'>info@myhelm.org</a> with your name and we will be happy to help.</span>"
             }
         }
 
@@ -300,16 +300,16 @@ class InitializePage extends Component {
 
         switch(status) {
             case "received": {
-                return "Helm has received your details..."
+                return "Helm has received your details from NHS login..."
             }
             case "registered": {
-                return "Helm has registered your details..."
+                return "Your Helm account is in the process of being set up."
             }
             case "searching": {
-                return "Helm is searching for your record..."
+                return "Helm is searching for your information."
             }
             case "found": {
-                return "Helm has found your record..."
+                return "Your Helm account is ready."
             }
             default: {
                 return "Loading..."

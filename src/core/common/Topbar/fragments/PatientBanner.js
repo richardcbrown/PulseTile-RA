@@ -33,6 +33,10 @@ const PatientBanner = ({ classes, patientInfo }) => {
                     <span className={classes.keyName}>Phone: </span>
                     {get(patientInfo, 'phone', null)}
                 </Typography>
+                <Typography variant="body2">
+                    <span className={classes.keyName}>Email: </span>
+                    {get(patientInfo, 'email', null)}
+                </Typography>
             </Grid>
             <Grid className={classes.gridBlock} item xs={6} lg={2}>
                 <Typography variant="body2">
