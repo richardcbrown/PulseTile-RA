@@ -6,16 +6,16 @@
  * @return {shape}
  */
 export default {
-    // vaccinations: {
-    //     title: "Vaccinations",
-    //     description: "A record of the immunisations/vaccines you have had to help you avoid ill health",
-    // },
     top3Things: {
         title: "Top 3 Things About Me",
         description: "Three things that you feel would be useful for health and care professionals to know about you",
     },
-    "help-and-advice": {
-        title: "Help and Advice",
+    "nhs-resources": {
+        title: "NHS Resources",
         description: ""
+    },
+    "leeds-information": {
+        title: "Leeds Information",
+        description: "Local service information and resources to support your health and care."
     }
 };

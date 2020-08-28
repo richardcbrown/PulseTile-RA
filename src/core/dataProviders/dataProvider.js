@@ -13,6 +13,7 @@ import {
     DELETE_MANY,
     HttpError,
 } from "react-admin";
+import queryString from "query-string";
 import sort, { ASC, DESC } from 'sort-array-objects';
 
 import pluginFilters from "../config/pluginFilters";
@@ -23,6 +24,20 @@ import { httpErrorAction } from '../actions/httpErrorAction';
 
 const apiPatientsUser = 'api/patients';
 const patientID = localStorage.getItem('patientId') ? localStorage.getItem('patientId') : localStorage.getItem('userId');
+
+const urlSelector = (resource, queryProps) => {
+    switch(resource) {
+        case 'leeds-information': {
+            return `${domainName}/api/repository${ queryProps ? `?${queryString.stringify(queryProps)}` : ""}`;
+        }
+        case 'patients': {
+            return `${domainName}/api/${resource}`;
+        }
+        default: {
+            return `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
+        }
+    }
+}
 
 /**
  * This constant prepare data for requests (URL and options)
@@ -39,11 +54,8 @@ const convertDataRequestToHTTP = (type, resource, params) => {
     };
     switch (type) {
         case GET_LIST: {
-            if (resource === 'patients') {
-                url = `${domainName}/api/${resource}`;
-            } else {
-                url = `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
-            }
+            url = urlSelector(resource, params)
+
             if (!options.headers) {
                 options.headers = new Headers({ Accept: 'application/json' });
             }
@@ -230,6 +242,9 @@ const convertHTTPResponse = (response, type, resource, params) => {
     switch (type) {
 
         case GET_LIST:
+            if (resource === "leeds-information") {
+                return response.results
+            }
 
             const pageNumber = get(params, 'pagination.page', 1);
             const numberPerPage = get(params, 'pagination.perPage', 10);

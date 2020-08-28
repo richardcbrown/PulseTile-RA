@@ -38,7 +38,9 @@
     "rss-parser": "^3.6.2",
     "sort-array-objects": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "clsx": "^1.1.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

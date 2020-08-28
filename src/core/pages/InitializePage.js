@@ -27,7 +27,6 @@ const styles = {
         left: "50%",
         position: "absolute",
         transform: "translate(-50%, -50%)",
-        marginLeft: "-100px",
     },
     tips: {
         overflow: "hidden",
@@ -35,8 +34,7 @@ const styles = {
         margin: "0 auto",
         position: "absolute",
         textAlign: "center",
-        top: 180,
-        left: -40,
+        top: 250,
         fontFamily: "HK_Grotesk_Regular",
         "& h2": {
             marginTop: 10,
@@ -106,12 +104,14 @@ const styles = {
     },
     rings: {
         position: "relative",
+        paddingTop: 20,
+        paddingBottom: 20,
         "& div": {
             position: "absolute",
             width: 120,
             height: 120,
-            top: 40,
-            left: 40,
+            top: 0,
+            left: -60,
             borderRadius: "50%",
             border: "10px solid #000",
             borderColor: "#3596f4 transparent #3596f4 transparent",
@@ -121,8 +121,8 @@ const styles = {
         "& div:nth-child(2)": {
             width: 96,
             height: 96,
-            top: 52,
-            left: 52,
+            top: 12,
+            left: -48,
             borderColor: "transparent #cacaca transparent #cacaca",
             WebkitAnimation: "rings_reverse 1s linear infinite",
             animation: "rings_reverse 1s linear infinite",
@@ -134,17 +134,50 @@ class InitializePage extends Component {
 
     componentDidMount() {
 
-        if (!token) {
-            this.props.initializeAction();
+        const { status } = this.props
+
+        if (!token || status !== "found") {
+            this.props.initializeAction()
+            this.interval = window.setInterval(() => this.props.initializeAction(), 5000)
         } else {
             this.props.checkTermsAction();        
         }
     }
 
+    componentDidUpdate() {
+
+        const { status, error } = this.props
+
+        if (error) {
+            clearInterval(this.interval)
+            return
+        }
+
+        if (token && status === "found") {
+            clearInterval(this.interval)
+            this.props.checkTermsAction();        
+        }
+    }
+
+    componentWillUnmount() {
+        window.clearInterval(this.interval)
+    }
+
     render() {
-        const { error } = this.props;
-        const { classes } = this.props;
+        let { error } = this.props;
+        const { classes, status } = this.props;
         const { closeDialog } = this;
+
+        if (status === "notfound") {
+            error = {
+                title: "Record not found",
+                message: "<span>There is an issue with setting up your Helm account, please try again or contact <a href='mailto:info@myhelm.org?subject=Helm Account Setup Issue'>info@myhelm.org</a> with your name and we will be happy to help.</span>"
+            }
+        }
+
+        if (error) {
+            clearInterval(this.interval)
+        }
 
         return (
             <div className={classes.mainSpinner}>
@@ -165,6 +198,7 @@ class InitializePage extends Component {
                     :
                     
                     <div className={classes.slidesAndRings}>
+                        <h1>{this.getStatus()}</h1>
                         <div className={classes.tips}>
                             <h2>Top Tips to a Healthy Life</h2>
                             <div className={classes.slideWrapper}>
@@ -261,6 +295,28 @@ class InitializePage extends Component {
         )
     }
 
+    getStatus() {
+        const { status } = this.props
+
+        switch(status) {
+            case "received": {
+                return "Helm has received your details from NHS login..."
+            }
+            case "registered": {
+                return "Your Helm account is in the process of being set up."
+            }
+            case "searching": {
+                return "Helm is searching for your information."
+            }
+            case "found": {
+                return "Your Helm account is ready."
+            }
+            default: {
+                return "Loading..."
+            }
+        }
+    }
+
     closeDialog = () => {
         document.cookie = 'JSESSIONID=;';
         document.cookie = 'META=;'
@@ -273,10 +329,11 @@ class InitializePage extends Component {
 }
 
 const mapStateToProps = state => {
-    const { terms } = state.custom;
+    const { terms, initialize } = state.custom;
 
     return {
-        error: terms.error
+        error: terms.error,
+        status: (initialize && initialize.data && initialize.data.status) || null
     }
 }
 

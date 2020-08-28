@@ -102,6 +102,10 @@ class MobileMenu extends Component {
                             {get(patientInfo, 'phone', null)}
                         </Typography>
                         <Typography variant="body2" className={classes.bannerRow}>
+                            <span>Email: </span>
+                            {get(patientInfo, 'email', null)}
+                        </Typography>
+                        <Typography variant="body2" className={classes.bannerRow}>
                             <span>Gender: </span>
                             { get(patientInfo, 'gender', null) }
                         </Typography>
