@@ -11,21 +11,21 @@ import TableHeader from "../../../core/common/TableHeader"
 import moment from "moment"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles"
 
-const listStyles = theme => ({
+const listStyles = (theme) => ({
     mainBlock: {
         margin: 0,
         paddingLeft: 10,
         paddingTop: 15,
         paddingRight: 25,
         border: `1px solid ${theme.palette.borderColor}`,
-        height: "100%"
+        height: "100%",
     },
     list: {
         paddingLeft: 0,
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
     blockTitle: {
         display: "flex",
@@ -61,35 +61,35 @@ const listStyles = theme => ({
         backgroundColor: theme.palette.mainColor,
         borderRadius: 0,
         boxShadow: "none",
-        '& button': {
+        "& button": {
             color: "#fff",
         },
     },
     inputBlock: {
-        width: 'calc(100% - 105px)',
+        width: "calc(100% - 105px)",
         backgroundColor: "#fff",
         borderRadius: 2,
         paddingLeft: 5,
     },
     tableList: {
-        '& thead': {
-            '& tr th': {
+        "& thead": {
+            "& tr th": {
                 paddingLeft: 10,
             },
         },
-        '& tbody': {
-            '& tr td': {
+        "& tbody": {
+            "& tr td": {
                 paddingLeft: 10,
             },
         },
-        '& tbody tr:hover': {
-            backgroundColor: theme.palette.mainColor + '!important',
+        "& tbody tr:hover": {
+            backgroundColor: theme.palette.mainColor + "!important",
         },
-        '& tbody tr:hover td span': {
-            color: "#fff"
-        }
-    }
-});
+        "& tbody tr:hover td span": {
+            color: "#fff",
+        },
+    },
+})
 
 /**
  * This component returns block with Top Three Things list
@@ -159,8 +159,8 @@ class TopThreeThingsSimpleList extends Component {
                             tableClass={classes.tableList}
                             resourceType="Composition"
                             query={{
-                                _sort: "-date",
-                                _count: 1,
+                                _sort: "date",
+                                _count: 10,
                                 type: "https://fhir.myhelm.org/STU3/ValueSet/phr-composition-type-1|T3T",
                             }}
                             headProvider={() => {
@@ -176,7 +176,7 @@ class TopThreeThingsSimpleList extends Component {
                                             <TableCell>
                                                 <span>#2</span>
                                             </TableCell>
-                                            <TableCell>                                               
+                                            <TableCell>
                                                 <span>#3</span>
                                             </TableCell>
                                         </TableRow>

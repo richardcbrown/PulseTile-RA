@@ -117,6 +117,7 @@ export function flattenComposition(composition) {
 export function transformComposition(formData) {
     return {
         resourceType: "Composition",
+        status: "final",
         type: {
             coding: [
                 {
