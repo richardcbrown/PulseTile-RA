@@ -46,7 +46,10 @@ const TableHeader = ({ classes, resource, translate }) => {
             <h1 className={classes.mainHeader}>
                 <Typography className={classes.title}>{title}</Typography>
             </h1>
-            <Typography className={classes.description}>{description}</Typography>
+            { typeof description === "string" ? 
+                <Typography className={classes.description}>{description}</Typography> : 
+                <div className={classes.description}>{description}</div>
+            }
         </div>
     );
 };

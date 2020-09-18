@@ -1,3 +1,6 @@
+import React from "react"
+import { Typography } from "@material-ui/core"
+
 /**
  * This component returns titles and descriptions for table headers
  * (for non-core plugins)
@@ -16,6 +19,11 @@ export default {
     },
     "leeds-information": {
         title: "Leeds Information",
-        description: "Local service information and resources to support your health and care."
+        description: (
+            <>
+                <Typography>Local service information and resources to support your health and care.</Typography>
+                <Typography>Please note that the results may not provide complete and relevant information at this time.</Typography>
+            </>
+        )
     }
 };

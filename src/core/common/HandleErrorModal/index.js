@@ -72,8 +72,12 @@ class HandleErrorModal extends Component {
         isErrorModalOpen: false,
     };
 
+    isJwtMessage(status, message) {
+        return Number(status) === 400 && typeof message === "string" && message.includes('JWT')
+    }
+ 
     isSessionExpired = (status, message) => {
-        return (Number(status) === 400 && message.includes('JWT')) || Number(status) === 403;
+        return this.isJwtMessage(message) || Number(status) === 403;
     };
 
     getErrorDescription = (status, isJwtOld) => {

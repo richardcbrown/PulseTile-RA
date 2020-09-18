@@ -447,6 +447,11 @@ class DirectoryList extends Component {
                 <TableHeader resource="leeds-information" />
 
                 <div className={classes.searchContainer}>
+                    <Typography 
+                        variant="caption"
+                        aria-label="Type in a search term e.g. Diabetes for national and local service information.">
+                        Type in a search term e.g. Diabetes for national and local service information.
+                    </Typography>
                     <TextField 
                         value={serviceOrResourceName} 
                         onChange={(e) => this.debounceNameSearch(e.target.value)} 
