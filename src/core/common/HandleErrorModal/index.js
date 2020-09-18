@@ -77,7 +77,7 @@ class HandleErrorModal extends Component {
     }
  
     isSessionExpired = (status, message) => {
-        return this.isJwtMessage(message) || Number(status) === 403;
+        return this.isJwtMessage(status, message) || Number(status) === 403;
     };
 
     getErrorDescription = (status, isJwtOld) => {
