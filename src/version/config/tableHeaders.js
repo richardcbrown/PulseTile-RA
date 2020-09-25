@@ -20,6 +20,6 @@ export default {
     "leeds-information": {
         title: "Leeds Information",
         description: "Local service information and resources to support your health and care.",
-        subText: "Please note that the results may not provide complete and relevant information at this time."
+        subText: "Please note this section is under development and some of the results may not provide complete and relevant information at this time. We would value your feedback on this section."
     }
 };
