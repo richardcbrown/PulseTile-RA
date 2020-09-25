@@ -36,17 +36,29 @@ const styles = theme => ({
  * @param {string} resource
  */
 const TableHeader = ({ classes, resource, translate }) => {
-    const title = translate('tableHeaders.' + resource +'.title');
-    const description = translate('tableHeaders.' + resource +'.description');
+    const title = translate('tableHeaders.' + resource + '.title');
+    let description = translate('tableHeaders.' + resource + '.description');
+    let subText = translate('tableHeaders.' + resource + '.subText');
+
     if (title === 'tableHeaders.' + resource +'.title') {
         return null;
     }
+
+    if (description === 'tableHeaders.' + resource + '.description') {
+        description = null;
+    }
+
+    if (subText === 'tableHeaders.' + resource + '.subText') {
+        subText = null;
+    }
+
     return (
         <div className={classes.tableHeaderBlock} >
             <h1 className={classes.mainHeader}>
                 <Typography className={classes.title}>{title}</Typography>
             </h1>
-            <Typography className={classes.description}>{description}</Typography>
+            { description && <Typography className={classes.description}>{description}</Typography> || null }
+            { subText && <Typography className={classes.description}>{subText}</Typography> || null }
         </div>
     );
 };
