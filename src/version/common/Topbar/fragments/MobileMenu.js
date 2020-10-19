@@ -81,6 +81,7 @@ class MobileMenu extends Component {
     render() {
         const { classes, setSidebarVisibility, isSidebarOpen, patientInfo } = this.props;
         const { isMobileBannerOpened } = this.state;
+        const resolved = get(patientInfo, 'resolved', false)
         return (
             <React.Fragment>
                 <div className={classes.menuAndBannerMobile}>
@@ -111,11 +112,16 @@ class MobileMenu extends Component {
                         </Typography>
                         <Typography variant="body2" className={classes.bannerRow}>
                             <span>NHS No.: </span>
-                            { get(patientInfo, 'nhsNumber', null) }</Typography>
+                            { get(patientInfo, 'nhsNumber', null) }
+                        </Typography>
                         <Typography variant="body2" className={classes.bannerRow}>
                             <span>Address: </span>
                             {get(patientInfo, 'address', null)}
                         </Typography>
+                        {
+                            !resolved ? 
+                            (<Typography variant="caption">More information will be displayed when it becomes available</Typography>) : null
+                        }
                     </div>
                 }
             </React.Fragment>
