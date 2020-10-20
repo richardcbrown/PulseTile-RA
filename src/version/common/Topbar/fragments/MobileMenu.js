@@ -120,7 +120,7 @@ class MobileMenu extends Component {
                         </Typography>
                         {
                             !resolved ? 
-                            (<Typography variant="caption">More information will be displayed when it becomes available</Typography>) : null
+                            (<Typography className={classes.bannerRow} variant="caption">More information will be displayed when it becomes available</Typography>) : null
                         }
                     </div>
                 }

@@ -58,7 +58,7 @@ const PatientBanner = ({ classes, patientInfo }) => {
             </Grid>
             {
                 !resolved ? 
-                (<Grid item xs={12}>
+                (<Grid className={classes.gridBlock} item xs={12}>
                     <Typography variant="caption">More information will be displayed when it becomes available</Typography>
                 </Grid>) : null
             }
