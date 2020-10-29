@@ -16,6 +16,11 @@ const styles = {
     title: {
         marginLeft: 10,
     },
+    button: {
+        width: "auto",
+        borderRadius: 8,
+        padding: 8
+    }
 };
 
 /**
@@ -41,7 +46,14 @@ class SettingsDialog extends Component {
         return (
             <div className={classes.settingsIconBlock}>
                 <Tooltip title="Settings">
-                    <IconButton id="icon-settings" aria-haspopup="true" aria-label="Settings" color="inherit" onClick={() => this.toggleDialog()}>
+                    <IconButton 
+                        id="icon-settings" 
+                        aria-haspopup="true" 
+                        aria-label="Settings" 
+                        color="inherit" 
+                        onClick={() => this.toggleDialog()}
+                        className={classes.button}
+                    >
                         <SettingsIcon />
                         <Typography variant="h1" className={classes.title}>Home</Typography>
                     </IconButton>

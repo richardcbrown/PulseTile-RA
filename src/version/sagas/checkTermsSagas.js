@@ -3,7 +3,6 @@ import { domainName, token } from "../../core/token"
 import get from "lodash/get"
 
 import { CHECK_TERMS_ACTION, checkTermsAction } from "../actions/checkTermsAction"
-import { userLogout } from "ra-core"
 
 export const checkTermsSaga = takeEvery(CHECK_TERMS_ACTION.REQUEST, function* (action) {
     const url = domainName + "/api/initialise/terms"
@@ -27,18 +26,27 @@ export const checkTermsSaga = takeEvery(CHECK_TERMS_ACTION.REQUEST, function* (a
 
                 return res.json()
             })
-            .then((response) => {
-                if (Number(statusCode) === 400 && response.error && response.error.includes("JWT")) {
-                    document.cookie = "JSESSIONID=;"
-                    document.cookie = "META=;"
-                    localStorage.removeItem("userId")
-                    localStorage.removeItem("username")
-                    localStorage.removeItem("role")
-                    window.location.href = "/#/login"
-                    return
+            .then(response => {
+
+                const isJwtMessage = (status, message) => {
+                    return Number(status) === 400 && typeof message === "string" && message.includes('JWT')
                 }
 
-                if (Number(statusCode) === 400 && response.error && response.error.includes("patient_notfound")) {
+                if (isJwtMessage(statusCode, response.error)) {
+                    document.cookie = 'JSESSIONID=;';
+                    document.cookie = 'META=;'
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('role');
+                    window.location.href = '/#/login';
+                    return;
+                }
+
+                const isPatientNotFoundError = (status, message) => {
+                    return Number(status) === 400 && typeof message === "string" && message.includes('patient_notfound')
+                }
+
+                if (isPatientNotFoundError(statusCode, response.error)) {
                     return {
                         title: "Error",
                         message: "You are not currently enrolled to use Helm, please try again later.",

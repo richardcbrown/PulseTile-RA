@@ -16,28 +16,25 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Hidden, Paper } from "@material-ui/core";
+import Bowser from "bowser"
+
+const browser = Bowser.getParser(window.navigator.userAgent)
+const isIe = browser.getBrowserName() === "Internet Explorer"
+const isSafari = browser.getBrowserName() === "Safari"
 
 const styles = (theme) => {
     return {
         termsBackground: {
+            position: "absolute",
+            top: 0,
+            zIndex: -1,
             width: "100%",
-            display: "flex",
-            flexGrow: 1,
+            height: "100%",
             background: `url(${backgroundImage}) 0 0 repeat`,
-            flexDirection: "column"
         },
         termsContainer: {
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
+            height: "calc(100% - 54px)",
             width: "100%"
-        },
-        policyContainer: {
-            flexGrow: 1,
-            marginBottom: "24px",
-            padding: "12px",
-            maxHeight: "500px",
-            overflowY: "auto"
         },
         policyAcceptContainer: {
             display: "flex",
@@ -47,52 +44,22 @@ const styles = (theme) => {
             width: "100%"
         },
         contentContainer: {
-            display: "flex",
-            flexGrow: 1,
-            flexDirection: "column",
             margin: 0,
-            flexWrap: "nowrap",
             height: "100%",
             width: "100%",
-            overflowY: "auto"
-        },
-        policiesContainer: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "stretch",
-            margin: 0,
-            flexGrow: 1,
-            width: "100%",
-            flexWrap: "wrap"
+            overflowY: "auto",
+            flexWrap: "nowrap",
+            flexDirection: "column"
         },
         declarationContainer: {
             overflowY: "auto"
         },
-        policyAndAcceptContainer: {
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center"
-        },
-        [theme.breakpoints.up('md')]: {
-            continueContainer: {
-                flexGrow: 1, 
-                alignItems: "flex-end",
-                margin: 0,
-                width: "100%"
-            }
-        },
-        [theme.breakpoints.down('sm')]: {
-            continueContainer: {
-                margin: 0,
-                width: "100%",
-                display: "block"
-            }
-        },
         continue: {
+            padding: "10px",
+            width: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-end",
-            padding: "10px"
+            alignItems: "flex-end"
         },
         mobileHeader: {
             width: "100%",
@@ -123,15 +90,25 @@ class Terms extends Component {
         const allAccepted = this.allPoliciesAccepted();
         const { expandedPolicies } = this.state;
 
+        const containerStyle = { 
+            width: "100%", 
+            margin: 0, 
+            flexDirection: "column", 
+            flexWrap: "nowrap", 
+            height: isIe || isSafari ? "initial" : "100%",
+            display: isIe || isSafari ? "block" : "flex" 
+        }
+
         return (
-            <div className={ classes.termsContainer }>
+            <>
                 <TopBarNoUser />
 
-                <div className={ classes.termsBackground }>
-                    <Grid container spacing={24}  className={ classes.contentContainer }>
-                        
-                        <Grid container spacing={24} style={{ display: "block", margin: 0, width: "100%" }}>
-                            <Grid item xs={12}>
+                <div className={ classes.termsContainer }>
+                    <div className={ classes.termsBackground }></div>
+
+                    <div className={ classes.contentContainer }>
+                        <Grid container spacing={24} style={containerStyle}>
+                            <Grid item xs={12} style={{ flexBasis: "initial" }}>
                                 <Paper>
                                     <Grid container spacing={16} style={{ width: "100%", margin: 0 }}>
                                         <Grid item xs={12}>
@@ -166,7 +143,7 @@ class Terms extends Component {
                                             {
                                                 shouldShow &&
 
-                                                <Grid item xs={12}>
+                                                <Grid item xs={12} style={{ flexBasis: "initial" }}>
                                                     <ExpansionPanel 
                                                         style={{ borderRadius: 4, marginBottom: 16 }} 
                                                         expanded={expandedPolicies[key] === true} 
@@ -213,23 +190,19 @@ class Terms extends Component {
                                     )
                                 })
                             }
-                        </Grid>
 
-                        <Grid container spacing={24} className={ classes.continueContainer } style={{ flexGrow: 1, alignItems: "flex-end" }}>
-                            {
-                                <Grid item xs={12}>
-                                    <Card className={ classes.continue }>
-                                        <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
-                                        <a href="https://myhelm.org" onClick={ () => this.closeDialog() }>
-                                            <Typography>I do not want to use Helm ></Typography>
-                                        </a>
-                                    </Card>
-                                </Grid>
-                            }
+                            <Grid item xs={12} style={{ flexBasis: "initial", flexGrow: 1, display: "flex", alignItems: "flex-end" }}>
+                                <Card className={ classes.continue }>
+                                    <ConfirmButton label="Continue" disabled={ !allAccepted } onClick={() => this.accept()} />
+                                    <a href="https://myhelm.org" onClick={ () => this.closeDialog() }>
+                                        <Typography>{"I do not want to use Helm >"}</Typography>
+                                    </a>
+                                </Card>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </div>
                 </div>
-            </div>
+            </>
         )
     }
 
@@ -282,6 +255,10 @@ class Terms extends Component {
 
     allPoliciesAccepted = () => {
         const { policies } = this.props;
+
+        if (!policies.length) {
+            return false
+        }
 
         for (let i = 0; i < policies.length; i++) {
             if (!this.policyAccepted(policies[i])) {

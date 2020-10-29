@@ -31,7 +31,11 @@ export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function * (acti
             })
             .then(response => {
 
-                if (Number(statusCode) === 400 && response.error && response.error.includes('JWT')) {
+                const isJwtMessage = (status, message) => {
+                    return Number(status) === 400 && typeof message === "string" && message.includes('JWT')
+                }
+
+                if (isJwtMessage(statusCode, response.error)) {
                     document.cookie = 'JSESSIONID=;';
                     document.cookie = 'META=;'
                     localStorage.removeItem('userId');
@@ -41,7 +45,11 @@ export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function * (acti
                     return;
                 }
 
-                if (Number(statusCode) === 400 && response.error && response.error.includes('patient_notfound')) {
+                const isPatientNotFoundError = (status, message) => {
+                    return Number(status) === 400 && typeof message === "string" && message.includes('patient_notfound')
+                }
+
+                if (isPatientNotFoundError(statusCode, response.error)) {
                     return {
                         title: 'Error',
                         message: 'You are not currently enrolled to use Helm, please try again later.'
