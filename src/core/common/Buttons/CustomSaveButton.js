@@ -1,10 +1,10 @@
-import React from "react";
-import { SaveButton } from "react-admin";
+import React from "react"
+import { SaveButton } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
-import DoneIcon from '@material-ui/icons/Done';
+import { withStyles } from "@material-ui/core/styles"
+import DoneIcon from "@material-ui/icons/Done"
 
-const styles = theme => ({
+const styles = (theme) => ({
     saveButton: {
         display: "block",
         width: 130,
@@ -21,14 +21,14 @@ const styles = theme => ({
             marginRight: 2,
         },
         "& span": {
-            textTransform: "capitalize"
+            textTransform: "capitalize",
         },
         "&:hover": {
             backgroundColor: "white",
             color: theme.palette.mainColor,
-        }
+        },
     },
-});
+})
 
 /**
  * This component returns Save button with custom styles
@@ -38,6 +38,6 @@ const styles = theme => ({
  */
 const CustomSaveButton = ({ classes, ...rest }) => (
     <SaveButton aria-label="Complete" label="Complete" icon={<DoneIcon />} className={classes.saveButton} {...rest} />
-);
+)
 
-export default withStyles(styles)(CustomSaveButton);
+export default withStyles(styles)(CustomSaveButton)

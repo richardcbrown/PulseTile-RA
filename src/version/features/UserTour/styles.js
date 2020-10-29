@@ -1,5 +1,5 @@
-const themeColor = (window && window.config) ? window.config.lightPalette.mainColor : "#0D672F";
-const dangerColor = (window && window.config) ? window.config.lightPalette.dangerColor : "#da534f";
+const themeColor = window && window.config ? window.config.lightPalette.mainColor : "#0D672F"
+const dangerColor = window && window.config ? window.config.lightPalette.dangerColor : "#da534f"
 
 /**
  * This component returns styles for User Tour
@@ -10,10 +10,10 @@ const dangerColor = (window && window.config) ? window.config.lightPalette.dange
 export default {
     options: {
         beaconSize: 36,
-        overlayColor: 'rgba(0, 0, 0, 0.5)',
+        overlayColor: "rgba(0, 0, 0, 0.5)",
         primaryColor: dangerColor,
-        spotlightShadow: 'none',
-        textColor: '#333',
+        spotlightShadow: "none",
+        textColor: "#333",
         width: 400,
         zIndex: 999999,
     },
@@ -32,12 +32,12 @@ export default {
     buttonSkip: {
         color: themeColor,
         fontSize: "16px",
-        fontWeight: "600"
+        fontWeight: "600",
     },
     buttonBack: {
         color: themeColor,
         fontSize: "16px",
-        fontWeight: "600"
+        fontWeight: "600",
     },
     buttonLast: {
         border: "2px solid " + themeColor,
@@ -57,4 +57,4 @@ export default {
         fontSize: "16px",
         fontWeight: "600",
     },
-};
+}

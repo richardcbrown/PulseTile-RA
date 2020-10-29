@@ -14,15 +14,15 @@ const apiPatientsUser = "api/patient/fhir"
 const patientID = localStorage.getItem("patientId") ? localStorage.getItem("patientId") : localStorage.getItem("userId")
 
 const urlSelector = (resource, queryProps) => {
-    switch(resource) {
-        case 'leeds-information': {
-            return `${domainName}/api/repository${ queryProps ? `?${queryString.stringify(queryProps)}` : ""}`;
+    switch (resource) {
+        case "leeds-information": {
+            return `${domainName}/api/repository${queryProps ? `?${queryString.stringify(queryProps)}` : ""}`
         }
-        case 'patients': {
-            return `${domainName}/api/${resource}`;
+        case "patients": {
+            return `${domainName}/api/${resource}`
         }
         default: {
-            return `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`;
+            return `${domainName}/${apiPatientsUser}/${patientID}/detail/${resource}`
         }
     }
 }
@@ -240,14 +240,14 @@ const convertHTTPResponse = (response, type, resource, params) => {
                 return response
             }
 
-            const pageNumber = get(params, 'pagination.page', 1);
-            const numberPerPage = get(params, 'pagination.perPage', 10);
-            const results = getResultsFromResponse(resource, response, params);
-            const resultsFiltering = getFilterResults(resource, results, params);
-            const resultsSorting = getSortedResults(resultsFiltering, params);
-            const startItem = (pageNumber - 1) * numberPerPage;
-            const endItem = pageNumber * numberPerPage;
-            const paginationResults = resultsSorting.slice(startItem, endItem);
+            const pageNumber = get(params, "pagination.page", 1)
+            const numberPerPage = get(params, "pagination.perPage", 10)
+            const results = getResultsFromResponse(resource, response, params)
+            const resultsFiltering = getFilterResults(resource, results, params)
+            const resultsSorting = getSortedResults(resultsFiltering, params)
+            const startItem = (pageNumber - 1) * numberPerPage
+            const endItem = pageNumber * numberPerPage
+            const paginationResults = resultsSorting.slice(startItem, endItem)
             return {
                 data: paginationResults,
                 total: resultsSorting.length,

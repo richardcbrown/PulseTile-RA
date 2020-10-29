@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import Tooltip from '@material-ui/core/Tooltip';
-import { ReactComponent as FeedbackIcon } from "../../../images/Feedback-XL.svg";
-import { Typography } from "@material-ui/core";
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from "react"
+import Tooltip from "@material-ui/core/Tooltip"
+import { ReactComponent as FeedbackIcon } from "../../../images/Feedback-XL.svg"
+import { Typography } from "@material-ui/core"
+import { withStyles } from "@material-ui/core/styles"
 
-const styles = theme => {    
+const styles = (theme) => {
     return {
         feedbackText: {
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down("sm")]: {
                 display: "none",
-            }
-        }
+            },
+        },
     }
 }
 
@@ -20,7 +20,6 @@ const styles = theme => {
  * @author Richard Brown <richard.brown@synanetics.com>
  */
 class FeedbackButton extends Component {
-
     render() {
         const { classes } = this.props
 
@@ -34,12 +33,14 @@ class FeedbackButton extends Component {
                 >
                     <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                         <FeedbackIcon width={40} height={40} title="Feedback" />
-                        <Typography className={classes.feedbackText} style={{ marginLeft: 20, fontWeight: "bold" }}>FEEDBACK</Typography>
-                    </div> 
+                        <Typography className={classes.feedbackText} style={{ marginLeft: 20, fontWeight: "bold" }}>
+                            FEEDBACK
+                        </Typography>
+                    </div>
                 </a>
             </Tooltip>
-        );
+        )
     }
-};
+}
 
-export default withStyles(styles)(FeedbackButton);
+export default withStyles(styles)(FeedbackButton)

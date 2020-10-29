@@ -1,12 +1,12 @@
-import get from "lodash/get";
+import get from "lodash/get"
 
-import { SET_SELECTED_FEEDS_ACTION } from "../actions/setSelectedFeedsAction";
+import { SET_SELECTED_FEEDS_ACTION } from "../actions/setSelectedFeedsAction"
 
 const initialState = {
     data: [],
     loading: false,
     error: null,
-};
+}
 
 /**
  * This component returns reducer for Feeds list action
@@ -23,8 +23,8 @@ export default (state = initialState, action) => {
                 ...state,
                 loading: false,
                 data: get(action, "data", []),
-            };
+            }
         default:
-            return state;
+            return state
     }
 }

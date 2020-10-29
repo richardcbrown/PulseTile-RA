@@ -1,25 +1,18 @@
-import React from "react";
-import {
-    Edit,
-    SimpleForm,
-    TextInput,
-    DisabledInput,
-    DateInput,
-    LongTextInput
-} from "react-admin";
+import React from "react"
+import { Edit, SimpleForm, TextInput, DisabledInput, DateInput, LongTextInput } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/Grid";
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
+import IconButton from "@material-ui/core/IconButton"
+import Tooltip from "@material-ui/core/Tooltip"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCompressArrowsAlt, faExpandArrowsAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCompressArrowsAlt, faExpandArrowsAlt } from "@fortawesome/free-solid-svg-icons"
 
-import EditFormToolbar from "../../common/Toolbars/EditFormToolbar";
+import EditFormToolbar from "../../common/Toolbars/EditFormToolbar"
 
-const styles = theme => ({
+const styles = (theme) => ({
     blockTitle: {
         display: "flex",
         alignItems: "center",
@@ -42,13 +35,13 @@ const styles = theme => ({
         color: theme.palette.paperColor,
     },
     editForm: {
-        '& > div': {
+        "& > div": {
             paddingTop: 0,
             paddingLeft: 10,
             paddingRight: 10,
         },
     },
-});
+})
 
 /**
  * This component returns block with template for plugin edit form
@@ -71,7 +64,11 @@ const EditTemplate = ({ classes, isListOpened, blockTitle, toggleListBlock, chil
             <div className={classes.emptyBlock}></div>
             <Tooltip title={isListOpened ? "Expand" : "Compress"}>
                 <IconButton onClick={() => toggleListBlock()}>
-                    <FontAwesomeIcon className={classes.expandBlockIcon} icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt} size="1x" />
+                    <FontAwesomeIcon
+                        className={classes.expandBlockIcon}
+                        icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt}
+                        size="1x"
+                    />
                 </IconButton>
             </Tooltip>
         </div>
@@ -81,6 +78,6 @@ const EditTemplate = ({ classes, isListOpened, blockTitle, toggleListBlock, chil
             </SimpleForm>
         </Edit>
     </Grid>
-);
+)
 
-export default withStyles(styles)(EditTemplate);
+export default withStyles(styles)(EditTemplate)

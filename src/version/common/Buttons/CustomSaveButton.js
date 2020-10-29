@@ -1,9 +1,9 @@
-import React from "react";
-import { SaveButton } from "react-admin";
-import DoneIcon from '@material-ui/icons/Done';
-import { withStyles } from '@material-ui/core/styles';
+import React from "react"
+import { SaveButton } from "react-admin"
+import DoneIcon from "@material-ui/icons/Done"
+import { withStyles } from "@material-ui/core/styles"
 
-const styles = theme => ({
+const styles = (theme) => ({
     saveButton: {
         display: "block",
         height: 40,
@@ -18,9 +18,9 @@ const styles = theme => ({
         "&:hover": {
             backgroundColor: theme.palette.mainColor,
             color: "white",
-        }
-    }
-});
+        },
+    },
+})
 
 /**
  * This component returns Confirm button
@@ -31,7 +31,14 @@ const styles = theme => ({
  * @param {string} label
  */
 const CustomSaveButton = ({ classes, label, redirectTo, rest }) => (
-    <SaveButton redirect={ redirectTo } aria-label={ label } label={ label } icon={<DoneIcon />} className={classes.saveButton} {...rest} />
-);
+    <SaveButton
+        redirect={redirectTo}
+        aria-label={label}
+        label={label}
+        icon={<DoneIcon />}
+        className={classes.saveButton}
+        {...rest}
+    />
+)
 
-export default withStyles(styles)(CustomSaveButton);
+export default withStyles(styles)(CustomSaveButton)

@@ -1,4 +1,4 @@
-import nonCoreTableHeaders from "../../version/config/tableHeaders";
+import nonCoreTableHeaders from "../../version/config/tableHeaders"
 
 /**
  * This component returns titles and descriptions for table headers
@@ -23,6 +23,6 @@ const coreTableHeaders = {
         title: "Problems / Issues",
         description: "The key problems that affect your health, some with clear diagnoses from your doctor",
     },
-};
+}
 
-export default Object.assign({}, coreTableHeaders, nonCoreTableHeaders);
+export default Object.assign({}, coreTableHeaders, nonCoreTableHeaders)

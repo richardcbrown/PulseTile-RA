@@ -1,26 +1,18 @@
-import React from "react";
-import {
-    Create,
-    SimpleForm,
-    TextInput,
-    BooleanInput,
-    DateInput,
-    DisabledInput,
-    LongTextInput,
-} from "react-admin";
+import React from "react"
+import { Create, SimpleForm, TextInput, BooleanInput, DateInput, DisabledInput, LongTextInput } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/Grid";
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
+import IconButton from "@material-ui/core/IconButton"
+import Tooltip from "@material-ui/core/Tooltip"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCompressArrowsAlt, faExpandArrowsAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCompressArrowsAlt, faExpandArrowsAlt } from "@fortawesome/free-solid-svg-icons"
 
-import CreateFormToolbar from "../../common/Toolbars/CreateFormToolbar";
+import CreateFormToolbar from "../../common/Toolbars/CreateFormToolbar"
 
-const styles = theme => ({
+const styles = (theme) => ({
     blockTitle: {
         display: "flex",
         alignItems: "center",
@@ -42,13 +34,13 @@ const styles = theme => ({
         color: theme.palette.paperColor,
     },
     createForm: {
-        '& > div': {
+        "& > div": {
             paddingTop: 0,
             paddingLeft: 10,
             paddingRight: 10,
         },
     },
-});
+})
 
 /**
  * This component returns common template for plugin Create form
@@ -69,7 +61,11 @@ const CreateTemplate = ({ classes, isListOpened, toggleListBlock, blockTitle, ch
             <div className={classes.emptyBlock}></div>
             <Tooltip title={isListOpened ? "Expand" : "Compress"}>
                 <IconButton onClick={() => toggleListBlock()}>
-                    <FontAwesomeIcon className={classes.expandBlockIcon} icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt} size="1x" />
+                    <FontAwesomeIcon
+                        className={classes.expandBlockIcon}
+                        icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt}
+                        size="1x"
+                    />
                 </IconButton>
             </Tooltip>
         </div>
@@ -79,6 +75,6 @@ const CreateTemplate = ({ classes, isListOpened, toggleListBlock, blockTitle, ch
             </SimpleForm>
         </Create>
     </Grid>
-);
+)
 
-export default withStyles(styles)(CreateTemplate);
+export default withStyles(styles)(CreateTemplate)

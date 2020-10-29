@@ -1,13 +1,13 @@
-import React from "react";
-import { connect } from 'react-redux';
-import { userLogout } from 'react-admin';
+import React from "react"
+import { connect } from "react-redux"
+import { userLogout } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import ExitIcon from '@material-ui/icons/ExitToApp';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import IconButton from "@material-ui/core/IconButton"
+import ExitIcon from "@material-ui/icons/ExitToApp"
+import Tooltip from "@material-ui/core/Tooltip"
 
-const styles = theme => ({
+const styles = (theme) => ({
     button: {
         display: "block",
         width: 140,
@@ -27,7 +27,7 @@ const styles = theme => ({
     icon: {
         marginLeft: 10,
     },
-});
+})
 
 /**
  * This component returns custom Logout button
@@ -41,16 +41,23 @@ const styles = theme => ({
 const CustomLogoutButton = ({ classes, userLogout, title = "Sign Out", hideIcon }) => {
     return (
         <Tooltip title={title}>
-            <IconButton className={classes.button} onClick={() => { localStorage.setItem('logout', true); userLogout(); }} aria-label="Sign Out">
+            <IconButton
+                className={classes.button}
+                onClick={() => {
+                    localStorage.setItem("logout", true)
+                    userLogout()
+                }}
+                aria-label="Sign Out"
+            >
                 {title}
-                { !hideIcon && <ExitIcon className={classes.icon} /> }
+                {!hideIcon && <ExitIcon className={classes.icon} />}
             </IconButton>
         </Tooltip>
-    );
-};
+    )
+}
 
 const mapDispatchToProps = {
     userLogout,
-};
+}
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CustomLogoutButton));
+export default connect(null, mapDispatchToProps)(withStyles(styles)(CustomLogoutButton))

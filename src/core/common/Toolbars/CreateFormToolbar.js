@@ -1,12 +1,12 @@
-import React from "react";
-import { Toolbar, SaveButton, ListButton } from "react-admin";
+import React from "react"
+import { Toolbar, SaveButton, ListButton } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
-import BlockIcon from '@material-ui/icons/Block';
+import { withStyles } from "@material-ui/core/styles"
+import BlockIcon from "@material-ui/icons/Block"
 
-import CustomSaveButton from "../../common/Buttons/CustomSaveButton";
+import CustomSaveButton from "../../common/Buttons/CustomSaveButton"
 
-const styles = theme => ({
+const styles = (theme) => ({
     listButton: {
         display: "block",
         width: 120,
@@ -28,12 +28,12 @@ const styles = theme => ({
         "&:hover": {
             backgroundColor: "#fff",
             color: theme.palette.dangerColor,
-        }
+        },
     },
     toolbar: {
         backgroundColor: theme.palette.toolbarColor,
-    }
-});
+    },
+})
 
 /**
  * This component returns toolbar without delete button for create forms
@@ -42,13 +42,13 @@ const styles = theme => ({
  * @param {shape} classes
  * @param {shape} props
  */
-const CreateFormToolbar = ({ classes, ...props}) => {
+const CreateFormToolbar = ({ classes, ...props }) => {
     return (
-        <Toolbar className={classes.toolbar} {...props} >
+        <Toolbar className={classes.toolbar} {...props}>
             <ListButton label="Cancel" icon={<BlockIcon />} className={classes.listButton} />
             <CustomSaveButton {...props} />
         </Toolbar>
-    );
-};
+    )
+}
 
-export default withStyles(styles)(CreateFormToolbar);
+export default withStyles(styles)(CreateFormToolbar)

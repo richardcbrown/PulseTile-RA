@@ -24,12 +24,12 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
                 const status = get(response, "status", null)
 
                 if (response.error) {
-                    document.cookie = 'JSESSIONID=;';
-                    document.cookie = 'META=;'
-                    localStorage.removeItem('userId');
-                    localStorage.removeItem('username');
-                    localStorage.removeItem('role');
-                    localStorage.removeItem('logout');
+                    document.cookie = "JSESSIONID=;"
+                    document.cookie = "META=;"
+                    localStorage.removeItem("userId")
+                    localStorage.removeItem("username")
+                    localStorage.removeItem("role")
+                    localStorage.removeItem("logout")
                     return false
                 } else if (redirectUrl) {
                     window.location.href = redirectUrl

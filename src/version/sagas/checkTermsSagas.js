@@ -26,24 +26,23 @@ export const checkTermsSaga = takeEvery(CHECK_TERMS_ACTION.REQUEST, function* (a
 
                 return res.json()
             })
-            .then(response => {
-
+            .then((response) => {
                 const isJwtMessage = (status, message) => {
-                    return Number(status) === 400 && typeof message === "string" && message.includes('JWT')
+                    return Number(status) === 400 && typeof message === "string" && message.includes("JWT")
                 }
 
                 if (isJwtMessage(statusCode, response.error)) {
-                    document.cookie = 'JSESSIONID=;';
-                    document.cookie = 'META=;'
-                    localStorage.removeItem('userId');
-                    localStorage.removeItem('username');
-                    localStorage.removeItem('role');
-                    window.location.href = '/#/login';
-                    return;
+                    document.cookie = "JSESSIONID=;"
+                    document.cookie = "META=;"
+                    localStorage.removeItem("userId")
+                    localStorage.removeItem("username")
+                    localStorage.removeItem("role")
+                    window.location.href = "/#/login"
+                    return
                 }
 
                 const isPatientNotFoundError = (status, message) => {
-                    return Number(status) === 400 && typeof message === "string" && message.includes('patient_notfound')
+                    return Number(status) === 400 && typeof message === "string" && message.includes("patient_notfound")
                 }
 
                 if (isPatientNotFoundError(statusCode, response.error)) {

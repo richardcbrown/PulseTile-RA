@@ -1,10 +1,10 @@
-import get from "lodash/get";
+import get from "lodash/get"
 
 const initialState = {
     data: null,
     loading: false,
     error: null,
-};
+}
 
 /**
  * This function creates custom reducer by action name
@@ -20,21 +20,21 @@ export default function createCustomReducer(actionName, data) {
                 return {
                     ...state,
                     loading: true,
-                };
+                }
             case actionName.SUCCESS:
                 return {
                     ...state,
                     loading: false,
                     data: get(action, data, []),
-                };
+                }
             case actionName.FAILURE:
                 return {
                     ...state,
                     loading: false,
                     error: get(action, "error", null),
-                };
+                }
             default:
-                return state;
+                return state
         }
     }
 }

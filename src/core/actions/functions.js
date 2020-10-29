@@ -5,7 +5,7 @@
  * @param base
  * @param optional
  */
-export function createRequestTypes(base, optional) {
+export function createRequestTypes(base, optional = {}) {
     for (let index in optional) {
         optional[index] = base + "_" + index
     }

@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
 
-import { withStyles } from '@material-ui/core/styles';
-import CardMedia from "@material-ui/core/CardMedia";
-import HomeIcon from "@material-ui/icons/Home";
-import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from "@material-ui/core/styles"
+import CardMedia from "@material-ui/core/CardMedia"
+import HomeIcon from "@material-ui/icons/Home"
+import Toolbar from "@material-ui/core/Toolbar"
 
-import helmLogo from "../../../images/helm-logo.png";
-import nhsLogo from "../../../images/nhs.png";
-import UserTour from "../../../features/UserTour";
-import ContrastMode from "../../../features/ContrastMode";
-import UserPanelButton from "./UserPanelButton";
+import helmLogo from "../../../images/helm-logo.png"
+import nhsLogo from "../../../images/nhs.png"
+import UserTour from "../../../features/UserTour"
+import ContrastMode from "../../../features/ContrastMode"
+import UserPanelButton from "./UserPanelButton"
 
-const styles = theme => ({
+const styles = (theme) => ({
     topPart: {
         display: "flex",
         backgroundColor: "white",
@@ -30,7 +30,7 @@ const styles = theme => ({
         justifyContent: "center",
         alignItems: "center",
     },
-    homeButton : {
+    homeButton: {
         color: "white",
     },
     mainLogoItem: {
@@ -40,12 +40,12 @@ const styles = theme => ({
         paddingLeft: 9,
     },
     nhsLogo: {
-        [theme.breakpoints.only('xs')]: {
+        [theme.breakpoints.only("xs")]: {
             display: "none",
         },
         width: "auto",
         maxWidth: "100%",
-        marginRight: 24
+        marginRight: 24,
     },
     rightBlockItem: {
         display: "inline-flex",
@@ -55,35 +55,35 @@ const styles = theme => ({
         justifyContent: "center",
         alignItems: "center",
         borderLeft: `1px solid ${theme.palette.borderColor}`,
-        '&:hover': {
+        "&:hover": {
             backgroundColor: theme.palette.mainColor,
         },
-        '&:active': {
+        "&:active": {
             backgroundColor: theme.palette.mainColor,
         },
-        '&:hover button': {
+        "&:hover button": {
             color: "white",
         },
-        '&:active button': {
+        "&:active button": {
             color: "white",
         },
-        '&:hover a': {
+        "&:hover a": {
             color: "white",
         },
-        '&:active a': {
+        "&:active a": {
             color: "white",
         },
     },
     rightBlockButton: {
         color: theme.palette.mainColor,
-        '&:hover': {
+        "&:hover": {
             color: "white",
         },
     },
     emptyBlock: {
         flexGrow: 1,
-    }
-});
+    },
+})
 
 /**
  * This component returns Top part of Helm Topbar
@@ -94,12 +94,12 @@ const TopPart = ({ classes, logout, location }) => {
     return (
         <Toolbar className={classes.topPart}>
             <div className={classes.homeButtonItem}>
-                <Link id="icon-home" to="/" className={classes.homeButton} color="inherit" aria-label="Home" >
+                <Link id="icon-home" to="/" className={classes.homeButton} color="inherit" aria-label="Home">
                     <HomeIcon />
                 </Link>
             </div>
             <div className={classes.mainLogoItem}>
-                <Link to="/" className={classes.homeButton} color="inherit" aria-label="Home" >
+                <Link to="/" className={classes.homeButton} color="inherit" aria-label="Home">
                     <CardMedia
                         id="logo-image"
                         className={classes.image}
@@ -124,7 +124,7 @@ const TopPart = ({ classes, logout, location }) => {
             <ContrastMode classes={classes} />
             <UserPanelButton classes={classes} />
         </Toolbar>
-    );
+    )
 }
 
-export default withStyles(styles)(TopPart);
+export default withStyles(styles)(TopPart)

@@ -15,11 +15,12 @@ export default {
     },
     "nhs-resources": {
         title: "NHS Resources",
-        description: ""
+        description: "",
     },
     "leeds-information": {
         title: "Leeds Information",
         description: "Local service information and resources to support your health and care.",
-        subText: "Please note this section is under development and some of the results may not provide complete and relevant information at this time. We would value your feedback on this section."
-    }
-};
+        subText:
+            "Please note this section is under development and some of the results may not provide complete and relevant information at this time. We would value your feedback on this section.",
+    },
+}

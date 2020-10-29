@@ -1,48 +1,48 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { synopsisTopThreeThingsAction } from "../../actions/synopsisActions";
-import get from "lodash/get";
-import customDataProvider from "../../../core/dataProviders/dataProvider";
-import { TextInput, DateInput, LongTextInput, Create, SimpleForm, maxLength } from "react-admin";
-import moment from "moment";
-import { withStyles } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/Grid";
-import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar";
-import TableHeader from "../../../core/common/TableHeader";
-import Breadcrumbs from "../../../core/common/Breadcrumbs";
-import backgroundImage from "../../images/Artboard.png";
-import { Typography } from "@material-ui/core";
-import { flattenComposition, transformComposition } from "../../fhir/composition";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { synopsisTopThreeThingsAction } from "../../actions/synopsisActions"
+import get from "lodash/get"
+import customDataProvider from "../../../core/dataProviders/dataProvider"
+// import { TextInput, DateInput, LongTextInput, Create, SimpleForm, maxLength } from "react-admin";
+import moment from "moment"
+import { withStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
+import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar"
+import TableHeader from "../../../core/common/TableHeader"
+import Breadcrumbs from "../../../core/common/Breadcrumbs"
+import backgroundImage from "../../images/Artboard.png"
+import { Typography } from "@material-ui/core"
+import { flattenComposition, transformComposition } from "../../fhir/composition"
 
 const styles = {
     createBlock: {
         padding: "24px",
         background: `url(${backgroundImage})`,
-        backgroundSize: "cover"
-    }
-};
+        backgroundSize: "cover",
+    },
+}
 
 const CharacterCount = ({ form, formItem, limit, show }) => {
-    
-    const showCount = form && show;
-    
+    const showCount = form && show
+
     if (!showCount) {
-        return (null);
+        return null
     }
 
-    const remaining = limit - (form.values && form.values[formItem] ? form.values[formItem].length : 0);
+    const remaining = limit - (form.values && form.values[formItem] ? form.values[formItem].length : 0)
 
     return (
-        <Typography>{ remaining }/{ limit } characters remaining</Typography>
+        <Typography>
+            {remaining}/{limit} characters remaining
+        </Typography>
     )
 }
 
-const conditionalRequired = (message, target) => (value,  allValues) => {
-    
-    const targetValue = allValues[target];
+const conditionalRequired = (message, target) => (value, allValues) => {
+    const targetValue = allValues[target]
 
     if (targetValue && !value) {
-        return message;
+        return message
     }
 
     return undefined
@@ -56,94 +56,87 @@ const conditionalRequired = (message, target) => (value,  allValues) => {
  * @param {shape} rest
  */
 class TopThreeThingsCreate extends Component {
-
     constructor(props) {
-        super(props);
+        super(props)
 
-        this.nameOneValidator = conditionalRequired("Subject is required", "description1");
-        this.nameTwoValidator = conditionalRequired("Subject is required", "description2");
-        this.nameThreeValidator = conditionalRequired("Subject is required", "description3");
+        this.nameOneValidator = conditionalRequired("Subject is required", "description1")
+        this.nameTwoValidator = conditionalRequired("Subject is required", "description2")
+        this.nameThreeValidator = conditionalRequired("Subject is required", "description3")
 
         this.state = {
-            loaded: false
-        };
+            loaded: false,
+        }
     }
 
     componentDidMount() {
-        this.props.getTopThreeThingsSynopsis();
+        this.props.getTopThreeThingsSynopsis()
     }
 
     componentDidUpdate() {
-
         if (!this.state.loaded && this.props.latestTopThreeThings.id) {
-            customDataProvider("GET_ONE", "Composition", { id: this.props.latestTopThreeThings.id })
-                .then(res => {
-                    this.setState({ ...flattenComposition(res.data), loaded: true })
-                });
+            customDataProvider("GET_ONE", "Composition", { id: this.props.latestTopThreeThings.id }).then((res) => {
+                this.setState({ ...flattenComposition(res.data), loaded: true })
+            })
         }
     }
 
-    formChanged = (form) => {
+    formChanged(form) {
         if (!form) {
-            return false;
+            return false
         }
 
-        form.fields = form.fields || {};
+        form.fields = form.fields || {}
 
-        form.fields["name1"] = { touched: true, visited: true };
-        form.fields["name2"] = { touched: true, visited: true };
-        form.fields["name3"] = { touched: true, visited: true };
+        form.fields["name1"] = { touched: true, visited: true }
+        form.fields["name2"] = { touched: true, visited: true }
+        form.fields["name3"] = { touched: true, visited: true }
 
         for (const prop in form.values) {
             if (form.values.hasOwnProperty(prop)) {
-                const initialValue = form.initial[prop];
-                const currentValue = form.values[prop];
+                const initialValue = form.initial[prop]
+                const currentValue = form.values[prop]
 
                 if (!initialValue && currentValue) {
-                    return true;
+                    return true
                 }
 
                 if (initialValue && currentValue !== initialValue) {
-                    return true;
+                    return true
                 }
             }
         }
 
-        return false;
-    } 
+        return false
+    }
 
-    handleSave = () => {
-
-        const { form } = this.props;
+    handleSave() {
+        const { form } = this.props
 
         if (this.formChanged(form) && !form.syncErrors) {
-            this.refs.formRef.props.save(transformComposition(form.values), '/top3Things');
+            this.refs.formRef.props.save(transformComposition(form.values), "/top3Things")
         }
     }
 
-    showCount = (key) => {
-        const { form } = this.props;
+    showCount(key) {
+        const { form } = this.props
 
-        return form && (!form.syncErrors || !form.syncErrors[key]);
+        return form && (!form.syncErrors || !form.syncErrors[key])
     }
 
     render() {
+        const { classes, form, ...rest } = this.props
 
-        const { classes, form, ...rest } = this.props;
+        const resourceUrl = "top3Things"
+        const title = "Top Three Things"
 
-        const resourceUrl="top3Things";
-        const title="Top Three Things";
-
-        const breadcrumbsResource = [
-            { url: "/" + resourceUrl, title: title, isActive: false },
-        ];
+        const breadcrumbsResource = [{ url: "/" + resourceUrl, title: title, isActive: false }]
 
         return (
             <React.Fragment>
                 <Breadcrumbs resource={breadcrumbsResource} />
-                <TableHeader resource={resourceUrl} />            
+                <TableHeader resource={resourceUrl} />
                 <Grid item xs={12} sm={12} className={classes.createBlock}>
-                    <Create {...rest}>
+                    {/* <Create {...rest}>
                         <SimpleForm 
                             className={classes.createForm}
                             toolbar={<CreateFormToolbar { ...rest } handleSave={ this.handleSave } disabled={ !form || !this.formChanged(form) || form.syncErrors } />}
@@ -204,41 +197,37 @@ class TopThreeThingsCreate extends Component {
                             <TextInput className={classes.labelBlock} source="author" label="Author" defaultValue={localStorage.getItem('username')} disabled={true} fullWidth />
                             <DateInput className={classes.labelBlock} source="dateCreated" label="Date" defaultValue={moment().format('MM/DD/YYYY')} disabled={true} fullWidth />
                         </SimpleForm>
-                    </Create>
+                    </Create> */}
                 </Grid>
             </React.Fragment>
-        );
+        )
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
+    const props = get(state, ["custom", "top3ThingsSynopsis", "data"], [])
 
-    const props = get(state, ['custom', 'top3ThingsSynopsis', 'data'], []);
-    
-    const form = get(state, ['form', 'record-form'], null);
+    const form = get(state, ["form", "record-form"], null)
 
-    const latestTopThreeThings = {
-        
-    };
+    const latestTopThreeThings = {}
 
     if (props && props.length) {
-        latestTopThreeThings.id = props[0].id;
+        latestTopThreeThings.id = props[0].id
     }
 
-    return Object.assign({}, { latestTopThreeThings }, { form });
-};
+    return Object.assign({}, { latestTopThreeThings }, { form })
+}
 
-const mapDispatchToProps = dispatch => {
-
-    const synopsisActions = [synopsisTopThreeThingsAction];
+const mapDispatchToProps = (dispatch) => {
+    const synopsisActions = [synopsisTopThreeThingsAction]
 
     return {
         getTopThreeThingsSynopsis() {
-            synopsisActions.map(item => {
-                return dispatch(item.request());
-            });
-        }
+            synopsisActions.map((item) => {
+                return dispatch(item.request())
+            })
+        },
     }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TopThreeThingsCreate));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TopThreeThingsCreate))

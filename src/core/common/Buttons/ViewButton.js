@@ -1,16 +1,16 @@
-import React from "react";
+import React from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { withStyles } from "@material-ui/core/styles"
+import Button from "@material-ui/core/Button"
+import Typography from "@material-ui/core/Typography"
 
-const styles = theme => ({
+const styles = (theme) => ({
     viewButton: {
         color: theme.palette.viewButton,
         fontSize: 16,
-        textTransform: 'capitalize',
+        textTransform: "capitalize",
     },
-});
+})
 
 /**
  * This component returns Show button with custom styles
@@ -21,9 +21,9 @@ const styles = theme => ({
  * @param {shape} record
  */
 const ViewButton = ({ classes, viewAction, record }) => (
-    <Button aria-label="View" onClick={e => viewAction(e, record)} className={classes.viewButton}>
+    <Button aria-label="View" onClick={(e) => viewAction(e, record)} className={classes.viewButton}>
         <Typography className={classes.viewButton}>View</Typography>
     </Button>
-);
+)
 
-export default withStyles(styles)(ViewButton);
+export default withStyles(styles)(ViewButton)

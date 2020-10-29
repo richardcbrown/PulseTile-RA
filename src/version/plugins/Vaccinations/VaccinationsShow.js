@@ -1,17 +1,17 @@
-import React from "react";
-import { TextField, DateField } from "react-admin";
-import { withStyles } from '@material-ui/core/styles';
+import React from "react"
+import { TextField, DateField } from "react-admin"
+import { withStyles } from "@material-ui/core/styles"
 
-import ShowTemplate from "../../../core/common/ResourseTemplates/ShowTemplate";
+import ShowTemplate from "../../../core/common/ResourseTemplates/ShowTemplate"
 
 const styles = {
     labelBlock: {
-        '& > div': {
+        "& > div": {
             marginTop: "0px !important",
             marginBottom: "0px !important",
         },
     },
-};
+}
 
 /**
  * This component returns block with Allergies details component
@@ -25,6 +25,6 @@ const VaccinationsShow = ({ classes, ...rest }) => (
         <TextField className={classes.labelBlock} source="author" label="Author" />
         <DateField className={classes.labelBlock} source="vaccinationDateTime" label="Date" />
     </ShowTemplate>
-);
+)
 
-export default VaccinationsShow;
+export default VaccinationsShow

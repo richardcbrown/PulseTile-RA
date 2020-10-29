@@ -1,12 +1,12 @@
-import React from "react";
-import Joyride from 'react-joyride';
+import React from "react"
+import Joyride from "react-joyride"
 
-import IconButton from '@material-ui/core/IconButton';
-import HelpIcon from '@material-ui/icons/Help';
-import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from "@material-ui/core/IconButton"
+import HelpIcon from "@material-ui/icons/Help"
+import Tooltip from "@material-ui/core/Tooltip"
 
-import { tourSteps, locale } from '../content';
-import toursStyles from "../styles";
+import { tourSteps, locale } from "../content"
+import toursStyles from "../styles"
 
 /**
  * This component returns button which run User Tour
@@ -28,7 +28,8 @@ const RunUserTour = ({ classes, runTour, shouldRunTour, callback }) => {
                     aria-haspopup="true"
                     aria-label="Tour"
                     color="inherit"
-                    onClick={ () => runTour() }>
+                    onClick={() => runTour()}
+                >
                     <HelpIcon />
                 </IconButton>
             </Tooltip>
@@ -44,7 +45,7 @@ const RunUserTour = ({ classes, runTour, shouldRunTour, callback }) => {
                 callback={callback}
             />
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default RunUserTour;
+export default RunUserTour

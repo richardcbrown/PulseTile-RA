@@ -1,13 +1,13 @@
-import React from "react";
+import React from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Menu from '@material-ui/core/Menu';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import Toolbar from "@material-ui/core/Toolbar"
+import IconButton from "@material-ui/core/IconButton"
+import MenuIcon from "@material-ui/icons/Menu"
+import Menu from "@material-ui/core/Menu"
+import Tooltip from "@material-ui/core/Tooltip"
 
-import PageTitle from "./PageTitle";
+import PageTitle from "./PageTitle"
 
 const styles = {
     greenPart: {
@@ -21,10 +21,9 @@ const styles = {
     },
     title: {
         flexGrow: 1,
-        color: "white"
+        color: "white",
     },
-};
-
+}
 
 /**
  * This component returns low part of Showcase TopBar
@@ -35,15 +34,16 @@ const styles = {
 const LowPart = ({ classes, setSidebarVisibility, isSidebarOpen, isMenuVisible, location, patientInfo }) => {
     return (
         <Toolbar className={classes.greenPart}>
-            { isMenuVisible &&
-            <Tooltip title="Menu">
-                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                    <MenuIcon onClick={() => setSidebarVisibility(!isSidebarOpen)} />
-                </IconButton>
-            </Tooltip> }
+            {isMenuVisible && (
+                <Tooltip title="Menu">
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                        <MenuIcon onClick={() => setSidebarVisibility(!isSidebarOpen)} />
+                    </IconButton>
+                </Tooltip>
+            )}
             <PageTitle location={location} classes={classes} patientInfo={patientInfo} />
         </Toolbar>
-    );
+    )
 }
 
-export default withStyles(styles)(LowPart);
+export default withStyles(styles)(LowPart)

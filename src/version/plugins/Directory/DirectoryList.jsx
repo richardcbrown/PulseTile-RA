@@ -1,5 +1,15 @@
 import React, { Component } from "react"
-import { Card, Typography, Grid, CardContent, Chip, TextField, Collapse, CardActions, IconButton } from "@material-ui/core"
+import {
+    Card,
+    Typography,
+    Grid,
+    CardContent,
+    Chip,
+    TextField,
+    Collapse,
+    CardActions,
+    IconButton,
+} from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { withStyles } from "@material-ui/core/styles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -9,51 +19,51 @@ import customDataProvider from "../../../core/dataProviders/dataProvider"
 import DirectoryPagination from "./fragments/DirectoryPagination"
 import TableHeader from "../../../core/common/TableHeader"
 import clsx from "clsx"
-import { httpErrorAction } from '../../../core/actions/httpErrorAction'
-import { connect } from 'react-redux'
+import { httpErrorAction } from "../../../core/actions/httpErrorAction"
+import { connect } from "react-redux"
 import get from "lodash/get"
 
-const styles = theme => ({
+const styles = (theme) => ({
     container: {
         width: "100%",
         height: "100%",
-        background: `url(${backgroundImage}) 0 0 repeat`
+        background: `url(${backgroundImage}) 0 0 repeat`,
     },
     searchContainer: {
         backgroundColor: "#fff",
-        padding: "24px"
+        padding: "24px",
     },
     resultsContainer: {
-        padding: "24px"
+        padding: "24px",
     },
     chipItem: {
         marginRight: "4px",
-        marginBottom: "4px"
+        marginBottom: "4px",
     },
     cardHeader: {
         backgroundColor: theme.palette.mainColor,
-        color: theme.palette.common.white
+        color: theme.palette.common.white,
     },
     cardContact: {
         display: "flex",
         marginBottom: "8px",
-        alignItems: "center"
+        alignItems: "center",
     },
     cardVideo: {
-        padding: 0
+        padding: 0,
     },
     searchField: {
-        marginBottom: "8px"
+        marginBottom: "8px",
     },
     expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-          duration: theme.transitions.duration.shortest,
+        transform: "rotate(0deg)",
+        marginLeft: "auto",
+        transition: theme.transitions.create("transform", {
+            duration: theme.transitions.duration.shortest,
         }),
     },
     expandOpen: {
-        transform: 'rotate(180deg)',
+        transform: "rotate(180deg)",
     },
     viewButton: {
         display: "flex",
@@ -73,43 +83,41 @@ const styles = theme => ({
         textDecorationLine: "none",
         fontFamily: theme.typography.fontFamily,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     cardActions: {
         flexDirection: "row-reverse",
-        justifyContent: "space-between"
-    }
+        justifyContent: "space-between",
+    },
 })
 
 const TagDisplay = ({ tags, tagSelected, onDelete, classes }) => {
     return (
         <React.Fragment>
-            {
-                tags.map((tag) => {
-                    if (tag.fixed) {
-                        return <Chip
+            {tags.map((tag) => {
+                if (tag.fixed) {
+                    return <Chip className={classes.chipItem} key={tag.id} label={tag.name} />
+                } else if (onDelete) {
+                    return (
+                        <Chip
                             className={classes.chipItem}
-                            key={tag.id}
-                            label={tag.name}
-                        />
-                    } else if (onDelete) {
-                        return <Chip
-                            className={classes.chipItem} 
                             key={tag.id}
                             label={tag.name}
                             onClick={() => tagSelected && tagSelected(tag)}
                             onDelete={() => onDelete(tag)}
                         />
-                    } else {
-                        return <Chip 
+                    )
+                } else {
+                    return (
+                        <Chip
                             className={classes.chipItem}
                             key={tag.id}
                             label={tag.name}
                             onClick={() => tagSelected && tagSelected(tag)}
                         />
-                    }
-                })
-            }
+                    )
+                }
+            })}
         </React.Fragment>
     )
 }
@@ -119,11 +127,11 @@ class YouTubeCard extends Component {
         super(props)
 
         this.state = {
-            expanded: false
+            expanded: false,
         }
     }
 
-    handleExpandClick = () => {
+    handleExpandClick() {
         const { expanded } = this.state
 
         this.setState({ expanded: !expanded })
@@ -141,47 +149,52 @@ class YouTubeCard extends Component {
             <Card>
                 <CardContent className={classes.cardHeader}>
                     <Typography variant="h5" className>
-                        { resource.name }
+                        {resource.name}
                     </Typography>
                 </CardContent>
                 <CardContent className={classes.cardVideo}>
-                    { embeddedLink && 
-                            <iframe width="100%" height="250" src={embeddedLink} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    }
+                    {embeddedLink && (
+                        <iframe
+                            width="100%"
+                            height="250"
+                            src={embeddedLink}
+                            frameborder="0"
+                            allow="autoplay; encrypted-media"
+                            allowfullscreen
+                        ></iframe>
+                    )}
                 </CardContent>
-                { 
-                    resource.intro &&
+                {resource.intro && (
                     <CardContent>
-                        <Typography>
-                            { resource.intro }    
-                        </Typography>
+                        <Typography>{resource.intro}</Typography>
                     </CardContent>
-                }
+                )}
                 <CardContent>
-                    <TagDisplay tags={resource.category_taxonomies.slice(0, 3)} tagSelected={tagSelected} classes={classes} /> 
+                    <TagDisplay
+                        tags={resource.category_taxonomies.slice(0, 3)}
+                        tagSelected={tagSelected}
+                        classes={classes}
+                    />
                 </CardContent>
                 <CardActions disableSpacing className={classes.cardActions}>
-                    <IconButton
-                        onClick={this.handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                    >
+                    <IconButton onClick={this.handleExpandClick} aria-expanded={expanded} aria-label="show more">
                         <ExpandMoreIcon />
                     </IconButton>
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography>
-                            { resource.description }    
-                        </Typography>
+                        <Typography>{resource.description}</Typography>
                     </CardContent>
-                    {
-                        hasAdditionalTags &&
+                    {hasAdditionalTags && (
                         <CardContent>
-                            <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                            <TagDisplay
+                                tags={resource.category_taxonomies.slice(3)}
+                                tagSelected={tagSelected}
+                                classes={classes}
+                            />
                         </CardContent>
-                    }
-                </Collapse>        
+                    )}
+                </Collapse>
             </Card>
         )
     }
@@ -192,11 +205,11 @@ class DefaultCard extends Component {
         super(props)
 
         this.state = {
-            expanded: false
+            expanded: false,
         }
     }
 
-    handleExpandClick = () => {
+    handleExpandClick() {
         const { expanded } = this.state
 
         this.setState({ expanded: !expanded })
@@ -214,43 +227,39 @@ class DefaultCard extends Component {
         return (
             <Card>
                 <CardContent className={classes.cardHeader}>
-                    <Typography variant="h5">
-                        { resource.name }
-                    </Typography>
+                    <Typography variant="h5">{resource.name}</Typography>
                 </CardContent>
                 <CardContent>
-                    <Typography>
-                        { resource.description }      
-                    </Typography>
+                    <Typography>{resource.description}</Typography>
                 </CardContent>
-                {
-                    hasContact && 
+                {hasContact && (
                     <CardContent>
-                        {   
-                            resource.contact_name && 
+                        {resource.contact_name && (
                             <div className={classes.cardContact}>
                                 <FontAwesomeIcon icon={faUser} size="2x" style={{ height: 20 }} />
-                                <Typography>{ resource.contact_name }</Typography>
+                                <Typography>{resource.contact_name}</Typography>
                             </div>
-                        }
-                        {
-                            resource.contact_phone &&
+                        )}
+                        {resource.contact_phone && (
                             <div className={classes.cardContact}>
                                 <FontAwesomeIcon icon={faPhone} size="2x" style={{ height: 20 }} />
-                                <Typography>{ resource.contact_phone }</Typography>
+                                <Typography>{resource.contact_phone}</Typography>
                             </div>
-                        }
-                        {
-                            resource.contact_email &&
+                        )}
+                        {resource.contact_email && (
                             <div className={classes.cardContact}>
                                 <FontAwesomeIcon icon={faAt} size="2x" style={{ height: 20 }} />
-                                <Typography>{ resource.contact_email }</Typography>
+                                <Typography>{resource.contact_email}</Typography>
                             </div>
-                        }
+                        )}
                     </CardContent>
-                }
+                )}
                 <CardContent>
-                    <TagDisplay tags={resource.category_taxonomies.slice(0, 3)} tagSelected={tagSelected} classes={classes} /> 
+                    <TagDisplay
+                        tags={resource.category_taxonomies.slice(0, 3)}
+                        tagSelected={tagSelected}
+                        classes={classes}
+                    />
                 </CardContent>
                 <CardActions disableSpacing className={classes.cardActions}>
                     <IconButton
@@ -263,30 +272,32 @@ class DefaultCard extends Component {
                     >
                         <ExpandMoreIcon />
                     </IconButton>
-                    {
-                        resource.url &&
-                        <a href={resource.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            aria-label="View" 
-                            className={classes.viewButton}>
+                    {resource.url && (
+                        <a
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="View"
+                            className={classes.viewButton}
+                        >
                             <span>View</span>
                         </a>
-                    }
-                </CardActions>                              
+                    )}
+                </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        <Typography>
-                            { resource.intro }      
-                        </Typography>
+                        <Typography>{resource.intro}</Typography>
                     </CardContent>
-                    {
-                        hasAdditionalTags &&
+                    {hasAdditionalTags && (
                         <CardContent>
-                            <TagDisplay tags={resource.category_taxonomies.slice(3)} tagSelected={tagSelected} classes={classes} /> 
+                            <TagDisplay
+                                tags={resource.category_taxonomies.slice(3)}
+                                tagSelected={tagSelected}
+                                classes={classes}
+                            />
                         </CardContent>
-                    }  
-                </Collapse>       
+                    )}
+                </Collapse>
             </Card>
         )
     }
@@ -294,7 +305,7 @@ class DefaultCard extends Component {
 
 const getTileForType = (serviceOrResource, tagSelected, classes) => {
     const { tileType } = serviceOrResource
-    
+
     switch (tileType) {
         case "youtube": {
             return <YouTubeCard resource={serviceOrResource} tagSelected={tagSelected} classes={classes} />
@@ -308,27 +319,24 @@ const getTileForType = (serviceOrResource, tagSelected, classes) => {
 const DirectoryGrid = ({ data, classes, tagSelected }) => {
     return (
         <Grid container spacing={16} className={classes.resultsContainer}>
-        {
-            data.map((d) => {
+            {data.map((d) => {
                 return (
                     <Grid item xs={12} sm={6} md={4}>
                         {getTileForType(d, tagSelected, classes)}
                     </Grid>
                 )
-            })
-        }
+            })}
         </Grid>
     )
 }
 
 class DirectoryList extends Component {
-
     constructor(props) {
         super(props)
 
         const { fixedTags } = props
 
-        fixedTags.forEach((tag) => tag.fixed = true)
+        fixedTags.forEach((tag) => (tag.fixed = true))
 
         this.state = {
             serviceOrResourceName: "",
@@ -336,7 +344,7 @@ class DirectoryList extends Component {
             page: 1,
             searchResults: {},
             searching: false,
-            firstLoad: true
+            firstLoad: true,
         }
     }
 
@@ -348,7 +356,7 @@ class DirectoryList extends Component {
         }
     }
 
-    tagSelected = (tag) => {
+    tagSelected(tag) {
         const { tags } = this.state
 
         if (tags.some((t) => t.id === tag.id)) {
@@ -360,7 +368,7 @@ class DirectoryList extends Component {
         this.tagChanged(newTags)
     }
 
-    tagRemoved = (tag) => {
+    tagRemoved(tag) {
         if (tag.fixed) {
             return
         }
@@ -372,66 +380,70 @@ class DirectoryList extends Component {
         this.tagChanged(filtered)
     }
 
-    tagChanged = (tags) => {
+    tagChanged(tags) {
         this.setState({ tags, page: 1 }, () => this.searchParametersChanged())
     }
 
-    pageSelected = (page) => {
+    pageSelected(page) {
         this.setState({ page }, () => this.searchParametersChanged())
     }
 
-    searchParametersChanged = () => {
+    searchParametersChanged() {
         this.setState({ searching: true })
-        
+
         const { tags, serviceOrResourceName, page } = this.state
         const { onError } = this.props
 
-        customDataProvider("GET_LIST", "leeds-information", { 
-            q: serviceOrResourceName, 
+        customDataProvider("GET_LIST", "leeds-information", {
+            q: serviceOrResourceName,
             tags: tags.map((t) => t.id).join(","),
-            page: page
+            page: page,
         })
-        .then(res => {
-            this.setState(prevState => {
-                return {
-                    ...prevState,
-                    searchResults: res,
-                    searching: false,
-                    firstLoad: false
+            .then((res) => {
+                this.setState((prevState) => {
+                    return {
+                        ...prevState,
+                        searchResults: res,
+                        searching: false,
+                        firstLoad: false,
+                    }
+                })
+            })
+            .catch((error) => {
+                const errorTrim = error.message.replace("Error:", "").trim()
+                const errorArray = errorTrim.split("|")
+                const data = {
+                    status: get(errorArray, [0], null),
+                    message: get(errorArray, [1], null),
                 }
-            })
-        }).catch((error) => {
-            const errorTrim = error.message.replace('Error:', '').trim();
-            const errorArray = errorTrim.split('|');
-            const data = {
-                status: get(errorArray, [0], null),
-                message: get(errorArray, [1], null)
-            };
 
-            this.setState({
-                searchResults: {},
-                searching: false,
-                firstLoad: false
-            })
+                this.setState({
+                    searchResults: {},
+                    searching: false,
+                    firstLoad: false,
+                })
 
-            onError(data);
-        });
+                onError(data)
+            })
     }
 
-    debounceNameSearch = (serviceOrResourceName) => {
-        this.setState((prevState) => {
-            return {
-                ...prevState,
-                serviceOrResourceName,
-                page: 1
-            }
-        }, () => {       
-            if (this.timeout) {
-                clearTimeout(this.timeout)
-            }
+    debounceNameSearch(serviceOrResourceName) {
+        this.setState(
+            (prevState) => {
+                return {
+                    ...prevState,
+                    serviceOrResourceName,
+                    page: 1,
+                }
+            },
+            () => {
+                if (this.timeout) {
+                    clearTimeout(this.timeout)
+                }
 
-            this.timeout = setTimeout(() => this.searchParametersChanged(), 300)
-        })
+                this.timeout = setTimeout(() => this.searchParametersChanged(), 300)
+            }
+        )
     }
 
     render() {
@@ -443,50 +455,57 @@ class DirectoryList extends Component {
         const { lastPage } = searchResults
 
         return (
-            <Grid className={classes.container} >
+            <Grid className={classes.container}>
                 <TableHeader resource="leeds-information" />
 
                 <div className={classes.searchContainer}>
                     <Typography
-                        style={{ marginBottom: 5 }} 
+                        style={{ marginBottom: 5 }}
                         variant="caption"
-                        aria-label="Type in a search term e.g. Diabetes for national and local service information.">
+                        aria-label="Type in a search term e.g. Diabetes for national and local service information."
+                    >
                         Type in a search term e.g. Diabetes for national and local service information.
                     </Typography>
-                    <TextField 
-                        value={serviceOrResourceName} 
-                        onChange={(e) => this.debounceNameSearch(e.target.value)} 
+                    <TextField
+                        value={serviceOrResourceName}
+                        onChange={(e) => this.debounceNameSearch(e.target.value)}
                         label="Search Service or Resource name"
                         fullWidth
                         className={classes.searchField}
                     />
 
-                    {
-                        (results.length &&
-                        <Typography aria-label="Select one or more tags from results to refine your search" className={classes.searchField} variant="caption">
+                    {(results.length && (
+                        <Typography
+                            aria-label="Select one or more tags from results to refine your search"
+                            className={classes.searchField}
+                            variant="caption"
+                        >
                             Select one or more tags from results to refine your search
-                        </Typography>) || null
-                    }
+                        </Typography>
+                    )) ||
+                        null}
 
-                    {
-                        tags && tags.length ?
+                    {tags && tags.length ? (
                         <div>
-                            <Typography className={classes.searchField} variant="caption" aria-label="Applied Tags">Applied Tags</Typography> 
+                            <Typography className={classes.searchField} variant="caption" aria-label="Applied Tags">
+                                Applied Tags
+                            </Typography>
                             <TagDisplay tags={tags} onDelete={this.tagRemoved} classes={classes} />
                         </div>
-                        : null
-                    }
+                    ) : null}
 
-                    {
-                        !firstLoad && !searching && !results.length && <div>
-                            <Typography>No results, please try another search</Typography> 
+                    {!firstLoad && !searching && !results.length && (
+                        <div>
+                            <Typography>No results, please try another search</Typography>
                         </div>
-                    }
+                    )}
                 </div>
 
                 <DirectoryGrid classes={classes} data={results} tagSelected={this.tagSelected} />
 
-                { results.length ? <DirectoryPagination page={page} pageSelected={this.pageSelected} lastPage={lastPage} /> : null }
+                {results.length ? (
+                    <DirectoryPagination page={page} pageSelected={this.pageSelected} lastPage={lastPage} />
+                ) : null}
             </Grid>
         )
     }
@@ -494,7 +513,7 @@ class DirectoryList extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onError: (error) => dispatch(httpErrorAction.save(error))
+        onError: (error) => dispatch(httpErrorAction.save(error)),
     }
 }
 

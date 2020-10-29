@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react"
 
-import AppBar from '@material-ui/core/AppBar';
-import { withStyles } from '@material-ui/core/styles';
+import AppBar from "@material-ui/core/AppBar"
+import { withStyles } from "@material-ui/core/styles"
 
-import TopBar from "./fragments/TopBar";
+import TopBar from "./fragments/TopBar"
 
 const styles = {
     appBar: {
         boxShadow: "none",
-    }
-};
+    },
+}
 
 /**
  * This is common component for theme TopBar
@@ -21,7 +21,7 @@ const TopBarNoUser = ({ classes, ...rest }) => {
         <AppBar position="static" className={classes.appBar}>
             <TopBar {...rest} />
         </AppBar>
-    );
-};
+    )
+}
 
-export default withStyles(styles)(TopBarNoUser);
+export default withStyles(styles)(TopBarNoUser)

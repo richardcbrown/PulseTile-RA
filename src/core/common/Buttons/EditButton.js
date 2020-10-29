@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import IconButton from "@material-ui/core/IconButton"
+import EditIcon from "@material-ui/icons/Edit"
+import Tooltip from "@material-ui/core/Tooltip"
 
-const styles = theme => ({
+const styles = (theme) => ({
     editButton: {
         display: "block",
         width: 85,
@@ -21,9 +21,9 @@ const styles = theme => ({
         "&:hover": {
             backgroundColor: theme.palette.mainColor,
             color: "white",
-        }
-    }
-});
+        },
+    },
+})
 
 /**
  * This component returns Edit button
@@ -34,10 +34,10 @@ const styles = theme => ({
  */
 const EditButton = ({ classes, redirectTo }) => (
     <Tooltip title="Edit">
-        <IconButton aria-label="Edit" className={classes.editButton} onClick={() => redirectTo('edit')}>
+        <IconButton aria-label="Edit" className={classes.editButton} onClick={() => redirectTo("edit")}>
             <EditIcon /> Edit
         </IconButton>
     </Tooltip>
-);
+)
 
-export default withStyles(styles)(EditButton);
+export default withStyles(styles)(EditButton)

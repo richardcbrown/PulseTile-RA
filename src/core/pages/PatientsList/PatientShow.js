@@ -1,17 +1,17 @@
-import React from "react";
-import { TextField, DateField } from "react-admin";
-import { withStyles } from '@material-ui/core/styles';
+import React from "react"
+import { TextField, DateField } from "react-admin"
+import { withStyles } from "@material-ui/core/styles"
 
-import ShowTemplate from "../../common/ResourseTemplates/ShowTemplate";
+import ShowTemplate from "../../common/ResourseTemplates/ShowTemplate"
 
 const styles = {
     labelBlock: {
-        '& > div': {
+        "& > div": {
             marginTop: "0px !important",
             marginBottom: "0px !important",
         },
     },
-};
+}
 
 /**
  * This component returns block with Patient details component
@@ -25,6 +25,6 @@ const PatientShow = ({ classes, ...rest }) => (
         <TextField className={classes.labelBlock} label="Gender" source="gender" />
         <TextField className={classes.labelBlock} label="Address" source="address" />
     </ShowTemplate>
-);
+)
 
-export default withStyles(styles)(PatientShow);
+export default withStyles(styles)(PatientShow)

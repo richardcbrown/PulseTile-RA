@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { TextField, DateField, ShowButton } from "react-admin";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { TextField, DateField, ShowButton } from "react-admin"
 
-import ListTemplate from "../../common/ResourseTemplates/ListTemplate";
-import ViewButton from "../../common/Buttons/ViewButton";
-import PatientCreate from "./PatientCreate";
-import PatientEdit from "./PatientEdit";
-import PatientShow from "./PatientShow";
+import ListTemplate from "../../common/ResourseTemplates/ListTemplate"
+import ViewButton from "../../common/Buttons/ViewButton"
+import PatientCreate from "./PatientCreate"
+import PatientEdit from "./PatientEdit"
+import PatientShow from "./PatientShow"
 
 /**
  * This component returns block with Patients list
@@ -15,7 +15,6 @@ import PatientShow from "./PatientShow";
  * @constructor
  */
 class PatientsList extends Component {
-
     /**
      * This function redirects to Patient Summary page
      *
@@ -23,11 +22,11 @@ class PatientsList extends Component {
      * @param {shape} e
      * @param {shape} record
      */
-    redirectToSummary = (e, record) => {
-        e.stopPropagation();
-        localStorage.setItem('patientId', record.nhsNumber);
-        this.props.history.push('/summary');
-    };
+    redirectToSummary(e, record) {
+        e.stopPropagation()
+        localStorage.setItem("patientId", record.nhsNumber)
+        this.props.history.push("/summary")
+    }
 
     render() {
         return (
@@ -50,4 +49,4 @@ class PatientsList extends Component {
     }
 }
 
-export default PatientsList;
+export default PatientsList

@@ -8,4 +8,4 @@
 export default {
     // vaccinations: ['vaccinationName'],
     top3Things: [],
-};
+}

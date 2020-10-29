@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component } from "react"
 
-import AppBar from '@material-ui/core/AppBar';
-import { withStyles } from '@material-ui/core/styles';
+import AppBar from "@material-ui/core/AppBar"
+import { withStyles } from "@material-ui/core/styles"
 
-import TopPart from "./fragments/TopPart";
-import LowPart from "./fragments/LowPart";
+import TopPart from "./fragments/TopPart"
+import LowPart from "./fragments/LowPart"
 
 const styles = {
     appBar: {
         boxShadow: "none",
-        width: "auto"
-    }
-};
+        width: "auto",
+    },
+}
 
 /**
  * This is common component for theme TopBar
@@ -24,7 +24,7 @@ const ThemeTopBar = ({ classes, ...rest }) => {
             <TopPart {...rest} />
             <LowPart {...rest} />
         </AppBar>
-    );
-};
+    )
+}
 
-export default withStyles(styles)(ThemeTopBar);
+export default withStyles(styles)(ThemeTopBar)

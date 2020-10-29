@@ -1,7 +1,7 @@
-import tableHeaders from "./tableHeaders";
+import tableHeaders from "./tableHeaders"
 
 export default {
     en: {
         tableHeaders: tableHeaders,
-    }
+    },
 }

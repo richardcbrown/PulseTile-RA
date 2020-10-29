@@ -1,16 +1,16 @@
-import React from "react";
-import { DisabledInput, TextInput, DateInput, LongTextInput } from "react-admin";
-import moment from "moment";
+import React from "react"
+import { DisabledInput, TextInput, DateInput, LongTextInput } from "react-admin"
+import moment from "moment"
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles"
 
 const styles = {
     labelBlock: {
-        '& > div': {
+        "& > div": {
             marginBottom: "0px !important",
         },
     },
-};
+}
 
 /**
  * This component returns Vaccinations creation/editing form
@@ -25,9 +25,23 @@ const VaccinationsCreate = ({ classes, ...rest }) => (
         <DateInput className={classes.labelBlock} source="vaccinationDateTime" label="Vaccination date" fullWidth />
         <TextInput className={classes.labelBlock} source="series" label="Series" fullWidth />
         <LongTextInput className={classes.labelBlock} source="comment" label="Comment" fullWidth />
-        <TextInput className={classes.labelBlock} source="author" label="Author" defaultValue={localStorage.getItem('username')} disabled={true} fullWidth />
-        <DateInput className={classes.labelBlock} source="dateCreated" label="Date" defaultValue={moment().format('MM/DD/YYYY')} disabled={true} fullWidth />
+        <TextInput
+            className={classes.labelBlock}
+            source="author"
+            label="Author"
+            defaultValue={localStorage.getItem("username")}
+            disabled={true}
+            fullWidth
+        />
+        <DateInput
+            className={classes.labelBlock}
+            source="dateCreated"
+            label="Date"
+            defaultValue={moment().format("MM/DD/YYYY")}
+            disabled={true}
+            fullWidth
+        />
     </React.Fragment>
-);
+)
 
-export default withStyles(styles)(VaccinationsCreate);
+export default withStyles(styles)(VaccinationsCreate)

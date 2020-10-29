@@ -1,13 +1,13 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React from "react"
+import { Link } from "react-router-dom"
 
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import CardMedia from "@material-ui/core/CardMedia";
+import { withStyles } from "@material-ui/core/styles"
+import Typography from "@material-ui/core/Typography"
+import CardMedia from "@material-ui/core/CardMedia"
 
-import footerLogo from "../../images/ripple-foundation-logo-footer.png";
+import footerLogo from "../../images/ripple-foundation-logo-footer.png"
 
-const styles = theme => ({
+const styles = (theme) => ({
     footerBlock: {
         display: "flex",
         flexDirection: "row",
@@ -38,7 +38,7 @@ const styles = theme => ({
     emptyBlock: {
         flexGrow: 1,
     },
-});
+})
 
 /**
  * This component returns custom default footer
@@ -64,7 +64,7 @@ const DefaultFooter = ({ classes }) => {
                 </Link>
             </React.Fragment>
         </footer>
-    );
-};
+    )
+}
 
-export default withStyles(styles)(DefaultFooter);
+export default withStyles(styles)(DefaultFooter)

@@ -6,8 +6,8 @@ import {
     SYNOPSIS_VACCINATIONS_ACTION,
     SYNOPSIS_NHSSERVICES_ACTION,
     SYNOPSIS_LEEDSSERVICES_ACTION,
-    SYNOPSIS_LOOPSERVICES_ACTION
-} from "../actions/synopsisActions";
+    SYNOPSIS_LOOPSERVICES_ACTION,
+} from "../actions/synopsisActions"
 
 import createCustomReducer from "../../core/reducers/createCustomReducer"
 import fhirReducer from "./fhirReducer"

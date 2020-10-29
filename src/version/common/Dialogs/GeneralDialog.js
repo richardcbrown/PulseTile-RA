@@ -1,26 +1,25 @@
 import React, { Component } from "react"
 
-import { withStyles } from "@material-ui/core/styles";
-import Dialog from '@material-ui/core/Dialog';
-import Typography from '@material-ui/core/Typography';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-import { getCurrentTheme } from "../../../core/config/styles";
+import { withStyles } from "@material-ui/core/styles"
+import Dialog from "@material-ui/core/Dialog"
+import Typography from "@material-ui/core/Typography"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
+import { getCurrentTheme } from "../../../core/config/styles"
 
-const styles = theme => {
-
-    theme = theme.palette.mainColor ? theme : getCurrentTheme();
+const styles = (theme) => {
+    theme = theme.palette.mainColor ? theme : getCurrentTheme()
 
     return {
         dialogBlock: {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            [theme.breakpoints.only('xs')]: {
+            [theme.breakpoints.only("xs")]: {
                 paddingTop: 0,
                 paddingLeft: 20,
                 paddingRight: 20,
             },
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up("sm")]: {
                 minHeight: 300,
                 minWidth: 500,
                 marginBottom: 10,
@@ -62,35 +61,28 @@ const styles = theme => {
                 color: theme.palette.dangerColor,
                 backgroundColor: "white",
             },
-        }
+        },
     }
-};
+}
 
 class GeneralDialog extends Component {
-
     render() {
-        const { classes, title, message, options, open, onClose, ...rest } = this.props;
+        const { classes, title, message, options, open, onClose, ...rest } = this.props
 
         return (
             <React.Fragment>
                 <Dialog onBackdropClick={() => onClose()} open={open} {...rest}>
-                    <div className={classes.dialogBlock} >
-                        <Typography className={classes.titleBlock}>
-                            { title }
-                        </Typography>
+                    <div className={classes.dialogBlock}>
+                        <Typography className={classes.titleBlock}>{title}</Typography>
                         <Typography className={classes.description}>
-                            <div dangerouslySetInnerHTML={ { __html: message } }></div>
+                            <div dangerouslySetInnerHTML={{ __html: message }}></div>
                         </Typography>
-                        <div className={classes.toolbar}>
-                            {  
-                                options.map((o) => (o))
-                            }
-                        </div>
+                        <div className={classes.toolbar}>{options.map((o) => o)}</div>
                     </div>
                 </Dialog>
             </React.Fragment>
-        );
+        )
     }
-};
+}
 
-export default withStyles(styles)(withMobileDialog({breakpoint: 'xs'})(GeneralDialog));
+export default withStyles(styles)(withMobileDialog({ breakpoint: "xs" })(GeneralDialog))

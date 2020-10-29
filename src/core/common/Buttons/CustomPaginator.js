@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 
-import { withStyles } from "@material-ui/core/styles";
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import IconButton from "@material-ui/core/IconButton"
+import FirstPageIcon from "@material-ui/icons/FirstPage"
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft"
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight"
+import LastPageIcon from "@material-ui/icons/LastPage"
+import Button from "@material-ui/core/Button"
+import Tooltip from "@material-ui/core/Tooltip"
 
-const MAXIMAL_BUTTONS_NUMBER = 5;
+const MAXIMAL_BUTTONS_NUMBER = 5
 
-const styles = theme => ({
+const styles = (theme) => ({
     paginatorRoot: {
         display: "flex",
         flexDirection: "row",
@@ -25,10 +25,10 @@ const styles = theme => ({
         boxSizing: "border-box",
         borderRadius: 0,
         color: theme.palette.mainColor,
-        '&:hover': {
+        "&:hover": {
             color: "white",
-            backgroundColor: theme.palette.mainColor
-        }
+            backgroundColor: theme.palette.mainColor,
+        },
     },
     activeButton: {
         display: "block",
@@ -39,12 +39,12 @@ const styles = theme => ({
         borderRadius: 0,
         color: "white",
         backgroundColor: theme.palette.mainColor,
-        '&:hover': {
+        "&:hover": {
             color: "white",
-            backgroundColor: theme.palette.mainColor
-        }
-    }
-});
+            backgroundColor: theme.palette.mainColor,
+        },
+    },
+})
 
 /**
  * This component returns custom paginator
@@ -52,10 +52,12 @@ const styles = theme => ({
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class CustomPaginator extends Component {
-
-    state = {
-        page: 1,
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            page: 1,
+        }
+    }
 
     /**
      * This function adds page parameter to URL
@@ -63,21 +65,31 @@ class CustomPaginator extends Component {
      * @author Bogdan Shcherban <bsc@piogroup.net>
      * @param {number} page
      */
-    goToPage = page => {
-        this.setState(
-            { page: page },
-            () => {
-                const { resourceUrl, history, itemsPerPage, sort } = this.props;
-                const { page} = this.state;
+    goToPage() {
+        return (page) => {
+            this.setState({ page: page }, () => {
+                const { resourceUrl, history, itemsPerPage, sort } = this.props
+                const { page } = this.state
 
                 if (sort) {
-                    history.push("/" + resourceUrl + "?page=" + page + "&perPage=" + itemsPerPage + "&sort=" + sort.field + "&order=" + sort.order);
+                    history.push(
+                        "/" +
+                            resourceUrl +
+                            "?page=" +
+                            page +
+                            "&perPage=" +
+                            itemsPerPage +
+                            "&sort=" +
+                            sort.field +
+                            "&order=" +
+                            sort.order
+                    )
                 } else {
-                    history.push("/" + resourceUrl + "?page=" + page + "&perPage=" + itemsPerPage);
+                    history.push("/" + resourceUrl + "?page=" + page + "&perPage=" + itemsPerPage)
                 }
-            }
-        );
-    };
+            })
+        }
+    }
 
     /**
      * This function add spaces to the button array if digit buttons number is more than maximal
@@ -88,78 +100,101 @@ class CustomPaginator extends Component {
      * @param {shape} classes
      * @return {array}
      */
-    getDigitButtons = (buttonsNumber, page, classes) => {
-        let buttons = [];
+    getDigitButtons(buttonsNumber, page, classes) {
+        let buttons = []
         if (buttonsNumber > MAXIMAL_BUTTONS_NUMBER) {
-            const half = Math.ceil(MAXIMAL_BUTTONS_NUMBER / 2) - 1;
+            const half = Math.ceil(MAXIMAL_BUTTONS_NUMBER / 2) - 1
             for (let i = 0; i < half; i++) {
                 buttons.push(
                     <Button
                         onClick={() => this.goToPage(i + 1)}
-                        aria-label={ i + 1 }
-                        className={(page === i + 1) ? classes.activeButton : classes.button}>
-                        { i + 1 }
+                        aria-label={i + 1}
+                        className={page === i + 1 ? classes.activeButton : classes.button}
+                    >
+                        {i + 1}
                     </Button>
-                );
+                )
             }
-            buttons.push(<Button className={classes.button}>{'...'}</Button>);
+            buttons.push(<Button className={classes.button}>{"..."}</Button>)
             for (let i = buttonsNumber - half; i < buttonsNumber; i++) {
                 buttons.push(
                     <Button
                         onClick={() => this.goToPage(i + 1)}
-                        aria-label={ i + 1 }
-                        className={(page === i + 1) ? classes.activeButton : classes.button}>
-                        { i + 1 }
+                        aria-label={i + 1}
+                        className={page === i + 1 ? classes.activeButton : classes.button}
+                    >
+                        {i + 1}
                     </Button>
-                );
+                )
             }
         } else {
             for (let i = 0; i < buttonsNumber; i++) {
                 buttons.push(
-                <Button
-                    onClick={() => this.goToPage(i + 1)}
-                    aria-label={ i + 1 }
-                    className={(page === i + 1) ? classes.activeButton : classes.button}>
-                    { i + 1 }
-                </Button>
-                );
+                    <Button
+                        onClick={() => this.goToPage(i + 1)}
+                        aria-label={i + 1}
+                        className={page === i + 1 ? classes.activeButton : classes.button}
+                    >
+                        {i + 1}
+                    </Button>
+                )
             }
         }
 
-        return buttons;
-    };
+        return buttons
+    }
 
     render() {
-        const { classes, itemsPerPage, total } = this.props;
-        const { page } = this.state;
-        const buttonsNumber = Math.ceil(total / itemsPerPage);
-        const buttons = this.getDigitButtons(buttonsNumber, page, classes);
+        const { classes, itemsPerPage, total } = this.props
+        const { page } = this.state
+        const buttonsNumber = Math.ceil(total / itemsPerPage)
+        const buttons = this.getDigitButtons(buttonsNumber, page, classes)
         return (
             <div className={classes.paginatorRoot}>
                 <Tooltip title="First page">
-                    <IconButton onClick={() => this.goToPage(1)} className={classes.button} disabled={page === 1} aria-label="First page">
+                    <IconButton
+                        onClick={() => this.goToPage(1)}
+                        className={classes.button}
+                        disabled={page === 1}
+                        aria-label="First page"
+                    >
                         <FirstPageIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Previous page">
-                    <IconButton onClick={() => this.goToPage(page - 1)} className={classes.button} disabled={page === 1} aria-label="Previous page">
+                    <IconButton
+                        onClick={() => this.goToPage(page - 1)}
+                        className={classes.button}
+                        disabled={page === 1}
+                        aria-label="Previous page"
+                    >
                         <KeyboardArrowLeft />
                     </IconButton>
                 </Tooltip>
-                { buttons }
+                {buttons}
                 <Tooltip title="Next page">
-                    <IconButton onClick={() => this.goToPage(page + 1)} className={classes.button} disabled={page === buttonsNumber} aria-label="Next page">
+                    <IconButton
+                        onClick={() => this.goToPage(page + 1)}
+                        className={classes.button}
+                        disabled={page === buttonsNumber}
+                        aria-label="Next page"
+                    >
                         <KeyboardArrowRight />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Last page">
-                    <IconButton onClick={() => this.goToPage(buttonsNumber)} className={classes.button} disabled={page === buttonsNumber} aria-label="Last page">
-                       <LastPageIcon />
+                    <IconButton
+                        onClick={() => this.goToPage(buttonsNumber)}
+                        className={classes.button}
+                        disabled={page === buttonsNumber}
+                        aria-label="Last page"
+                    >
+                        <LastPageIcon />
                     </IconButton>
                 </Tooltip>
             </div>
-        );
+        )
     }
-};
+}
 
-export default withStyles(styles)(CustomPaginator);
+export default withStyles(styles)(CustomPaginator)

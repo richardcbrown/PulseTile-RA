@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import get from "lodash/get";
+import React, { Component } from "react"
+import get from "lodash/get"
 
-import { withRouter } from 'react-router-dom';
-import { Sidebar, getResources, Responsive, setSidebarVisibility } from 'react-admin';
-import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom"
+import { Sidebar, getResources, Responsive, setSidebarVisibility } from "react-admin"
+import { connect } from "react-redux"
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles"
 
-import MobileMenu from "./MobileMenu";
-import MenuItems from "./MenuItems";
-import { getMenuItems } from "./getMenuType";
+import MobileMenu from "./MobileMenu"
+import MenuItems from "./MenuItems"
+import { getMenuItems } from "./getMenuType"
 
-const styles = theme => ({
+const styles = (theme) => ({
     sidebarBlock: {
         maxWidth: 240,
         backgroundColor: "#fff",
-        '& div': {
+        "& div": {
             marginTop: 0,
         },
     },
@@ -32,17 +32,17 @@ const styles = theme => ({
     menuItem: {
         color: `${theme.palette.mainColor} !important`,
         borderBottom: `1px solid ${theme.palette.borderColor}`,
-        '&:hover': {
+        "&:hover": {
             backgroundColor: theme.palette.mainColor,
             color: "#fff !important",
         },
     },
     menuItemSelected: {
-        backgroundColor: theme.palette.mainColor + '! important',
+        backgroundColor: theme.palette.mainColor + "! important",
         color: "#fff !important",
         borderBottom: `1px solid ${theme.palette.borderColor}`,
     },
-});
+})
 
 /**
  * This component returns custom menu
@@ -50,35 +50,41 @@ const styles = theme => ({
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 const CustomSidebar = ({ classes, isSidebarOpen, onMenuClick, location }) => {
-    const currentPathname = get(location, 'pathname', null);
-    const pathNameArray = currentPathname.split('/');
-    const currentList = '/' + pathNameArray[1];
-    const menuItems = getMenuItems(currentPathname);
+    const currentPathname = get(location, "pathname", null)
+    const pathNameArray = currentPathname.split("/")
+    const currentList = "/" + pathNameArray[1]
+    const menuItems = getMenuItems(currentPathname)
     return (
         <Responsive
             small={
-                isSidebarOpen ? null : <MobileMenu
-                    classes={classes}
-                    menuItems={menuItems}
-                    currentList={currentList}
-                    onMenuClick={onMenuClick}
-                />
+                isSidebarOpen ? null : (
+                    <MobileMenu
+                        classes={classes}
+                        menuItems={menuItems}
+                        currentList={currentList}
+                        onMenuClick={onMenuClick}
+                    />
+                )
             }
             medium={
-                isSidebarOpen ?
+                isSidebarOpen ? (
                     <Sidebar className={classes.sidebarBlock}>
-                        <MenuItems classes={classes} menuItems={menuItems} currentList={currentList} onMenuClick={onMenuClick} />
+                        <MenuItems
+                            classes={classes}
+                            menuItems={menuItems}
+                            currentList={currentList}
+                            onMenuClick={onMenuClick}
+                        />
                     </Sidebar>
-                    : null
+                ) : null
             }
-        >
-        </Responsive>
-    );
-};
+        ></Responsive>
+    )
+}
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     resources: getResources(state),
     isSidebarOpen: state.admin.ui.sidebarOpen,
-});
+})
 
-export default withRouter(connect(mapStateToProps, null)(withStyles(styles)(CustomSidebar)));
+export default withRouter(connect(mapStateToProps, null)(withStyles(styles)(CustomSidebar)))

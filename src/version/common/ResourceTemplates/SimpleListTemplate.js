@@ -1,21 +1,18 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
-import {
-    List,
-    Datagrid
-} from "react-admin";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { List, Datagrid } from "react-admin"
 
-import { withStyles } from "@material-ui/core/styles";
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { withStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
 
-import Breadcrumbs from "../../../core/common/Breadcrumbs";
-import TableHeader from "../../../core/common/TableHeader";
-import SimpleListToolbar from "../../common/Toolbars/SimpleListToolbar";
-import EmptyListBlock from "../../../core/common/ResourseTemplates/EmptyListBlock";
-import { ITEMS_PER_PAGE } from "../../../core/config/styles";
+import Breadcrumbs from "../../../core/common/Breadcrumbs"
+import TableHeader from "../../../core/common/TableHeader"
+import SimpleListToolbar from "../../common/Toolbars/SimpleListToolbar"
+import EmptyListBlock from "../../../core/common/ResourseTemplates/EmptyListBlock"
+import { ITEMS_PER_PAGE } from "../../../core/config/styles"
 
-const listStyles = theme => ({
+const listStyles = (theme) => ({
     mainBlock: {
         margin: 0,
         paddingLeft: 10,
@@ -60,30 +57,30 @@ const listStyles = theme => ({
         backgroundColor: theme.palette.mainColor,
         borderRadius: 0,
         boxShadow: "none",
-        '& button': {
+        "& button": {
             color: "#fff",
         },
     },
     inputBlock: {
-        width: 'calc(100% - 105px)',
+        width: "calc(100% - 105px)",
         backgroundColor: "#fff",
         borderRadius: 2,
         paddingLeft: 5,
     },
     tableList: {
-        '& thead': {
-            '& tr th': {
+        "& thead": {
+            "& tr th": {
                 paddingLeft: 10,
             },
         },
-        '& tbody tr:hover': {
-            backgroundColor: theme.palette.mainColor + '!important',
+        "& tbody tr:hover": {
+            backgroundColor: theme.palette.mainColor + "!important",
         },
-        '& tbody tr:hover td span': {
-            color: "#fff"
-        }
-    }
-});
+        "& tbody tr:hover td span": {
+            color: "#fff",
+        },
+    },
+})
 
 /**
  * This component returns template for List page
@@ -92,25 +89,27 @@ const listStyles = theme => ({
  * @author Richard Brown <richard.brown@synanetics.com>
  */
 class ListTemplate extends Component {
-
-    state = {
-        isListOpened: true,
-        isFilterOpened: false,
-        filterText: null,
-        key: 0,
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            isListOpened: true,
+            isFilterOpened: false,
+            filterText: null,
+            key: 0,
+        }
+    }
 
     render() {
-        const { resourceUrl, title, children, classes, history, currentList } = this.props;
-        const { key } = this.state;
+        const { resourceUrl, title, children, classes, history, currentList } = this.props
+        const { key } = this.state
 
         const breadcrumbsResource = [
             { url: "/" + resourceUrl, title: title, isActive: true },
-            { url: `/${resourceUrl}/history`, title: "History", isActive: false }
-        ];
-        
-        const currentListArray = Object.values(currentList);
-        const idsNumber = currentListArray.length > 0 ? currentListArray.length : 0;
+            { url: `/${resourceUrl}/history`, title: "History", isActive: false },
+        ]
+
+        const currentListArray = Object.values(currentList)
+        const idsNumber = currentListArray.length > 0 ? currentListArray.length : 0
         return (
             <React.Fragment>
                 <Breadcrumbs resource={breadcrumbsResource} />
@@ -130,29 +129,33 @@ class ListTemplate extends Component {
                             perPage={ITEMS_PER_PAGE}
                             actions={null}
                             bulkActions={false}
-                            pagination={<SimpleListToolbar resourceUrl={`${resourceUrl}/history`} history={history} sort={ { field: 'dateCreated', order: 'DESC' } } />}
-                            sort={ { field: 'dateCreated', order: 'DESC' } }
+                            pagination={
+                                <SimpleListToolbar
+                                    resourceUrl={`${resourceUrl}/history`}
+                                    history={history}
+                                    sort={{ field: "dateCreated", order: "DESC" }}
+                                />
+                            }
+                            sort={{ field: "dateCreated", order: "DESC" }}
                             {...this.props}
                         >
-                            { (idsNumber > 0) ?
-                                <Datagrid className={classes.tableList}>
-                                    {children}
-                                </Datagrid>
-                                :
+                            {idsNumber > 0 ? (
+                                <Datagrid className={classes.tableList}>{children}</Datagrid>
+                            ) : (
                                 <EmptyListBlock />
-                            }
+                            )}
                         </List>
                     </Grid>
                 </Grid>
             </React.Fragment>
-        );
+        )
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
         currentList: state.admin.resources[ownProps.resource] || {},
-    };
-};
+    }
+}
 
-export default connect(mapStateToProps, null)(withStyles(listStyles)(ListTemplate));
+export default connect(mapStateToProps, null)(withStyles(listStyles)(ListTemplate))

@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography"
 
 const titlesArray = {
     charts: "System Dashboard",
     patients: "Patients Lists",
-};
+}
 
 /**
  * This component returns page title (for Charts and Patients pages)
@@ -15,13 +15,9 @@ const titlesArray = {
  * @param {shape} location
  */
 const PageTitle = ({ classes, location }) => {
-    const pathName = location.pathname;
-    const title = titlesArray[pathName.replace('/', '')];
-    return (
-        <Typography className={classes.title}>
-            {title ? title : "System Dashboard"}
-        </Typography>
-    );
-};
+    const pathName = location.pathname
+    const title = titlesArray[pathName.replace("/", "")]
+    return <Typography className={classes.title}>{title ? title : "System Dashboard"}</Typography>
+}
 
-export default PageTitle;
+export default PageTitle

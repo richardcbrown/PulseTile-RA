@@ -1,14 +1,13 @@
-import React from "react";
+import React from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import Tooltip from '@material-ui/core/Tooltip';
-import { getCurrentTheme } from "../../../core/config/styles";
+import { withStyles } from "@material-ui/core/styles"
+import IconButton from "@material-ui/core/IconButton"
+import AddIcon from "@material-ui/icons/Add"
+import Tooltip from "@material-ui/core/Tooltip"
+import { getCurrentTheme } from "../../../core/config/styles"
 
-const styles = theme => {
-
-    theme = theme.palette.mainColor ? theme : getCurrentTheme();
+const styles = (theme) => {
+    theme = theme.palette.mainColor ? theme : getCurrentTheme()
 
     return {
         createButton: {
@@ -29,10 +28,10 @@ const styles = theme => {
             "&:hover": {
                 backgroundColor: theme.palette.mainColor,
                 color: "white",
-            }
-        }
+            },
+        },
     }
-};
+}
 
 /**
  * This component returns Confirm button
@@ -43,12 +42,12 @@ const styles = theme => {
  * @param {string} label
  */
 const ConfirmButton = ({ classes, onClick, label, hideIcon, disabled }) => (
-    <Tooltip title={ label }>
-        <IconButton disabled={ disabled } aria-label={ label } className={classes.createButton} onClick={onClick}>
-            { hideIcon && <AddIcon /> }            
-            { label }
+    <Tooltip title={label}>
+        <IconButton disabled={disabled} aria-label={label} className={classes.createButton} onClick={onClick}>
+            {hideIcon && <AddIcon />}
+            {label}
         </IconButton>
     </Tooltip>
-);
+)
 
-export default withStyles(styles)(ConfirmButton);
+export default withStyles(styles)(ConfirmButton)

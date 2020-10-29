@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import IconButton from "@material-ui/core/IconButton"
+import AddIcon from "@material-ui/icons/Add"
+import Tooltip from "@material-ui/core/Tooltip"
 
-const styles = theme => ({
+const styles = (theme) => ({
     createButton: {
         display: "block",
         width: 100,
@@ -21,9 +21,9 @@ const styles = theme => ({
         "&:hover": {
             backgroundColor: theme.palette.mainColor,
             color: "white",
-        }
-    }
-});
+        },
+    },
+})
 
 /**
  * This component returns Edit button
@@ -39,6 +39,6 @@ const CreateButton = ({ classes, history, redirectPath }) => (
             <AddIcon /> Create
         </IconButton>
     </Tooltip>
-);
+)
 
-export default withStyles(styles)(CreateButton);
+export default withStyles(styles)(CreateButton)

@@ -1,27 +1,27 @@
 import React, { Component } from "react"
-import get from "lodash/get";
-import { connect } from 'react-redux';
+import get from "lodash/get"
+import { connect } from "react-redux"
 
-import { withStyles } from "@material-ui/core/styles";
-import Dialog from '@material-ui/core/Dialog';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
+import { withStyles } from "@material-ui/core/styles"
+import Dialog from "@material-ui/core/Dialog"
+import Typography from "@material-ui/core/Typography"
+import Button from "@material-ui/core/Button"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-import { httpErrorAction } from '../../actions/httpErrorAction';
-import CustomLogoutButton from "../Buttons/CustomLogoutButton";
+import { httpErrorAction } from "../../actions/httpErrorAction"
+import CustomLogoutButton from "../Buttons/CustomLogoutButton"
 
-const styles = theme => ({
+const styles = (theme) => ({
     dialogBlock: {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        [theme.breakpoints.only('xs')]: {
+        [theme.breakpoints.only("xs")]: {
             paddingTop: 0,
             paddingLeft: 20,
             paddingRight: 20,
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             minHeight: 300,
             minWidth: 500,
             marginBottom: 10,
@@ -63,86 +63,94 @@ const styles = theme => ({
             color: theme.palette.dangerColor,
             backgroundColor: "white",
         },
-    }
-});
+    },
+})
 
 class HandleErrorModal extends Component {
-
-    state = {
-        isErrorModalOpen: false,
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            isErrorModalOpen: false,
+        }
+    }
 
     isJwtMessage(status, message) {
-        return Number(status) === 400 && typeof message === "string" && message.includes('JWT')
+        return Number(status) === 400 && typeof message === "string" && message.includes("JWT")
     }
- 
-    isSessionExpired = (status, message) => {
-        return this.isJwtMessage(status, message) || Number(status) === 403;
-    };
 
-    getErrorDescription = (status, isJwtOld) => {
-        let result = 'Something is wrong';
+    isSessionExpired(status, message) {
+        return this.isJwtMessage(status, message) || Number(status) === 403
+    }
+
+    getErrorDescription(status, isJwtOld) {
+        let result = "Something is wrong"
         if (Number(status) === 404) {
-            result = 'API is currently unavailable';
+            result = "API is currently unavailable"
         } else if (Number(status) > 499) {
-            result = 'Something is wrong with the server. Please try again later.';
+            result = "Something is wrong with the server. Please try again later."
         } else if (isJwtOld) {
-            result = 'Your session has expired. Click the button to log in again.';
+            result = "Your session has expired. Click the button to log in again."
         }
-        return result;
-    };
+        return result
+    }
 
-    closeModal = () => {
-        this.setState(
-            { isErrorModalOpen: false },
-            () => this.props.removeErrorNotification()
-        );
-    };
+    closeModal() {
+        this.setState({ isErrorModalOpen: false }, () => this.props.removeErrorNotification())
+    }
 
     render() {
-        const { classes, status, message, httpErrors, ...rest } = this.props;
-        const { isErrorModalOpen } = this.state;
+        const { classes, status, message, httpErrors, ...rest } = this.props
+        const { isErrorModalOpen } = this.state
 
-        const errorStatus = get(httpErrors, 'status', null);
-        const errorMessage = get(httpErrors, 'message', null);
+        const errorStatus = get(httpErrors, "status", null)
+        const errorMessage = get(httpErrors, "message", null)
 
-        const isOpen = isErrorModalOpen || (errorStatus && errorMessage);
+        const isOpen = isErrorModalOpen || (errorStatus && errorMessage)
 
-        const isJwtOld = this.isSessionExpired(errorStatus, errorMessage);
-        const errorDescription = this.getErrorDescription(errorStatus, isJwtOld);
+        const isJwtOld = this.isSessionExpired(errorStatus, errorMessage)
+        const errorDescription = this.getErrorDescription(errorStatus, isJwtOld)
         return (
             <React.Fragment>
                 <Dialog open={isOpen} {...rest}>
-                    <div className={classes.dialogBlock} >
-                        <Typography className={classes.titleBlock}>
-                            Connection Error
-                        </Typography>
+                    <div className={classes.dialogBlock}>
+                        <Typography className={classes.titleBlock}>Connection Error</Typography>
                         <Typography className={classes.description}>{errorDescription}</Typography>
                         <div className={classes.toolbar}>
-                            <Button aria-label="Close" onClick={() => this.closeModal()}>Close</Button>
-                            { isJwtOld
-                                ? <CustomLogoutButton title="Login again" hideIcon={true} />
-                                : <Button aria-label="Reload page" className={classes.reloadButton} onClick={() => window.location.reload()}>Reload page</Button>
-                            }
+                            <Button aria-label="Close" onClick={() => this.closeModal()}>
+                                Close
+                            </Button>
+                            {isJwtOld ? (
+                                <CustomLogoutButton title="Login again" hideIcon={true} />
+                            ) : (
+                                <Button
+                                    aria-label="Reload page"
+                                    className={classes.reloadButton}
+                                    onClick={() => window.location.reload()}
+                                >
+                                    Reload page
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </Dialog>
             </React.Fragment>
-        );
+        )
     }
+}
 
-};
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        httpErrors: state.custom.httpErrors.data
-    };
-};
-
-const mapDispatchToProps = dispatch => ({
-    removeErrorNotification() {
-        dispatch(httpErrorAction.remove());
+        httpErrors: state.custom.httpErrors.data,
     }
-});
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withMobileDialog({breakpoint: 'xs'})(HandleErrorModal)));
+const mapDispatchToProps = (dispatch) => ({
+    removeErrorNotification() {
+        dispatch(httpErrorAction.remove())
+    },
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(styles)(withMobileDialog({ breakpoint: "xs" })(HandleErrorModal)))

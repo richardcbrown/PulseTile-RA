@@ -1,15 +1,15 @@
-import React from "react";
-import { Toolbar, SaveButton } from "react-admin";
+import React from "react"
+import { Toolbar, SaveButton } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
-import CancelButton from "../Buttons/CancelButton";
-import CustomSaveButton from "../Buttons/CustomSaveButton";
+import { withStyles } from "@material-ui/core/styles"
+import CancelButton from "../Buttons/CancelButton"
+import CustomSaveButton from "../Buttons/CustomSaveButton"
 
-const styles = theme => ({
+const styles = (theme) => ({
     toolbar: {
         backgroundColor: theme.palette.toolbarColor,
-    }
-});
+    },
+})
 
 /**
  * This component returns custom toolbar for edit form
@@ -22,11 +22,11 @@ const styles = theme => ({
  */
 const EditToolbar = ({ classes, changeViewType, ...props }) => {
     return (
-        <Toolbar className={classes.toolbar} {...props} >
+        <Toolbar className={classes.toolbar} {...props}>
             <CancelButton redirectTo={changeViewType} />
             <CustomSaveButton {...props} />
         </Toolbar>
-    );
-};
+    )
+}
 
-export default withStyles(styles)(EditToolbar);
+export default withStyles(styles)(EditToolbar)

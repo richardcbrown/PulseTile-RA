@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
-import CreateTemplate from "../../../core/common/ResourseTemplates/CreateTemplate";
-import Inputs from "./fragments/Inputs";
+import CreateTemplate from "../../../core/common/ResourseTemplates/CreateTemplate"
+import Inputs from "./fragments/Inputs"
 
 /**
  * This component returns Vaccinations creation form
@@ -14,6 +14,6 @@ const VaccinationsCreate = ({ classes, ...rest }) => (
     <CreateTemplate blockTitle="Vaccination" {...rest}>
         <Inputs />
     </CreateTemplate>
-);
+)
 
-export default VaccinationsCreate;
+export default VaccinationsCreate

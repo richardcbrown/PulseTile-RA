@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
-import EditTemplate from "../../../core/common/ResourseTemplates/EditTemplate";
-import Inputs from "./fragments/Inputs";
+import EditTemplate from "../../../core/common/ResourseTemplates/EditTemplate"
+import Inputs from "./fragments/Inputs"
 
 /**
  * This component returns TopThreeThings editing form
@@ -14,6 +14,6 @@ const TopThreeThingsEdit = ({ classes, ...rest }) => (
     <EditTemplate blockTitle="Top Three Things" {...rest}>
         <Inputs />
     </EditTemplate>
-);
+)
 
-export default TopThreeThingsEdit;
+export default TopThreeThingsEdit

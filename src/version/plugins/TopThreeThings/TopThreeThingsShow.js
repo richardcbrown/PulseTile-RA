@@ -1,17 +1,17 @@
-import React from "react";
-import { TextField, DateField } from "react-admin";
-import { withStyles } from '@material-ui/core/styles';
+import React from "react"
+import { TextField, DateField } from "react-admin"
+import { withStyles } from "@material-ui/core/styles"
 
-import ShowTemplate from "../../../core/common/ResourseTemplates/ShowTemplate";
+import ShowTemplate from "../../../core/common/ResourseTemplates/ShowTemplate"
 
 const styles = {
     labelBlock: {
-        '& > div': {
+        "& > div": {
             marginTop: "0px !important",
             marginBottom: "0px !important",
         },
     },
-};
+}
 
 /**
  * This component returns block with Allergies details component
@@ -20,13 +20,13 @@ const styles = {
  */
 const TopThreeThingsShow = ({ classes, ...rest }) => (
     <ShowTemplate pageTitle="Top Three Things" {...rest}>
-        <TextField className={classes.labelBlock}  source="name1" label="#1" />
-        <TextField className={classes.labelBlock}  source="description1" label="Description #1" />
-        <TextField className={classes.labelBlock}  source="name2" label="#2" />
-        <TextField className={classes.labelBlock}  source="description2" label="Description #2" />
-        <TextField className={classes.labelBlock}  source="name3" label="#3" />
-        <TextField className={classes.labelBlock}  source="description3" label="Description #3" />
+        <TextField className={classes.labelBlock} source="name1" label="#1" />
+        <TextField className={classes.labelBlock} source="description1" label="Description #1" />
+        <TextField className={classes.labelBlock} source="name2" label="#2" />
+        <TextField className={classes.labelBlock} source="description2" label="Description #2" />
+        <TextField className={classes.labelBlock} source="name3" label="#3" />
+        <TextField className={classes.labelBlock} source="description3" label="Description #3" />
     </ShowTemplate>
-);
+)
 
-export default withStyles(styles)(TopThreeThingsShow);
+export default withStyles(styles)(TopThreeThingsShow)

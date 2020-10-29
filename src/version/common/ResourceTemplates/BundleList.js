@@ -34,7 +34,16 @@ class BundleList extends Component {
 
     /** @returns {JSX.Element | null} */
     render() {
-        const { bundle, resourceType, componentKey, getBundle, rowProvider, headProvider, query, tableClass } = this.props
+        const {
+            bundle,
+            resourceType,
+            componentKey,
+            getBundle,
+            rowProvider,
+            headProvider,
+            query,
+            tableClass,
+        } = this.props
 
         if (!bundle) {
             return null

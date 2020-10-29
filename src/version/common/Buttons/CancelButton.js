@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import BlockIcon from '@material-ui/icons/Block';
-import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from "@material-ui/core/styles"
+import IconButton from "@material-ui/core/IconButton"
+import BlockIcon from "@material-ui/icons/Block"
+import Tooltip from "@material-ui/core/Tooltip"
 
-const styles = theme => ({
+const styles = (theme) => ({
     button: {
         display: "block",
         width: 100,
@@ -21,9 +21,9 @@ const styles = theme => ({
         "&:hover": {
             color: theme.palette.dangerColor,
             backgroundColor: "#fff",
-        }
-    }
-});
+        },
+    },
+})
 
 /**
  * This component returns Cancel button
@@ -33,11 +33,11 @@ const styles = theme => ({
  * @param {func}  onClick
  */
 const CancelButton = ({ classes, onClick, label }) => (
-    <Tooltip title={ label }>
-        <IconButton aria-label={ label } className={classes.button} onClick={onClick}>
-            <BlockIcon /> { label }
+    <Tooltip title={label}>
+        <IconButton aria-label={label} className={classes.button} onClick={onClick}>
+            <BlockIcon /> {label}
         </IconButton>
     </Tooltip>
-);
+)
 
-export default withStyles(styles)(CancelButton);
+export default withStyles(styles)(CancelButton)

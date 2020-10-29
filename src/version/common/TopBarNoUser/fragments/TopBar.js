@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 
-import { withStyles } from '@material-ui/core/styles';
-import CardMedia from "@material-ui/core/CardMedia";
-import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from "@material-ui/core/styles"
+import CardMedia from "@material-ui/core/CardMedia"
+import Toolbar from "@material-ui/core/Toolbar"
 
-import helmLogo from "../../../images/helm-logo.png";
-import nhsLogo from "../../../images/nhs.png";
+import helmLogo from "../../../images/helm-logo.png"
+import nhsLogo from "../../../images/nhs.png"
 
-const styles = theme => ({
+const styles = (theme) => ({
     topPart: {
         display: "flex",
         backgroundColor: "white",
@@ -23,17 +23,17 @@ const styles = theme => ({
         paddingLeft: 9,
     },
     nhsLogo: {
-        [theme.breakpoints.only('xs')]: {
+        [theme.breakpoints.only("xs")]: {
             display: "none",
         },
         width: "auto",
         maxWidth: "100%",
-        marginRight: 24
+        marginRight: 24,
     },
     emptyBlock: {
         flexGrow: 1,
-    }
-});
+    },
+})
 
 /**
  * This component returns Top part of Helm Topbar
@@ -64,7 +64,7 @@ const TopPart = ({ classes }) => {
                 title="Pulse Tile"
             />
         </Toolbar>
-    );
+    )
 }
 
-export default withStyles(styles)(TopPart);
+export default withStyles(styles)(TopPart)

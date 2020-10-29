@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
-import EditTemplate from "../../../core/common/ResourseTemplates/EditTemplate";
-import Inputs from "./fragments/Inputs";
+import EditTemplate from "../../../core/common/ResourseTemplates/EditTemplate"
+import Inputs from "./fragments/Inputs"
 
 /**
  * This component returns block with edit form for Vaccinations
@@ -12,9 +12,9 @@ import Inputs from "./fragments/Inputs";
  * @constructor
  */
 const VaccinationsEdit = ({ classes, ...rest }) => (
-    <EditTemplate blockTitle="Vaccination"  {...rest}>
+    <EditTemplate blockTitle="Vaccination" {...rest}>
         <Inputs />
     </EditTemplate>
-);
+)
 
-export default VaccinationsEdit;
+export default VaccinationsEdit

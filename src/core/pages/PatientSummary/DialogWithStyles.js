@@ -1,32 +1,32 @@
-import React, { Component } from "react";
-import get from "lodash/get";
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
+import React, { Component } from "react"
+import get from "lodash/get"
+import compose from "recompose/compose"
+import { connect } from "react-redux"
 
-import { withStyles } from "@material-ui/core/styles";
-import Dialog from '@material-ui/core/Dialog';
-import Divider from '@material-ui/core/Divider';
-import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
-import Typography from "@material-ui/core/Typography";
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
+import { withStyles } from "@material-ui/core/styles"
+import Dialog from "@material-ui/core/Dialog"
+import Divider from "@material-ui/core/Divider"
+import Checkbox from "@material-ui/core/Checkbox"
+import Radio from "@material-ui/core/Radio"
+import Typography from "@material-ui/core/Typography"
+import CloseIcon from "@material-ui/icons/Close"
+import IconButton from "@material-ui/core/IconButton"
+import Tooltip from "@material-ui/core/Tooltip"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-import { showModeAction } from "../../actions/showModeAction";
-import { showHeadingsAction } from "../../actions/showHeadingsAction";
-import { synopsisData, showModesArray, SHOW_ALL, getHeadingsLists } from "./config";
-import { themeCommonElements } from "../../../version/config/theme.config";
+import { showModeAction } from "../../actions/showModeAction"
+import { showHeadingsAction } from "../../actions/showHeadingsAction"
+import { synopsisData, showModesArray, SHOW_ALL, getHeadingsLists } from "./config"
+import { themeCommonElements } from "../../../version/config/theme.config"
 
-const styles = theme => ({
+const styles = (theme) => ({
     dialogBlock: {
-        [theme.breakpoints.only('xs')]: {
+        [theme.breakpoints.only("xs")]: {
             paddingTop: 0,
             paddingLeft: 20,
             paddingRight: 20,
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             minHeight: 300,
             minWidth: 500,
             marginTop: 5,
@@ -65,8 +65,8 @@ const styles = theme => ({
     closeIcon: {
         float: "right",
         height: 25,
-    }
-});
+    },
+})
 
 /**
  * This component returns content and functionality of dialog window
@@ -74,11 +74,13 @@ const styles = theme => ({
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class DialogContent extends Component {
-
-    state = {
-        selectedMode: this.props.showMode ? this.props.showMode : SHOW_ALL,
-        selectedHeadings: this.props.showHeadings ? Object.values(this.props.showHeadings) : getHeadingsLists(),
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedMode: this.props.showMode ? this.props.showMode : SHOW_ALL,
+            selectedHeadings: this.props.showHeadings ? Object.values(this.props.showHeadings) : getHeadingsLists(),
+        }
+    }
 
     /**
      * This function checks is current heading was checked
@@ -87,10 +89,10 @@ class DialogContent extends Component {
      * @param {string} itemName
      * @return {boolean}
      */
-    isHeadingChecked = itemName => {
-        const { selectedHeadings } = this.state;
-        return Object.values(selectedHeadings).indexOf(itemName) !== -1;
-    };
+    isHeadingChecked(itemName) {
+        const { selectedHeadings } = this.state
+        return Object.values(selectedHeadings).indexOf(itemName) !== -1
+    }
 
     /**
      * This function saves headings to select
@@ -98,21 +100,24 @@ class DialogContent extends Component {
      * @author Bogdan Shcherban <bsc@piogroup.net>
      * @param {string} itemName
      */
-    toggleVisibility = itemName => {
-        this.setState(state => {
-            const { selectedHeadings } = state;
-            let headingsArray = selectedHeadings;
-            if (Object.values(selectedHeadings).indexOf(itemName) !== -1) {
-                let index = headingsArray.indexOf(itemName);
-                headingsArray.splice(index, 1)
-            } else {
-                headingsArray.push(itemName);
-            }
-            return {
-                selectedHeadings: headingsArray,
-            };
-        }, () => this.props.setHeadingsAction(this.state.selectedHeadings));
-    };
+    toggleVisibility(itemName) {
+        this.setState(
+            (state) => {
+                const { selectedHeadings } = state
+                let headingsArray = selectedHeadings
+                if (Object.values(selectedHeadings).indexOf(itemName) !== -1) {
+                    let index = headingsArray.indexOf(itemName)
+                    headingsArray.splice(index, 1)
+                } else {
+                    headingsArray.push(itemName)
+                }
+                return {
+                    selectedHeadings: headingsArray,
+                }
+            },
+            () => this.props.setHeadingsAction(this.state.selectedHeadings)
+        )
+    }
 
     /**
      * This function toggle shows mode
@@ -120,20 +125,17 @@ class DialogContent extends Component {
      * @author Bogdan Shcherban <bsc@piogroup.net>
      * @param {string} mode
      */
-    selectShowMode = mode => {
-        this.setState(
-            { selectedMode: mode },
-            () => this.props.setModeAction(mode)
-        );
-    };
+    selectShowMode(mode) {
+        this.setState({ selectedMode: mode }, () => this.props.setModeAction(mode))
+    }
 
     render() {
-        const { classes, onClose, showMode, ...rest } = this.props;
-        const { selectedMode, selectedHeadings } = this.state;
-        const FeedSelector = get(themeCommonElements, 'feedsSelectors', false);
+        const { classes, onClose, showMode, ...rest } = this.props
+        const { selectedMode, selectedHeadings } = this.state
+        const FeedSelector = get(themeCommonElements, "feedsSelectors", false)
         return (
             <Dialog onBackdropClick={() => onClose()} {...rest}>
-                <div className={classes.dialogBlock} >
+                <div className={classes.dialogBlock}>
                     <Tooltip title="Settings">
                         <IconButton className={classes.closeIcon} color="inherit" onClick={() => onClose()}>
                             <CloseIcon />
@@ -142,28 +144,25 @@ class DialogContent extends Component {
                     <Typography className={classes.sectionTitle}>SHOW</Typography>
                     <Divider />
                     <div className={classes.dialogItem}>
-                        {
-                            synopsisData.map((item, key) => {
-                                return (
-                                    <div key={key} className={classes.dialogLabel}>
-                                        <Checkbox
-                                            className={classes.checkbox}
-                                            checked={this.isHeadingChecked(item.list)}
-                                            color="primary"
-                                            onChange={() => this.toggleVisibility(item.list)}
-                                        />
-                                        <Typography className={classes.checkboxLabel}>{item.title}</Typography>
-                                    </div>
-                                );
-                            })
-                        }
+                        {synopsisData.map((item, key) => {
+                            return (
+                                <div key={key} className={classes.dialogLabel}>
+                                    <Checkbox
+                                        className={classes.checkbox}
+                                        checked={this.isHeadingChecked(item.list)}
+                                        color="primary"
+                                        onChange={() => this.toggleVisibility(item.list)}
+                                    />
+                                    <Typography className={classes.checkboxLabel}>{item.title}</Typography>
+                                </div>
+                            )
+                        })}
                     </div>
-                    { FeedSelector && <FeedSelector classes={classes} /> }
+                    {FeedSelector && <FeedSelector classes={classes} />}
                     <Typography>VIEW OF BOARDS</Typography>
                     <Divider />
                     <div className={classes.dialogItemColumn}>
-                    {
-                        showModesArray.map((item, key) => {
+                        {showModesArray.map((item, key) => {
                             return (
                                 <label key={key} className={classes.dialogLabel}>
                                     <Radio
@@ -174,35 +173,34 @@ class DialogContent extends Component {
                                     />
                                     <Typography className={classes.checkboxLabel}>{item.label}</Typography>
                                 </label>
-                            );
-                        })
-                    }
+                            )
+                        })}
                     </div>
                 </div>
             </Dialog>
-        );
+        )
     }
-};
+}
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        showMode: get(state, 'custom.showMode.data', null),
-        showHeadings: get(state, 'custom.showHeadings.data', null),
-    };
-};
+        showMode: get(state, "custom.showMode.data", null),
+        showHeadings: get(state, "custom.showHeadings.data", null),
+    }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         setModeAction(mode) {
-            dispatch(showModeAction.request(mode));
+            dispatch(showModeAction.request(mode))
         },
         setHeadingsAction(headingsArray) {
-            dispatch(showHeadingsAction.request(headingsArray));
-        }
+            dispatch(showHeadingsAction.request(headingsArray))
+        },
     }
-};
+}
 
 export default compose(
     withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps)
-)(withMobileDialog({breakpoint: 'xs'})(DialogContent));
+)(withMobileDialog({ breakpoint: "xs" })(DialogContent))

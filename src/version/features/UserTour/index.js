@@ -1,61 +1,68 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { setSidebarVisibility } from 'react-admin';
-import RunUserTour from "./fragments/RunTourButton";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { setSidebarVisibility } from "react-admin"
+import RunUserTour from "./fragments/RunTourButton"
 
 class UserTour extends Component {
-
-    state = {
-        shouldRunTour: false
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            shouldRunTour: false,
+        }
+    }
 
     /**
      * This function add info to Cookie that user tour was passed
      *
      * @param tour
      */
-    callback = (tour) => {
-        const { type } = tour;
+    callback(tour) {
+        const { type } = tour
 
-        if (type === 'tour:end') {
-            document.cookie = 'userTour=passed';
+        if (type === "tour:end") {
+            document.cookie = "userTour=passed"
             this.setState({
-                shouldRunTour: false
+                shouldRunTour: false,
             })
         }
-    };
+    }
 
     /**
      * This function runs User Tour
      */
-    runTour = () => {
-        this.setState({ shouldRunTour: true }, this.props.setSidebarVisibility(false));
-    };
+    runTour() {
+        this.setState({ shouldRunTour: true }, this.props.setSidebarVisibility(false))
+    }
 
     render() {
-        const { classes } = this.props;
-        const { shouldRunTour } = this.state;
+        const { classes } = this.props
+        const { shouldRunTour } = this.state
 
         return (
             <div className={classes.rightBlockItem}>
-                <RunUserTour classes={classes} runTour={this.runTour} shouldRunTour={shouldRunTour} callback={this.callback} />
+                <RunUserTour
+                    classes={classes}
+                    runTour={this.runTour}
+                    shouldRunTour={shouldRunTour}
+                    callback={this.callback}
+                />
             </div>
-        );
+        )
     }
-};
+}
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         isSidebarOpen: state.admin.ui.sidebarOpen,
     }
-};
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         setSidebarVisibility(params) {
-            dispatch(setSidebarVisibility(params));
+            dispatch(setSidebarVisibility(params))
         },
     }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserTour);
+export default connect(mapStateToProps, mapDispatchToProps)(UserTour)

@@ -1,12 +1,12 @@
-import React from "react";
-import { TextInput, DateInput, RadioButtonGroupInput } from "react-admin";
+import React from "react"
+import { TextInput, DateInput, RadioButtonGroupInput } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles"
 
 const genderChoices = [
-    { id: 'male', name: 'Male' },
-    { id: 'female', name: 'Female' },
-];
+    { id: "male", name: "Male" },
+    { id: "female", name: "Female" },
+]
 
 const styles = {
     halfWidthBlock: {
@@ -17,11 +17,11 @@ const styles = {
         width: "50% !important",
     },
     labelBlock: {
-        '& > div': {
+        "& > div": {
             marginBottom: "0px !important",
         },
     },
-};
+}
 
 const FormInputs = ({ classes }) => {
     return (
@@ -40,7 +40,7 @@ const FormInputs = ({ classes }) => {
             </div>
             <TextInput source="nhsNumber" label="CHI Number" fullWidth />
         </React.Fragment>
-    );
-};
+    )
+}
 
-export default withStyles(styles)(FormInputs);
+export default withStyles(styles)(FormInputs)

@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List"
+import Typography from "@material-ui/core/Typography"
 
 /**
  * This component returns synopsis list
@@ -14,7 +14,6 @@ import Typography from "@material-ui/core/Typography";
  * @constructor
  */
 const ItemsList = ({ classes, items, list, history, listOnly }) => {
-    
     if (items && items.length === 0) {
         return (
             <List className={classes.list}>
@@ -22,23 +21,24 @@ const ItemsList = ({ classes, items, list, history, listOnly }) => {
                     <Typography>No data</Typography>
                 </li>
             </List>
-        );
+        )
     } else {
         return (
             <List className={classes.list}>
                 {items.map((item, key) => {
-                    const onClick = list && item.sourceId ?  () => history.push("/" + list + "/" + item.sourceId + "/show") : () => {};
+                    const onClick =
+                        list && item.sourceId
+                            ? () => history.push("/" + list + "/" + item.sourceId + "/show")
+                            : () => {}
                     return (
                         <li key={key} className={classes.listItem} onClick={onClick}>
-                            <Typography>
-                                {item.text}
-                            </Typography>
+                            <Typography>{item.text}</Typography>
                         </li>
-                    );
+                    )
                 })}
             </List>
-        );
+        )
     }
-};
+}
 
-export default ItemsList;
+export default ItemsList

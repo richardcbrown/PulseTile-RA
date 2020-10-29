@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
+import React, { Component } from "react"
+import { connect } from "react-redux"
 
-import IconButton from '@material-ui/core/IconButton';
-import ContrastIcon from '@material-ui/icons/Tonality';
-import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from "@material-ui/core/IconButton"
+import ContrastIcon from "@material-ui/icons/Tonality"
+import Tooltip from "@material-ui/core/Tooltip"
 
-import { contrastModeAction } from "../../actions/contrastModeAction";
+import { contrastModeAction } from "../../actions/contrastModeAction"
 
 /**
  * Thic component returns Contrast Mode button
@@ -13,20 +13,21 @@ import { contrastModeAction } from "../../actions/contrastModeAction";
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class ContrastMode extends Component {
-
-    state = {
-        isContrastMode: false,
-    };
-
-    toggleContrastMode = () => {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isContrastMode: false,
+        }
+    }
+    toggleContrastMode() {
         this.setState(
-            state => ({ isContrastMode: !this.state.isContrastMode }),
+            (state) => ({ isContrastMode: !this.state.isContrastMode }),
             () => this.props.contrastModeAction(this.state.isContrastMode)
-        );
-    };
+        )
+    }
 
     render() {
-        const { classes, contrastMode } = this.props;
+        const { classes, contrastMode } = this.props
         return (
             <div className={classes.rightBlockItem}>
                 <Tooltip title="Contrast mode">
@@ -41,22 +42,22 @@ class ContrastMode extends Component {
                     </IconButton>
                 </Tooltip>
             </div>
-        );
+        )
     }
-};
+}
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         contrastMode: state.custom.contrastMode.data,
-    };
-};
+    }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         contrastModeAction(mode) {
-            dispatch(contrastModeAction.request(mode));
+            dispatch(contrastModeAction.request(mode))
         },
     }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContrastMode);
+export default connect(mapStateToProps, mapDispatchToProps)(ContrastMode)

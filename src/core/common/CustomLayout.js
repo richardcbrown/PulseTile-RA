@@ -1,34 +1,34 @@
-import React, { Component } from "react";
-import get from "lodash/get";
-import { connect } from 'react-redux';
-import { Layout } from 'react-admin';
+import React, { Component } from "react"
+import get from "lodash/get"
+import { connect } from "react-redux"
+import { Layout } from "react-admin"
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles"
 
-import CustomSidebar from "./Sidebar";
-import CustomTopBar from "./Topbar";
-import CustomFooter from "./Footer";
+import CustomSidebar from "./Sidebar"
+import CustomTopBar from "./Topbar"
+import CustomFooter from "./Footer"
 
-import { getCurrentTheme } from "../config/styles";
+import { getCurrentTheme } from "../config/styles"
 
 const styles = {
     root: {
-        flexDirection: 'column',
+        flexDirection: "column",
         zIndex: 1,
-        minHeight: '100vh',
-        position: 'relative',
+        minHeight: "100vh",
+        position: "relative",
         maxWidth: "100% !important",
         minWidth: "100% !important",
-        '& > div': {
-            minHeight: '100vh',
-            overflowX: 'hidden !important',
+        "& > div": {
+            minHeight: "100vh",
+            overflowX: "hidden !important",
         },
-        '& main > div': {
+        "& main > div": {
             padding: 0,
-            width: "100%"
-        }
+            width: "100%",
+        },
     },
-};
+}
 
 /**
  * This component returns custom layout
@@ -45,14 +45,14 @@ const CustomLayout = ({ classes, ...rest }) => {
             sidebar={CustomSidebar}
             notification={CustomFooter}
         />
-    );
-};
+    )
+}
 
-const mapStateToProps = state => {
-    const isContrastMode = get(state, 'custom.contrastMode.data', false);
+const mapStateToProps = (state) => {
+    const isContrastMode = get(state, "custom.contrastMode.data", false)
     return {
         theme: getCurrentTheme(isContrastMode),
     }
-};
+}
 
-export default connect(mapStateToProps, null)(withStyles(styles)(CustomLayout));
+export default connect(mapStateToProps, null)(withStyles(styles)(CustomLayout))

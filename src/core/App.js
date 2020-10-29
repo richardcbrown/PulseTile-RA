@@ -12,15 +12,14 @@ import customSagas from "./sagas"
 import customReducers from "./reducers"
 import customRoutes from "./routes"
 
-import Charts from "./pages/Charts"
 import Layout from "./common/CustomLayout"
 import InitializePage from "./pages/InitializePage"
 import { themeCommonElements } from "../version/config/theme.config"
 import translations from "./translations"
 
 const plugins = corePlugins.concat(nonCorePlugins)
-const Homepage = get(themeCommonElements, "homePage", Charts)
-const i18nProvider = (locale) => translations[locale]
+const Homepage = get(themeCommonElements, "homePage")
+const i18nProvider = { getLocale: (locale) => translations[locale] }
 
 const App = () => {
     return (

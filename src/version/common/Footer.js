@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { Link } from "react-router-dom"
 
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import CardMedia from "@material-ui/core/CardMedia";
+import { withStyles } from "@material-ui/core/styles"
+import Typography from "@material-ui/core/Typography"
+import CardMedia from "@material-ui/core/CardMedia"
 
-import { contrastModeAction } from "../actions/contrastModeAction";
-import footerLogo from "../../core/images/ripple-foundation-logo-footer.png";
+import { contrastModeAction } from "../actions/contrastModeAction"
+import footerLogo from "../../core/images/ripple-foundation-logo-footer.png"
 
-const styles = theme => ({
+const styles = (theme) => ({
     footerBlock: {
         display: "flex",
         flexDirection: "row",
@@ -42,7 +42,7 @@ const styles = theme => ({
     emptyBlock: {
         flexGrow: 1,
     },
-});
+})
 
 /**
  * This component returns custom theme footer
@@ -50,55 +50,63 @@ const styles = theme => ({
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class Footer extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isContrastMode: this.props.contrastMode,
+        }
+    }
 
-    state = {
-        isContrastMode: this.props.contrastMode,
-    };
-
-    toggleContrastMode = e => {
-        e.preventDefault();
-        this.setState(
-            state => ({ isContrastMode: !this.state.isContrastMode }),
-            () => this.props.contrastModeAction(this.state.isContrastMode)
-        );
-    };
+    toggleContrastMode() {
+        return (e) => {
+            e.preventDefault()
+            this.setState(
+                (state) => ({ isContrastMode: !this.state.isContrastMode }),
+                () => this.props.contrastModeAction(this.state.isContrastMode)
+            )
+        }
+    }
 
     render() {
-        const { classes } = this.props;
-        const { isContrastMode } = this.state;
-        const linkText = isContrastMode ? "Disable High Contrast Mode" : "Enable High Contrast Mode";
+        const { classes } = this.props
+        const { isContrastMode } = this.state
+        const linkText = isContrastMode ? "Disable High Contrast Mode" : "Enable High Contrast Mode"
         return (
             <footer className={classes.footerBlock}>
-                <Typography className={classes.copyright}>Copyright 2018 Ripple Foundation CIC Ltd. All rights reserved.</Typography>
-                <Link to="/" className={classes.contrastModeLink} onClick={e => this.toggleContrastMode(e)}>{linkText}</Link>
+                <Typography className={classes.copyright}>
+                    Copyright 2018 Ripple Foundation CIC Ltd. All rights reserved.
+                </Typography>
+                <Link to="/" className={classes.contrastModeLink} onClick={(e) => this.toggleContrastMode(e)}>
+                    {linkText}
+                </Link>
                 <div className={classes.emptyBlock}></div>
                 <Link to="/">
                     <CardMedia
-                      className={classes.footerLogo}
-                      component="img"
-                      alt="Pulse Tile"
-                      height="29px"
-                      image={footerLogo}
-                      title="Pulse Tile"
+                        className={classes.footerLogo}
+                        component="img"
+                        alt="Pulse Tile"
+                        height="29px"
+                        image={footerLogo}
+                        title="Pulse Tile"
                     />
                 </Link>
             </footer>
-        );
+        )
     }
-};
+}
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         contrastMode: state.custom.contrastMode.data,
-    };
-};
+    }
+}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         contrastModeAction(mode) {
-            dispatch(contrastModeAction.request(mode));
+            dispatch(contrastModeAction.request(mode))
         },
     }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Footer));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Footer))
