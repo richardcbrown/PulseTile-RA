@@ -40,7 +40,12 @@ class UserTour extends Component {
 
     return (
       <div className={classes.rightBlockItem}>
-        <RunUserTour classes={classes} runTour={this.runTour} shouldRunTour={shouldRunTour} callback={this.callback} />
+        <RunUserTour
+          classes={classes}
+          runTour={() => this.runTour()}
+          shouldRunTour={shouldRunTour}
+          callback={(tour) => this.callback(tour)}
+        />
       </div>
     )
   }

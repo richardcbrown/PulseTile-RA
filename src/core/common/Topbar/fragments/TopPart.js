@@ -71,7 +71,7 @@ class TopPart extends Component {
               className={classes.userNemuButton}
               aria-owns={isTopbarMenuOpen ? "menu-appbar" : undefined}
               aria-haspopup="true"
-              onClick={this.handleMenu}
+              onClick={() => this.handleMenu()}
               color="inherit"
             >
               <AccountCircle />
@@ -83,7 +83,7 @@ class TopPart extends Component {
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             transformOrigin={{ vertical: "top", horizontal: "right" }}
             open={isTopbarMenuOpen}
-            onClose={this.handleClose}
+            onClose={() => this.handleClose()}
           >
             {logout}
           </Menu>

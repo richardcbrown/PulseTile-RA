@@ -35,7 +35,7 @@ class ContrastMode extends Component {
             className={classes.rightBlockButton}
             aria-haspopup="true"
             color="inherit"
-            onClick={this.toggleContrastMode}
+            onClick={() => this.toggleContrastMode()}
             aria-label="Contrast mode"
           >
             <ContrastIcon />

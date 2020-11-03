@@ -28,9 +28,18 @@ const defaultDarkPalette = {
   paperColor: "#fff",
   fontColor: "#000",
   toolbarColor: "#fff",
-  background: "#fff",
-  text: "#000",
-  divider: "#000",
+  background: {
+    default: "#fff",
+    paper: "#fff",
+  },
+  text: {
+    primary: "#000",
+    secondary: "#000",
+    disabled: "#000",
+  },
+  // background: "#fff",
+  // text: "#000",
+  // divider: "#000",
 }
 
 /**

@@ -20,8 +20,11 @@ import translations from "./translations"
 const plugins = corePlugins.concat(nonCorePlugins)
 const Homepage = get(themeCommonElements, "homePage")
 const i18nProvider = {
-  getLocale: (locale) => translations[locale],
-  translate: (locale, options) => translations[locale],
+  getLocale: () => "en",
+  translate: (key, options) => {
+    console.log(key, options)
+    return get(translations, `en.${key}`)
+  },
 }
 
 const App = () => {
