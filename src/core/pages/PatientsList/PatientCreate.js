@@ -10,9 +10,9 @@ import FormInputs from "./fragments/FormInputs"
  * @param {shape} props
  */
 const PatientCreate = (props) => (
-    <CreateTemplate blockTitle="Patient" {...props}>
-        <FormInputs />
-    </CreateTemplate>
+  <CreateTemplate blockTitle="Patient" {...props}>
+    <FormInputs />
+  </CreateTemplate>
 )
 
 export default PatientCreate

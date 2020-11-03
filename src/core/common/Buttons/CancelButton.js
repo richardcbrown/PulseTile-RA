@@ -6,23 +6,23 @@ import BlockIcon from "@material-ui/icons/Block"
 import Tooltip from "@material-ui/core/Tooltip"
 
 const styles = (theme) => ({
-    button: {
-        display: "block",
-        width: 100,
-        height: 40,
-        margin: "8px !important",
-        padding: 0,
-        color: "#fff",
-        backgroundColor: theme.palette.dangerColor,
-        border: `1px solid ${theme.palette.dangerColor}`,
-        borderRadius: 25,
-        fontSize: 16,
-        fontWeight: 800,
-        "&:hover": {
-            color: theme.palette.dangerColor,
-            backgroundColor: "#fff",
-        },
+  button: {
+    display: "block",
+    width: 100,
+    height: 40,
+    margin: "8px !important",
+    padding: 0,
+    color: "#fff",
+    backgroundColor: theme.palette.dangerColor,
+    border: `1px solid ${theme.palette.dangerColor}`,
+    borderRadius: 25,
+    fontSize: 16,
+    fontWeight: 800,
+    "&:hover": {
+      color: theme.palette.dangerColor,
+      backgroundColor: "#fff",
     },
+  },
 })
 
 /**
@@ -33,11 +33,11 @@ const styles = (theme) => ({
  * @param {func}  redirectTo
  */
 const CancelButton = ({ classes, redirectTo }) => (
-    <Tooltip title="Cancel">
-        <IconButton aria-label="Cancel" className={classes.button} onClick={() => redirectTo("show")}>
-            <BlockIcon /> Cancel
-        </IconButton>
-    </Tooltip>
+  <Tooltip title="Cancel">
+    <IconButton aria-label="Cancel" className={classes.button} onClick={() => redirectTo("show")}>
+      <BlockIcon /> Cancel
+    </IconButton>
+  </Tooltip>
 )
 
 export default withStyles(styles)(CancelButton)

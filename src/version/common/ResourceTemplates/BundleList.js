@@ -18,70 +18,60 @@ import querystring from "querystring"
  * BundleListProps */
 
 class BundleList extends Component {
-    /**
-     *
-     * @param {BundleListProps} props
-     */
-    constructor(props) {
-        super(props)
+  /**
+   *
+   * @param {BundleListProps} props
+   */
+  constructor(props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    const { resourceType, query, getBundle, componentKey } = /** @type {BundleListProps} */ (this.props)
+
+    getBundle(componentKey, resourceType, querystring.stringify(query))
+  }
+
+  /** @returns {JSX.Element | null} */
+  render() {
+    const { bundle, resourceType, componentKey, getBundle, rowProvider, headProvider, query, tableClass } = this.props
+
+    if (!bundle) {
+      return null
     }
 
-    componentDidMount() {
-        const { resourceType, query, getBundle, componentKey } = /** @type {BundleListProps} */ (this.props)
+    const resources = getFromBundle(bundle, resourceType)
 
-        getBundle(componentKey, resourceType, querystring.stringify(query))
-    }
-
-    /** @returns {JSX.Element | null} */
-    render() {
-        const {
-            bundle,
-            resourceType,
-            componentKey,
-            getBundle,
-            rowProvider,
-            headProvider,
-            query,
-            tableClass,
-        } = this.props
-
-        if (!bundle) {
-            return null
-        }
-
-        const resources = getFromBundle(bundle, resourceType)
-
-        return (
-            <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <Table className={tableClass}>
-                    {headProvider()}
-                    <TableBody>{resources.map((resource) => rowProvider(resource))}</TableBody>
-                </Table>
-                <BundlePagination
-                    itemsPerPage={query._count}
-                    bundle={bundle}
-                    pageSelected={(query) => getBundle(componentKey, resourceType, querystring.stringify(query))}
-                />
-            </div>
-        )
-    }
+    return (
+      <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <Table className={tableClass}>
+          {headProvider()}
+          <TableBody>{resources.map((resource) => rowProvider(resource))}</TableBody>
+        </Table>
+        <BundlePagination
+          itemsPerPage={query._count}
+          bundle={bundle}
+          pageSelected={(query) => getBundle(componentKey, resourceType, querystring.stringify(query))}
+        />
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { fhir } = state.custom
+  const { fhir } = state.custom
 
-    const { componentKey, resourceType } = ownProps
+  const { componentKey, resourceType } = ownProps
 
-    return {
-        bundle:
-            (fhir[componentKey] && fhir[componentKey][resourceType] && fhir[componentKey][resourceType].data) || null,
-    }
+  return {
+    bundle: (fhir[componentKey] && fhir[componentKey][resourceType] && fhir[componentKey][resourceType].data) || null,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        getBundle: (key, resourceType, query) => dispatch(getFhirResourcesAction.request(key, resourceType, query)),
-    }
+  return {
+    getBundle: (key, resourceType, query) => dispatch(getFhirResourcesAction.request(key, resourceType, query)),
+  }
 }
 
 const connected = connect(mapStateToProps, mapDispatchToProps)(BundleList)

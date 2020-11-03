@@ -10,19 +10,19 @@ import Directory from "../pages/Directory"
 import NhsWidgets from "../plugins/NhsWidgets/NhsWidgets"
 
 export default [
-    {
-        name: "top3Things",
-        label: "Top Three Things",
-        list: TopThreeThingsCreate,
-    },
-    {
-        name: "leeds-information",
-        label: "Leeds Information",
-        list: Directory,
-    },
-    {
-        name: "nhs-resources",
-        label: "NHS Resources",
-        list: NhsWidgets,
-    },
+  {
+    name: "top3Things",
+    label: "Top Three Things",
+    list: TopThreeThingsCreate,
+  },
+  {
+    name: "leeds-information",
+    label: "Leeds Information",
+    list: Directory,
+  },
+  {
+    name: "nhs-resources",
+    label: "NHS Resources",
+    list: NhsWidgets,
+  },
 ]

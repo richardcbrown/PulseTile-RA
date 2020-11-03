@@ -13,33 +13,33 @@ import { faCompressArrowsAlt, faExpandArrowsAlt } from "@fortawesome/free-solid-
 import CreateFormToolbar from "../../common/Toolbars/CreateFormToolbar"
 
 const styles = (theme) => ({
-    blockTitle: {
-        display: "flex",
-        alignItems: "center",
-        height: 49,
-        backgroundColor: theme.palette.mainColor,
-        paddingLeft: 15,
+  blockTitle: {
+    display: "flex",
+    alignItems: "center",
+    height: 49,
+    backgroundColor: theme.palette.mainColor,
+    paddingLeft: 15,
+  },
+  title: {
+    color: theme.palette.paperColor,
+    fontSize: 18,
+    fontWeight: 700,
+  },
+  emptyBlock: {
+    flexGrow: 1,
+  },
+  expandBlockIcon: {
+    height: 20,
+    paddingRight: 20,
+    color: theme.palette.paperColor,
+  },
+  createForm: {
+    "& > div": {
+      paddingTop: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
     },
-    title: {
-        color: theme.palette.paperColor,
-        fontSize: 18,
-        fontWeight: 700,
-    },
-    emptyBlock: {
-        flexGrow: 1,
-    },
-    expandBlockIcon: {
-        height: 20,
-        paddingRight: 20,
-        color: theme.palette.paperColor,
-    },
-    createForm: {
-        "& > div": {
-            paddingTop: 0,
-            paddingLeft: 10,
-            paddingRight: 10,
-        },
-    },
+  },
 })
 
 /**
@@ -55,26 +55,26 @@ const styles = (theme) => ({
  * @param {shape}   rest
  */
 const CreateTemplate = ({ classes, isListOpened, toggleListBlock, blockTitle, children, ...rest }) => (
-    <Grid item xs={12} sm={isListOpened ? 6 : 12}>
-        <div className={classes.blockTitle}>
-            <Typography className={classes.title}>{blockTitle}</Typography>
-            <div className={classes.emptyBlock}></div>
-            <Tooltip title={isListOpened ? "Expand" : "Compress"}>
-                <IconButton onClick={() => toggleListBlock()}>
-                    <FontAwesomeIcon
-                        className={classes.expandBlockIcon}
-                        icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt}
-                        size="1x"
-                    />
-                </IconButton>
-            </Tooltip>
-        </div>
-        <Create {...rest}>
-            <SimpleForm className={classes.createForm} toolbar={<CreateFormToolbar />}>
-                {children}
-            </SimpleForm>
-        </Create>
-    </Grid>
+  <Grid item xs={12} sm={isListOpened ? 6 : 12}>
+    <div className={classes.blockTitle}>
+      <Typography className={classes.title}>{blockTitle}</Typography>
+      <div className={classes.emptyBlock}></div>
+      <Tooltip title={isListOpened ? "Expand" : "Compress"}>
+        <IconButton onClick={() => toggleListBlock()}>
+          <FontAwesomeIcon
+            className={classes.expandBlockIcon}
+            icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt}
+            size="1x"
+          />
+        </IconButton>
+      </Tooltip>
+    </div>
+    <Create {...rest}>
+      <SimpleForm className={classes.createForm} toolbar={<CreateFormToolbar />}>
+        {children}
+      </SimpleForm>
+    </Create>
+  </Grid>
 )
 
 export default withStyles(styles)(CreateTemplate)

@@ -12,22 +12,23 @@ import CustomFooter from "./Footer"
 import { getCurrentTheme } from "../config/styles"
 
 const styles = {
-    root: {
-        flexDirection: "column",
-        zIndex: 1,
-        minHeight: "100vh",
-        position: "relative",
-        maxWidth: "100% !important",
-        minWidth: "100% !important",
-        "& > div": {
-            minHeight: "100vh",
-            overflowX: "hidden !important",
-        },
-        "& main > div": {
-            padding: 0,
-            width: "100%",
-        },
+  root: {
+    flexDirection: "column",
+    zIndex: 1,
+    minHeight: "100vh",
+    position: "relative",
+    maxWidth: "100% !important",
+    minWidth: "100% !important",
+    "& > div": {
+      minHeight: "100vh",
+      overflowX: "hidden !important",
+      margin: 0,
     },
+    "& main > div": {
+      padding: 0,
+      width: "100%",
+    },
+  },
 }
 
 /**
@@ -37,22 +38,22 @@ const styles = {
  * @constructor
  */
 const CustomLayout = ({ classes, ...rest }) => {
-    return (
-        <Layout
-            {...rest}
-            className={classes.root}
-            appBar={CustomTopBar}
-            sidebar={CustomSidebar}
-            notification={CustomFooter}
-        />
-    )
+  return (
+    <Layout
+      {...rest}
+      className={classes.root}
+      appBar={CustomTopBar}
+      sidebar={CustomSidebar}
+      notification={CustomFooter}
+    />
+  )
 }
 
 const mapStateToProps = (state) => {
-    const isContrastMode = get(state, "custom.contrastMode.data", false)
-    return {
-        theme: getCurrentTheme(isContrastMode),
-    }
+  const isContrastMode = get(state, "custom.contrastMode.data", false)
+  return {
+    theme: getCurrentTheme(isContrastMode),
+  }
 }
 
 export default connect(mapStateToProps, null)(withStyles(styles)(CustomLayout))

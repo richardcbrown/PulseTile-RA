@@ -1,9 +1,9 @@
 import get from "lodash/get"
 
 const initialState = {
-    data: null,
-    loading: false,
-    error: null,
+  data: null,
+  loading: false,
+  error: null,
 }
 
 /**
@@ -14,27 +14,27 @@ const initialState = {
  * @param {string} data
  */
 export default function createCustomReducer(actionName, data) {
-    return (state = initialState, action) => {
-        switch (action.type) {
-            case actionName.REQUEST:
-                return {
-                    ...state,
-                    loading: true,
-                }
-            case actionName.SUCCESS:
-                return {
-                    ...state,
-                    loading: false,
-                    data: get(action, data, []),
-                }
-            case actionName.FAILURE:
-                return {
-                    ...state,
-                    loading: false,
-                    error: get(action, "error", null),
-                }
-            default:
-                return state
+  return (state = initialState, action) => {
+    switch (action.type) {
+      case actionName.REQUEST:
+        return {
+          ...state,
+          loading: true,
         }
+      case actionName.SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          data: get(action, data, []),
+        }
+      case actionName.FAILURE:
+        return {
+          ...state,
+          loading: false,
+          error: get(action, "error", null),
+        }
+      default:
+        return state
     }
+  }
 }

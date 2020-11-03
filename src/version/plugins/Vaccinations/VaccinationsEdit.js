@@ -12,9 +12,9 @@ import Inputs from "./fragments/Inputs"
  * @constructor
  */
 const VaccinationsEdit = ({ classes, ...rest }) => (
-    <EditTemplate blockTitle="Vaccination" {...rest}>
-        <Inputs />
-    </EditTemplate>
+  <EditTemplate blockTitle="Vaccination" {...rest}>
+    <Inputs />
+  </EditTemplate>
 )
 
 export default VaccinationsEdit

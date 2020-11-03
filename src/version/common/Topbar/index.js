@@ -7,10 +7,10 @@ import TopPart from "./fragments/TopPart"
 import LowPart from "./fragments/LowPart"
 
 const styles = {
-    appBar: {
-        boxShadow: "none",
-        width: "auto",
-    },
+  appBar: {
+    boxShadow: "none",
+    width: "auto",
+  },
 }
 
 /**
@@ -19,12 +19,12 @@ const styles = {
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 const ThemeTopBar = ({ classes, ...rest }) => {
-    return (
-        <AppBar position="static" className={classes.appBar}>
-            <TopPart {...rest} />
-            <LowPart {...rest} />
-        </AppBar>
-    )
+  return (
+    <AppBar position="static" className={classes.appBar}>
+      <TopPart {...rest} />
+      <LowPart {...rest} />
+    </AppBar>
+  )
 }
 
 export default withStyles(styles)(ThemeTopBar)

@@ -6,27 +6,27 @@ import ThemeTopbar from "../common/Topbar"
 import PatientSummary from "../../core/pages/PatientSummary"
 
 export const themeShortMenu = [
-    { url: "/summary", label: "Patient Summary" },
-    { url: "/top3Things", label: "TopThreeThings" },
-    { url: "/nhs-resources", label: "NHS Resources" },
-    { url: "/leeds-information", label: "Leeds Information" },
+  { url: "/summary", label: "Patient Summary" },
+  { url: "/top3Things", label: "TopThreeThings" },
+  { url: "/nhs-resources", label: "NHS Resources" },
+  { url: "/leeds-information", label: "Leeds Information" },
 ]
 
 export const themeFullMenu = [
-    { url: "/summary", label: "Patient Summary" },
-    { url: "/top3Things", label: "TopThreeThings" },
-    { url: "/nhs-resources", label: "NHS Resources" },
-    { url: "/leeds-information", label: "Leeds Information" },
+  { url: "/summary", label: "Patient Summary" },
+  { url: "/top3Things", label: "TopThreeThings" },
+  { url: "/nhs-resources", label: "NHS Resources" },
+  { url: "/leeds-information", label: "Leeds Information" },
 ]
 
 export const themeCommonElements = {
-    topbar: ThemeTopbar,
-    homePage: PatientSummary,
-    isFooterAbsent: true,
+  topbar: ThemeTopbar,
+  homePage: PatientSummary,
+  isFooterAbsent: true,
 }
 
 export const themeImages = {
-    backgroundImage: backgroundImage,
-    cardBackgroundImage: cardBackgroundImage,
-    tableHeaderImage: tableHeaderImage,
+  backgroundImage: backgroundImage,
+  cardBackgroundImage: cardBackgroundImage,
+  tableHeaderImage: tableHeaderImage,
 }

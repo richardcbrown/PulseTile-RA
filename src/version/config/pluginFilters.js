@@ -6,6 +6,6 @@
  * @return {shape}
  */
 export default {
-    // vaccinations: ['vaccinationName'],
-    top3Things: [],
+  // vaccinations: ['vaccinationName'],
+  top3Things: [],
 }

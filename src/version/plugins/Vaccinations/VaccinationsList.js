@@ -16,18 +16,18 @@ import VaccinationsShow from "./VaccinationsShow"
  * @constructor
  */
 const VaccinationsList = ({ classes, ...rest }) => (
-    <ListTemplate
-        create={VaccinationsCreate}
-        edit={VaccinationsEdit}
-        show={VaccinationsShow}
-        resourceUrl="vaccinations"
-        title="Vaccinations"
-        {...rest}
-    >
-        <TextField label="Vaccination Name" source="vaccinationName" />
-        <DateField label="Date and Time" source="dateCreated" />
-        <TextField label="Source" source="source" />
-    </ListTemplate>
+  <ListTemplate
+    create={VaccinationsCreate}
+    edit={VaccinationsEdit}
+    show={VaccinationsShow}
+    resourceUrl="vaccinations"
+    title="Vaccinations"
+    {...rest}
+  >
+    <TextField label="Vaccination Name" source="vaccinationName" />
+    <DateField label="Date and Time" source="dateCreated" />
+    <TextField label="Source" source="source" />
+  </ListTemplate>
 )
 
 export default VaccinationsList

@@ -12,69 +12,69 @@ import PatientBanner from "../../../../core/common/Topbar/fragments/PatientBanne
 import MobileMenu from "./MobileMenu"
 
 const styles = (theme) => ({
-    lowPart: {
-        display: "flex",
-        minHeight: "auto",
-        flexDirection: "column",
-        padding: 0,
+  lowPart: {
+    display: "flex",
+    minHeight: "auto",
+    flexDirection: "column",
+    padding: 0,
+  },
+  menuAndBanner: {
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
     },
-    menuAndBanner: {
-        [theme.breakpoints.only("xs")]: {
-            display: "none",
-        },
-        display: "flex",
-        width: "100%",
-        minHeight: "auto",
-        border: `1px solid ${theme.palette.borderColor}`,
-        padding: 0,
-        backgroundColor: "white",
-        justifyContent: "space-between",
+    display: "flex",
+    width: "100%",
+    minHeight: "auto",
+    border: `1px solid ${theme.palette.borderColor}`,
+    padding: 0,
+    backgroundColor: "white",
+    justifyContent: "space-between",
+  },
+  menuButtonBlock: {
+    display: "inline-flex",
+    position: "relative",
+    minWidth: 238,
+    minHeight: 90,
+    borderRight: `1px solid ${theme.palette.borderColor}`,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  menuButton: {
+    borderRadius: 15,
+    minWidth: 64,
+    color: theme.palette.mainColor,
+    textTransform: "none",
+    backgroundColor: "white",
+    "&:hover": {
+      backgroundColor: theme.palette.mainColor,
+      color: "white",
     },
-    menuButtonBlock: {
-        display: "inline-flex",
-        position: "relative",
-        minWidth: 238,
-        minHeight: 90,
-        borderRight: `1px solid ${theme.palette.borderColor}`,
-        justifyContent: "center",
-        alignItems: "center",
+    "&:active": {
+      backgroundColor: theme.palette.mainColor,
+      color: "white",
     },
-    menuButton: {
-        borderRadius: 15,
-        minWidth: 64,
-        color: theme.palette.mainColor,
-        textTransform: "none",
-        backgroundColor: "white",
-        "&:hover": {
-            backgroundColor: theme.palette.mainColor,
-            color: "white",
-        },
-        "&:active": {
-            backgroundColor: theme.palette.mainColor,
-            color: "white",
-        },
-    },
-    title: {
-        display: "block",
-        width: "100%",
-        flexGrow: 1,
-        color: "white",
-        backgroundColor: theme.palette.mainColor,
-        textAlign: "center",
-        paddingTop: 5,
-        paddingBottom: 5,
-        fontWeight: 800,
-    },
-    patientInfo: {
-        color: "black",
-        padding: "11px 14px",
-        marginLeft: 5,
-    },
-    gridBlock: {
-        padding: "0px !important",
-        marginTop: 5,
-        marginBottom: 5,
-    },
+  },
+  title: {
+    display: "block",
+    width: "100%",
+    flexGrow: 1,
+    color: "white",
+    backgroundColor: theme.palette.mainColor,
+    textAlign: "center",
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontWeight: 800,
+  },
+  patientInfo: {
+    color: "black",
+    padding: "11px 14px",
+    marginLeft: 5,
+  },
+  gridBlock: {
+    padding: "0px !important",
+    marginTop: 5,
+    marginBottom: 5,
+  },
 })
 
 /**
@@ -87,20 +87,20 @@ const styles = (theme) => ({
  * @constructor
  */
 const MenuButton = ({ classes, setSidebarVisibility, isSidebarOpen }) => {
-    return (
-        <div className={classes.menuButtonBlock}>
-            <Button
-                aria-label={!isSidebarOpen ? "Menu" : "Close"}
-                variant="contained"
-                color="primary"
-                className={classes.menuButton}
-                onClick={() => setSidebarVisibility(!isSidebarOpen)}
-            >
-                {!isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
-                {!isSidebarOpen ? "Menu" : "Close"}
-            </Button>
-        </div>
-    )
+  return (
+    <div className={classes.menuButtonBlock}>
+      <Button
+        aria-label={!isSidebarOpen ? "Menu" : "Close"}
+        variant="contained"
+        color="primary"
+        className={classes.menuButton}
+        onClick={() => setSidebarVisibility(!isSidebarOpen)}
+      >
+        {!isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
+        {!isSidebarOpen ? "Menu" : "Close"}
+      </Button>
+    </div>
+  )
 }
 
 /**
@@ -110,34 +110,28 @@ const MenuButton = ({ classes, setSidebarVisibility, isSidebarOpen }) => {
  * @constructor
  */
 class LowPart extends Component {
-    componentWillMount() {
-        this.props.setSidebarVisibility(true)
-    }
+  componentWillMount() {
+    this.props.setSidebarVisibility(true)
+  }
 
-    render() {
-        const { classes, isSidebarOpen, setSidebarVisibility, location, patientInfo } = this.props
-        const isPageHasTitle = pageHasTitle(location)
-        return (
-            <Toolbar className={classes.lowPart}>
-                {isPageHasTitle && <PageTitle classes={classes} location={location} />}
-                <div className={classes.menuAndBanner}>
-                    <MenuButton
-                        classes={classes}
-                        setSidebarVisibility={setSidebarVisibility}
-                        isSidebarOpen={isSidebarOpen}
-                    />
-                    {!isPageHasTitle && (
-                        <PatientBanner location={location} classes={classes} patientInfo={patientInfo} />
-                    )}
-                </div>
-                <MobileMenu
-                    setSidebarVisibility={setSidebarVisibility}
-                    isSidebarOpen={isSidebarOpen}
-                    patientInfo={patientInfo}
-                />
-            </Toolbar>
-        )
-    }
+  render() {
+    const { classes, isSidebarOpen, setSidebarVisibility, location, patientInfo } = this.props
+    const isPageHasTitle = pageHasTitle(location)
+    return (
+      <Toolbar className={classes.lowPart}>
+        {isPageHasTitle && <PageTitle classes={classes} location={location} />}
+        <div className={classes.menuAndBanner}>
+          <MenuButton classes={classes} setSidebarVisibility={setSidebarVisibility} isSidebarOpen={isSidebarOpen} />
+          {!isPageHasTitle && <PatientBanner location={location} classes={classes} patientInfo={patientInfo} />}
+        </div>
+        <MobileMenu
+          setSidebarVisibility={setSidebarVisibility}
+          isSidebarOpen={isSidebarOpen}
+          patientInfo={patientInfo}
+        />
+      </Toolbar>
+    )
+  }
 }
 
 export default withStyles(styles)(LowPart)

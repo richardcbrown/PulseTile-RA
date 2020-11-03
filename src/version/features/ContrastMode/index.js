@@ -13,51 +13,51 @@ import { contrastModeAction } from "../../actions/contrastModeAction"
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class ContrastMode extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isContrastMode: false,
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      isContrastMode: false,
     }
-    toggleContrastMode() {
-        this.setState(
-            (state) => ({ isContrastMode: !this.state.isContrastMode }),
-            () => this.props.contrastModeAction(this.state.isContrastMode)
-        )
-    }
+  }
+  toggleContrastMode() {
+    this.setState(
+      (state) => ({ isContrastMode: !this.state.isContrastMode }),
+      () => this.props.contrastModeAction(this.state.isContrastMode)
+    )
+  }
 
-    render() {
-        const { classes, contrastMode } = this.props
-        return (
-            <div className={classes.rightBlockItem}>
-                <Tooltip title="Contrast mode">
-                    <IconButton
-                        className={classes.rightBlockButton}
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={this.toggleContrastMode}
-                        aria-label="Contrast mode"
-                    >
-                        <ContrastIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
-        )
-    }
+  render() {
+    const { classes, contrastMode } = this.props
+    return (
+      <div className={classes.rightBlockItem}>
+        <Tooltip title="Contrast mode">
+          <IconButton
+            className={classes.rightBlockButton}
+            aria-haspopup="true"
+            color="inherit"
+            onClick={this.toggleContrastMode}
+            aria-label="Contrast mode"
+          >
+            <ContrastIcon />
+          </IconButton>
+        </Tooltip>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        contrastMode: state.custom.contrastMode.data,
-    }
+  return {
+    contrastMode: state.custom.contrastMode.data,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        contrastModeAction(mode) {
-            dispatch(contrastModeAction.request(mode))
-        },
-    }
+  return {
+    contrastModeAction(mode) {
+      dispatch(contrastModeAction.request(mode))
+    },
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContrastMode)

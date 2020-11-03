@@ -19,37 +19,40 @@ import translations from "./translations"
 
 const plugins = corePlugins.concat(nonCorePlugins)
 const Homepage = get(themeCommonElements, "homePage")
-const i18nProvider = { getLocale: (locale) => translations[locale] }
+const i18nProvider = {
+  getLocale: (locale) => translations[locale],
+  translate: (locale, options) => translations[locale],
+}
 
 const App = () => {
-    return (
-        <Admin
-            authProvider={authProvider}
-            customSagas={[customSagas]}
-            customReducers={{ custom: customReducers }}
-            customRoutes={customRoutes}
-            dataProvider={customDataProvider}
-            dashboard={Homepage}
-            appLayout={Layout}
-            loginPage={InitializePage}
-            locale="en"
-            i18nProvider={i18nProvider}
-        >
-            {plugins.map((item) => {
-                const resourceProps = {}
+  return (
+    <Admin
+      authProvider={authProvider}
+      customSagas={[customSagas]}
+      customReducers={{ custom: customReducers }}
+      customRoutes={customRoutes}
+      dataProvider={customDataProvider}
+      dashboard={Homepage}
+      appLayout={Layout}
+      loginPage={InitializePage}
+      locale="en"
+      i18nProvider={i18nProvider}
+    >
+      {plugins.map((item) => {
+        const resourceProps = {}
 
-                if (item.create) {
-                    resourceProps.create = item.create
-                }
+        if (item.create) {
+          resourceProps.create = item.create
+        }
 
-                if (item.edit) {
-                    resourceProps.edit = item.edit
-                }
+        if (item.edit) {
+          resourceProps.edit = item.edit
+        }
 
-                return <Resource name={item.name} options={{ label: item.label }} list={item.list} {...resourceProps} />
-            })}
-        </Admin>
-    )
+        return <Resource name={item.name} options={{ label: item.label }} list={item.list} {...resourceProps} />
+      })}
+    </Admin>
+  )
 }
 
 export default App

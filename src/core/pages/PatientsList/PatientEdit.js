@@ -12,9 +12,9 @@ import FormInputs from "./fragments/FormInputs"
  * @constructor
  */
 const PatientEdit = ({ classes, ...rest }) => (
-    <EditTemplate blockTitle="Patient" {...rest}>
-        <FormInputs />
-    </EditTemplate>
+  <EditTemplate blockTitle="Patient" {...rest}>
+    <FormInputs />
+  </EditTemplate>
 )
 
 export default PatientEdit

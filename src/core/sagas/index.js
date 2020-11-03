@@ -9,33 +9,33 @@ import showHeadingsSagas from "./showHeadingsSagas"
 
 import createSynopsisSagas from "./createSynopsisSagas"
 import {
-    SYNOPSIS_ALLERGIES_ACTION,
-    synopsisAllergiesAction,
-    SYNOPSIS_CONTACTS_ACTION,
-    synopsisContactsAction,
-    SYNOPSIS_MEDICATIONS_ACTION,
-    synopsisMedicationsAction,
-    SYNOPSIS_PROBLEMS_ACTION,
-    synopsisProblemsAction,
+  SYNOPSIS_ALLERGIES_ACTION,
+  synopsisAllergiesAction,
+  SYNOPSIS_CONTACTS_ACTION,
+  synopsisContactsAction,
+  SYNOPSIS_MEDICATIONS_ACTION,
+  synopsisMedicationsAction,
+  SYNOPSIS_PROBLEMS_ACTION,
+  synopsisProblemsAction,
 } from "../actions/synopsisActions"
 
 // LINK TO NON-CORE SAGAS
 import nonCoreSagas from "../../version/sagas"
 
 const coreSagas = [
-    createSynopsisSagas(SYNOPSIS_ALLERGIES_ACTION, synopsisAllergiesAction, "allergies"),
-    createSynopsisSagas(SYNOPSIS_CONTACTS_ACTION, synopsisContactsAction, "contacts"),
-    createSynopsisSagas(SYNOPSIS_MEDICATIONS_ACTION, synopsisMedicationsAction, "medications"),
-    createSynopsisSagas(SYNOPSIS_PROBLEMS_ACTION, synopsisProblemsAction, "problems"),
-    initializeSagas,
-    demographicsSagas,
-    httpErrorSagas,
-    showModeSagas,
-    showHeadingsSagas,
+  createSynopsisSagas(SYNOPSIS_ALLERGIES_ACTION, synopsisAllergiesAction, "allergies"),
+  createSynopsisSagas(SYNOPSIS_CONTACTS_ACTION, synopsisContactsAction, "contacts"),
+  createSynopsisSagas(SYNOPSIS_MEDICATIONS_ACTION, synopsisMedicationsAction, "medications"),
+  createSynopsisSagas(SYNOPSIS_PROBLEMS_ACTION, synopsisProblemsAction, "problems"),
+  initializeSagas,
+  demographicsSagas,
+  httpErrorSagas,
+  showModeSagas,
+  showHeadingsSagas,
 ]
 
 const mergeSagas = coreSagas.concat(nonCoreSagas)
 
 export default function* rootSaga() {
-    yield all(mergeSagas)
+  yield all(mergeSagas)
 }

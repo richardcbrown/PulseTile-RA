@@ -11,9 +11,9 @@ import Inputs from "./fragments/Inputs"
  * @param {shape} rest
  */
 const VaccinationsCreate = ({ classes, ...rest }) => (
-    <CreateTemplate blockTitle="Vaccination" {...rest}>
-        <Inputs />
-    </CreateTemplate>
+  <CreateTemplate blockTitle="Vaccination" {...rest}>
+    <Inputs />
+  </CreateTemplate>
 )
 
 export default VaccinationsCreate

@@ -1,9 +1,5 @@
-import React, { Component } from "react"
+import React, { Component, useEffect, useState } from "react"
 import { connect } from "react-redux"
-import { synopsisTopThreeThingsAction } from "../../actions/synopsisActions"
-import get from "lodash/get"
-import customDataProvider from "../../../core/dataProviders/dataProvider"
-// import { TextInput, DateInput, LongTextInput, Create, SimpleForm, maxLength } from "react-admin";
 import moment from "moment"
 import { withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
@@ -11,223 +7,441 @@ import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar"
 import TableHeader from "../../../core/common/TableHeader"
 import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import backgroundImage from "../../images/Artboard.png"
-import { Typography } from "@material-ui/core"
+import { Typography, TextField, Paper, FormGroup, FormControl, FormHelperText } from "@material-ui/core"
 import { flattenComposition, transformComposition } from "../../fhir/composition"
+import { getFhirResourcesAction } from "../../actions/getFhirResourcesAction"
+import querystring from "query-string"
+import { getFromBundle } from "../../fhir/GetFromBundle"
+import { createFhirResourceAction } from "../../actions/createFhirResourceAction"
 
 const styles = {
-    createBlock: {
-        padding: "24px",
-        background: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-    },
+  createBlock: {
+    padding: "24px",
+    background: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+  },
 }
 
-const CharacterCount = ({ form, formItem, limit, show }) => {
-    const showCount = form && show
+const CharacterCount = ({ value, limit }) => {
+  if (!limit) {
+    return null
+  }
 
-    if (!showCount) {
-        return null
-    }
+  const remaining = limit - (value ? value.length : 0)
 
-    const remaining = limit - (form.values && form.values[formItem] ? form.values[formItem].length : 0)
-
-    return (
-        <Typography>
-            {remaining}/{limit} characters remaining
-        </Typography>
-    )
+  return (
+    <Typography>
+      {remaining}/{limit} characters remaining
+    </Typography>
+  )
 }
 
 const conditionalRequired = (message, target) => (value, allValues) => {
-    const targetValue = allValues[target]
+  const targetValue = allValues[target]
 
-    if (targetValue && !value) {
-        return message
+  if (targetValue && !value) {
+    return message
+  }
+
+  return undefined
+}
+
+/** @type {fhir.Questionnaire} */
+const questionnaire = {
+  resourceType: "Questionnaire",
+  status: "active",
+  identifier: [
+    {
+      system: "http://test.com",
+      value: "test",
+    },
+  ],
+  item: [
+    {
+      linkId: "item1",
+      type: "group",
+      item: [
+        {
+          linkId: "title1",
+          type: "string",
+          text: "#1",
+          maxLength: 75,
+        },
+        {
+          linkId: "description1",
+          type: "text",
+          text: "Description #1",
+          maxLength: 500,
+        },
+      ],
+    },
+    {
+      linkId: "item2",
+      type: "group",
+      item: [
+        {
+          linkId: "title2",
+          type: "string",
+          text: "#2",
+          maxLength: 75,
+        },
+        {
+          linkId: "description2",
+          type: "text",
+          text: "Description #2",
+          maxLength: 500,
+        },
+      ],
+    },
+    {
+      linkId: "item3",
+      type: "group",
+      item: [
+        {
+          linkId: "title3",
+          type: "string",
+          text: "#3",
+          maxLength: 75,
+        },
+        {
+          linkId: "description3",
+          type: "text",
+          text: "Description #3",
+          maxLength: 500,
+        },
+      ],
+    },
+  ],
+}
+
+/**
+ * @typedef {Object} QuestionnaireResponseItemCreatorProps
+ * @property {fhir.QuestionnaireItem} item
+ * @property {fhir.QuestionnaireResponseItem} responseItem
+ * @property {(item: fhir.QuestionnaireResponseItem) => void} onItemChange
+ */
+
+/**
+ * @type {import('react').FunctionComponent<QuestionnaireResponseItemCreatorProps>}
+ */
+const QuestionnaireResponseItemCreator = ({ item, onItemChange, responseItem, initialResponseItem }) => {
+  const { type } = item
+
+  const [value, setValue] = useState("")
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+
+  useEffect(() => {
+    const maxLengthError = value && value.length > item.maxLength
+
+    /** @type {fhir.QuestionnaireResponseItem} */
+    const responseItem = {
+      linkId: item.linkId,
+      text: item.text,
+      answer: [{ valueString: value }],
     }
 
-    return undefined
+    onItemChange(responseItem)
+
+    if (maxLengthError) {
+      setError(true)
+      setErrorMessage(`Must be ${item.maxLength} characters or less`)
+      return
+    }
+
+    setError(false)
+    setErrorMessage("")
+  }, [value])
+
+  useEffect(() => {
+    if (!initialResponseItem) {
+      return
+    }
+
+    const value = getValue(initialResponseItem)
+
+    setValue(value)
+  }, [initialResponseItem])
+
+  function getResponseItem(item, responseItem) {
+    const responseItems = (responseItem && responseItem.item) || []
+
+    const response = responseItems.find((ri) => ri.linkId === item.linkId) || null
+
+    return response
+  }
+
+  /**
+   * @param {fhir.QuestionnaireResponseItem} responseItem
+   */
+  function getValue(responseItem) {
+    return ((responseItem && (responseItem.answer || [])[0]) || {}).valueString || ""
+  }
+
+  switch (type) {
+    case "group": {
+      const subItems = item.item || []
+
+      const groupItemChanged = (response) => {
+        const items = (responseItem && responseItem.item) || []
+
+        const newItems = items.filter((i) => i.linkId !== response.linkId)
+
+        newItems.push(response)
+
+        onItemChange({ linkId: item.linkId, item: newItems })
+      }
+
+      return (
+        <>
+          {subItems.map((si) => (
+            <QuestionnaireResponseItemCreator
+              responseItem={getResponseItem(si, responseItem)}
+              item={si}
+              onItemChange={groupItemChanged}
+              initialResponseItem={getResponseItem(si, initialResponseItem)}
+            />
+          ))}
+        </>
+      )
+    }
+    case "string":
+    case "text": {
+      return (
+        <FormControl>
+          <TextField
+            error={error}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            label={item.text}
+            fullWidth={type === "text"}
+          />
+          {!error ? (
+            <CharacterCount limit={item.maxLength} value={value} />
+          ) : (
+            <FormHelperText error={error}>{errorMessage}</FormHelperText>
+          )}
+        </FormControl>
+      )
+    }
+    default: {
+      throw Error(`Type ${type} not supported`)
+    }
+  }
+}
+
+/**
+ * @typedef {Object} QuestionnaireResponseCreatorProps
+ * @property {fhir.Questionnaire} questionnaire
+ * @property {(response: fhir.QuestionnaireResponse) => void} createQuestionnaireResponse
+ */
+
+/**
+ * @type {import('react').FunctionComponent<QuestionnaireResponseCreatorProps>}
+ */
+const QuestionnaireResponseCreator = ({ questionnaire, createQuestionnaireResponse, questionnaireResponse }) => {
+  const { item } = questionnaire
+
+  const [response, setResponse] = useState({ resourceType: "QuestionnaireResponse" })
+
+  useEffect(() => {
+    if (questionnaireResponse) {
+      const item = questionnaireResponse.item || []
+
+      setResponse({ resourceType: "QuestionnaireResponse", item })
+    }
+  }, [questionnaireResponse])
+
+  function updateResponse(responseItem) {
+    const { item = [] } = response
+
+    const newItems = item.filter((i) => i.linkId !== responseItem.linkId)
+
+    newItems.push(responseItem)
+
+    setResponse({ ...response, item: newItems })
+  }
+
+  function getResponseItem(item, response) {
+    if (!response) {
+      return null
+    }
+
+    const responseItems = response.item || []
+
+    const responseItem = responseItems.find((ri) => ri.linkId === item.linkId) || null
+
+    return responseItem
+  }
+
+  if (!item) {
+    return null
+  }
+
+  return (
+    <Grid container spacing={0} style={{ margin: 0, width: "100%" }}>
+      <Grid item container spacing={4} style={{ margin: 0, width: "100%" }} xs={12}>
+        <Grid item xs={12}>
+          <FormGroup>
+            {item.map((qItem) => (
+              <QuestionnaireResponseItemCreator
+                responseItem={getResponseItem(qItem, response)}
+                item={qItem}
+                onItemChange={updateResponse}
+                initialResponseItem={getResponseItem(qItem, questionnaireResponse)}
+              />
+            ))}
+
+            <FormControl>
+              <TextField
+                // className={classes.labelBlock}
+                label="Author"
+                defaultValue={localStorage.getItem("username")}
+                disabled={true}
+                fullWidth
+              />
+            </FormControl>
+            <FormControl>
+              <TextField
+                // className={classes.labelBlock}
+                label="Date"
+                defaultValue={moment().format("MM/DD/YYYY")}
+                disabled={true}
+                fullWidth
+              />
+            </FormControl>
+          </FormGroup>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <CreateFormToolbar
+          handleSave={() => {
+            /** @type {fhir.QuestionnaireResponse} */
+            const questionnaireResponse = { ...response, status: "completed", authored: new Date().toISOString() }
+
+            questionnaireResponse.questionnaire = {
+              reference: `${questionnaire.resourceType}/${questionnaire.id}`,
+            }
+
+            createQuestionnaireResponse(questionnaireResponse)
+          }}
+          disabled={false}
+        />
+      </Grid>
+    </Grid>
+  )
 }
 
 /**
  * This component returns TopThreeThings creation form
  *
  * @author Richard Brown
- * @param {shape} classes
- * @param {shape} rest
+ * @param {Object} classes
+ * @param {Object} rest
  */
 class TopThreeThingsCreate extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.nameOneValidator = conditionalRequired("Subject is required", "description1")
-        this.nameTwoValidator = conditionalRequired("Subject is required", "description2")
-        this.nameThreeValidator = conditionalRequired("Subject is required", "description3")
+    this.nameOneValidator = conditionalRequired("Subject is required", "description1")
+    this.nameTwoValidator = conditionalRequired("Subject is required", "description2")
+    this.nameThreeValidator = conditionalRequired("Subject is required", "description3")
 
-        this.state = {
-            loaded: false,
-        }
+    this.state = {
+      responseRequested: false,
+    }
+  }
+
+  componentDidMount() {
+    const { resourceType, query, getBundle, componentKey } = this.props
+    getBundle("TopThreeThings", "Questionnaire", querystring.stringify({ identifier: "http://test.com|test" }))
+  }
+
+  componentDidUpdate() {
+    const { questionnaire, getBundle } = this.props
+    const { responseRequested } = this.state
+
+    if (!questionnaire || responseRequested) {
+      return
     }
 
-    componentDidMount() {
-        this.props.getTopThreeThingsSynopsis()
-    }
+    this.setState({ responseRequested: true })
 
-    componentDidUpdate() {
-        if (!this.state.loaded && this.props.latestTopThreeThings.id) {
-            customDataProvider("GET_ONE", "Composition", { id: this.props.latestTopThreeThings.id }).then((res) => {
-                this.setState({ ...flattenComposition(res.data), loaded: true })
-            })
-        }
-    }
+    getBundle(
+      "TopThreeThings",
+      "QuestionnaireResponse",
+      querystring.stringify({
+        questionnaire: `${questionnaire.resourceType}/${questionnaire.id}`,
+        _sort: "-authored",
+      })
+    )
+  }
 
-    formChanged(form) {
-        if (!form) {
-            return false
-        }
+  render() {
+    const { classes, createResource, questionnaire, questionnaireResponse } = this.props
 
-        form.fields = form.fields || {}
+    const resourceUrl = "top3Things"
+    const title = "Top Three Things"
 
-        form.fields["name1"] = { touched: true, visited: true }
-        form.fields["name2"] = { touched: true, visited: true }
-        form.fields["name3"] = { touched: true, visited: true }
+    const breadcrumbsResource = [{ url: "/" + resourceUrl, title: title, isActive: false }]
 
-        for (const prop in form.values) {
-            if (form.values.hasOwnProperty(prop)) {
-                const initialValue = form.initial[prop]
-                const currentValue = form.values[prop]
-
-                if (!initialValue && currentValue) {
-                    return true
-                }
-
-                if (initialValue && currentValue !== initialValue) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
-    handleSave() {
-        const { form } = this.props
-
-        if (this.formChanged(form) && !form.syncErrors) {
-            this.refs.formRef.props.save(transformComposition(form.values), "/top3Things")
-        }
-    }
-
-    showCount(key) {
-        const { form } = this.props
-
-        return form && (!form.syncErrors || !form.syncErrors[key])
-    }
-
-    render() {
-        const { classes, form, ...rest } = this.props
-
-        const resourceUrl = "top3Things"
-        const title = "Top Three Things"
-
-        const breadcrumbsResource = [{ url: "/" + resourceUrl, title: title, isActive: false }]
-
-        return (
-            <React.Fragment>
-                <Breadcrumbs resource={breadcrumbsResource} />
-                <TableHeader resource={resourceUrl} />
-                <Grid item xs={12} sm={12} className={classes.createBlock}>
-                    {/* <Create {...rest}>
-                        <SimpleForm 
-                            className={classes.createForm}
-                            toolbar={<CreateFormToolbar { ...rest } handleSave={ this.handleSave } disabled={ !form || !this.formChanged(form) || form.syncErrors } />}
-                            onSubmit={ this.submit }
-                            ref="formRef"
-                        >
-                            <TextInput 
-                                className={classes.labelBlock}  
-                                source="name1" 
-                                label="#1"
-                                defaultValue={ this.state.name1 }
-                                validate={ [this.nameOneValidator, maxLength(75)] } 
-                            />
-                            <CharacterCount limit={ 75 } form={ form } formItem="name1" show={ this.showCount("name1") } />
-                            <LongTextInput 
-                                className={classes.labelBlock} 
-                                source="description1" 
-                                label="Description #1" 
-                                fullWidth
-                                defaultValue={ this.state.description1 }
-                                validate={ maxLength(500) } 
-                            />
-                            <CharacterCount limit={ 500 } form={ form } formItem="description1" show={ this.showCount("description1") } />
-                            <TextInput 
-                                className={classes.labelBlock}  
-                                source="name2" 
-                                label="#2"
-                                defaultValue={ this.state.name2 }
-                                validate={ [this.nameTwoValidator, maxLength(75)] }  
-                            />
-                            <CharacterCount limit={ 75 } form={ form } formItem="name2" show={ this.showCount("name2") } />
-                            <LongTextInput 
-                                className={classes.labelBlock} 
-                                source="description2" 
-                                label="Description #2" 
-                                fullWidth
-                                defaultValue={ this.state.description2 }
-                                validate={ maxLength(500) } 
-                            />
-                            <CharacterCount limit={ 500 } form={ form } formItem="description2" show={ this.showCount("description2") } />
-                            <TextInput 
-                                className={classes.labelBlock}  
-                                source="name3" 
-                                label="#3"
-                                defaultValue={ this.state.name3 }
-                                validate={ [this.nameThreeValidator, maxLength(75)] }  
-                            />
-                            <CharacterCount limit={ 75 } form={ form } formItem="name3" show={ this.showCount("name3") } />
-                            <LongTextInput 
-                                className={classes.labelBlock} 
-                                source="description3" 
-                                label="Description #3" 
-                                fullWidth
-                                defaultValue={ this.state.description3 }
-                                validate={ maxLength(500) } 
-                            />
-                            <CharacterCount limit={ 500 } form={ form } formItem="description3" show={ this.showCount("description3") } />
-                            <TextInput className={classes.labelBlock} source="author" label="Author" defaultValue={localStorage.getItem('username')} disabled={true} fullWidth />
-                            <DateInput className={classes.labelBlock} source="dateCreated" label="Date" defaultValue={moment().format('MM/DD/YYYY')} disabled={true} fullWidth />
-                        </SimpleForm>
-                    </Create> */}
-                </Grid>
-            </React.Fragment>
-        )
-    }
+    return (
+      <React.Fragment>
+        <Breadcrumbs resource={breadcrumbsResource} />
+        <TableHeader resource={resourceUrl} />
+        <Grid item xs={12} sm={12} className={classes.createBlock}>
+          {questionnaire ? (
+            <Paper elevation={0}>
+              <QuestionnaireResponseCreator
+                questionnaire={questionnaire}
+                questionnaireResponse={questionnaireResponse}
+                createQuestionnaireResponse={(response) => createResource(response)}
+              />
+            </Paper>
+          ) : null}
+        </Grid>
+      </React.Fragment>
+    )
+  }
 }
 
-const mapStateToProps = (state) => {
-    const props = get(state, ["custom", "top3ThingsSynopsis", "data"], [])
+const mapStateToProps = (state, ownProps) => {
+  const { fhir } = state.custom
 
-    const form = get(state, ["form", "record-form"], null)
+  //const { componentKey, resourceType } = ownProps
 
-    const latestTopThreeThings = {}
+  const componentKey = "TopThreeThings"
+  const resourceType = "Questionnaire"
 
-    if (props && props.length) {
-        latestTopThreeThings.id = props[0].id
-    }
+  const questionnaireBundle =
+    (fhir[componentKey] && fhir[componentKey][resourceType] && fhir[componentKey][resourceType].data) || null
 
-    return Object.assign({}, { latestTopThreeThings }, { form })
+  const questionnaireResponseBundle =
+    (fhir[componentKey] &&
+      fhir[componentKey]["QuestionnaireResponse"] &&
+      fhir[componentKey]["QuestionnaireResponse"].data) ||
+    null
+
+  const questionnaire = /** @type {fhir.Questionnaire | null} */ ((questionnaireBundle &&
+    getFromBundle(questionnaireBundle, "Questionnaire")[0]) ||
+    null)
+
+  const questionnaireResponse = /** @type {fhir.QuestionnaireResponse | null} */ ((questionnaireResponseBundle &&
+    getFromBundle(questionnaireResponseBundle, "QuestionnaireResponse")[0]) ||
+    null)
+
+  return {
+    questionnaire,
+    questionnaireResponse,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const synopsisActions = [synopsisTopThreeThingsAction]
-
-    return {
-        getTopThreeThingsSynopsis() {
-            synopsisActions.map((item) => {
-                return dispatch(item.request())
-            })
-        },
-    }
+  return {
+    getBundle: (key, resourceType, query) => dispatch(getFhirResourcesAction.request(key, resourceType, query)),
+    createResource: (resource) =>
+      dispatch(createFhirResourceAction.request("TopThreeThings", "QuestionnaireResponse", resource)),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TopThreeThingsCreate))

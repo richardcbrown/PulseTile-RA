@@ -10,17 +10,17 @@ import Typography from "@material-ui/core/Typography"
 import DialogWithStyles from "./DialogWithStyles"
 
 const styles = {
-    settingsIconBlock: {
-        paddingLeft: 20,
-    },
-    title: {
-        marginLeft: 10,
-    },
-    button: {
-        width: "auto",
-        borderRadius: 8,
-        padding: 8,
-    },
+  settingsIconBlock: {
+    paddingLeft: 20,
+  },
+  title: {
+    marginLeft: 10,
+  },
+  button: {
+    width: "auto",
+    borderRadius: 8,
+    padding: 8,
+  },
 }
 
 /**
@@ -29,43 +29,43 @@ const styles = {
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class SettingsDialog extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            open: false,
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false,
     }
+  }
 
-    toggleDialog() {
-        this.setState({
-            open: !this.state.open,
-        })
-    }
+  toggleDialog() {
+    this.setState({
+      open: !this.state.open,
+    })
+  }
 
-    render() {
-        const { classes } = this.props
-        const { open } = this.state
-        return (
-            <div className={classes.settingsIconBlock}>
-                <Tooltip title="Settings">
-                    <IconButton
-                        id="icon-settings"
-                        aria-haspopup="true"
-                        aria-label="Settings"
-                        color="inherit"
-                        onClick={() => this.toggleDialog()}
-                        className={classes.button}
-                    >
-                        <SettingsIcon />
-                        <Typography variant="h1" className={classes.title}>
-                            Home
-                        </Typography>
-                    </IconButton>
-                </Tooltip>
-                <DialogWithStyles open={open} onClose={this.toggleDialog} />
-            </div>
-        )
-    }
+  render() {
+    const { classes } = this.props
+    const { open } = this.state
+    return (
+      <div className={classes.settingsIconBlock}>
+        <Tooltip title="Settings">
+          <IconButton
+            id="icon-settings"
+            aria-haspopup="true"
+            aria-label="Settings"
+            color="inherit"
+            onClick={() => this.toggleDialog()}
+            className={classes.button}
+          >
+            <SettingsIcon />
+            <Typography variant="h1" className={classes.title}>
+              Home
+            </Typography>
+          </IconButton>
+        </Tooltip>
+        <DialogWithStyles open={open} onClose={this.toggleDialog} />
+      </div>
+    )
+  }
 }
 
 export default withStyles(styles)(SettingsDialog)

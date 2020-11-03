@@ -14,134 +14,134 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSortDown } from "@fortawesome/free-solid-svg-icons"
 
 const styles = (theme) => ({
-    menuAndBannerMobile: {
-        [theme.breakpoints.up("md")]: {
-            display: "none",
-        },
-        display: "flex",
-        width: "100%",
-        minHeight: "auto",
-        flexDirection: "row",
-        padding: 0,
-        justifyContent: "space-between",
-        backgroundColor: theme.palette.paperColor,
+  menuAndBannerMobile: {
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
-    mobileMenuButton: {
-        color: theme.palette.mainColor,
+    display: "flex",
+    width: "100%",
+    minHeight: "auto",
+    flexDirection: "row",
+    padding: 0,
+    justifyContent: "space-between",
+    backgroundColor: theme.palette.paperColor,
+  },
+  mobileMenuButton: {
+    color: theme.palette.mainColor,
+  },
+  iconArrowDown: {
+    color: theme.palette.fontColor,
+    paddingTop: 15,
+    paddingRight: 15,
+  },
+  patientBannerMobile: {
+    paddingLeft: 15,
+    backgroundColor: theme.palette.paperColor,
+    width: "100%",
+    minHeight: "auto",
+    "& span": {
+      color: theme.palette.fontColor,
     },
-    iconArrowDown: {
-        color: theme.palette.fontColor,
-        paddingTop: 15,
-        paddingRight: 15,
-    },
-    patientBannerMobile: {
-        paddingLeft: 15,
-        backgroundColor: theme.palette.paperColor,
-        width: "100%",
-        minHeight: "auto",
-        "& span": {
-            color: theme.palette.fontColor,
-        },
-    },
-    patientName: {
-        paddingTop: 15,
-        color: theme.palette.fontColor,
-    },
-    bannerRow: {
-        marginBottom: 5,
-    },
+  },
+  patientName: {
+    paddingTop: 15,
+    color: theme.palette.fontColor,
+  },
+  bannerRow: {
+    marginBottom: 5,
+  },
 })
 
 const MenuButtonMobile = ({ classes, setSidebarVisibility, isSidebarOpen }) => (
-    <Tooltip title={isSidebarOpen ? "Menu" : "Close"}>
-        <IconButton
-            className={classes.mobileMenuButton}
-            aria-haspopup="true"
-            color="inherit"
-            onClick={() => setSidebarVisibility(!isSidebarOpen)}
-            aria-label={isSidebarOpen ? "Menu" : "Close"}
-        >
-            {isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
-        </IconButton>
-    </Tooltip>
+  <Tooltip title={isSidebarOpen ? "Menu" : "Close"}>
+    <IconButton
+      className={classes.mobileMenuButton}
+      aria-haspopup="true"
+      color="inherit"
+      onClick={() => setSidebarVisibility(!isSidebarOpen)}
+      aria-label={isSidebarOpen ? "Menu" : "Close"}
+    >
+      {isSidebarOpen ? <MenuIcon /> : <CloseIcon />}
+    </IconButton>
+  </Tooltip>
 )
 
 class MobileMenu extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isMobileBannerOpened: false,
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      isMobileBannerOpened: false,
     }
+  }
 
-    toggleMobileBanner() {
-        this.setState({
-            isMobileBannerOpened: !this.state.isMobileBannerOpened,
-        })
-    }
+  toggleMobileBanner() {
+    this.setState({
+      isMobileBannerOpened: !this.state.isMobileBannerOpened,
+    })
+  }
 
-    render() {
-        const { classes, setSidebarVisibility, isSidebarOpen, patientInfo } = this.props
-        const { isMobileBannerOpened } = this.state
-        const resolved = get(patientInfo, "resolved", false)
-        return (
-            <React.Fragment>
-                <div className={classes.menuAndBannerMobile}>
-                    <MenuButtonMobile
-                        classes={classes}
-                        setSidebarVisibility={setSidebarVisibility}
-                        isSidebarOpen={isSidebarOpen}
-                    />
-                    <Typography variant="h6" className={classes.patientName}>
-                        {get(patientInfo, "name", null)}
-                    </Typography>
-                    <FontAwesomeIcon
-                        icon={faSortDown}
-                        size="1x"
-                        className={classes.iconArrowDown}
-                        onClick={() => this.toggleMobileBanner()}
-                    />
-                </div>
-                {isMobileBannerOpened && (
-                    <div className={classes.patientBannerMobile}>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>Doctor: </span>
-                            {get(patientInfo, "gpName", null)}
-                        </Typography>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>D.O.B.: </span>
-                            {moment(get(patientInfo, "dateOfBirth", null)).format("DD-MMM-YYYY")}
-                        </Typography>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>Phone: </span>
-                            {get(patientInfo, "phone", null)}
-                        </Typography>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>Email: </span>
-                            {get(patientInfo, "email", null)}
-                        </Typography>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>Gender: </span>
-                            {get(patientInfo, "gender", null)}
-                        </Typography>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>NHS No.: </span>
-                            {get(patientInfo, "nhsNumber", null)}
-                        </Typography>
-                        <Typography variant="body2" className={classes.bannerRow}>
-                            <span>Address: </span>
-                            {get(patientInfo, "address", null)}
-                        </Typography>
-                        {!resolved ? (
-                            <Typography className={classes.bannerRow} variant="caption">
-                                More information will be displayed when it becomes available
-                            </Typography>
-                        ) : null}
-                    </div>
-                )}
-            </React.Fragment>
-        )
-    }
+  render() {
+    const { classes, setSidebarVisibility, isSidebarOpen, patientInfo } = this.props
+    const { isMobileBannerOpened } = this.state
+    const resolved = get(patientInfo, "resolved", false)
+    return (
+      <React.Fragment>
+        <div className={classes.menuAndBannerMobile}>
+          <MenuButtonMobile
+            classes={classes}
+            setSidebarVisibility={setSidebarVisibility}
+            isSidebarOpen={isSidebarOpen}
+          />
+          <Typography variant="h6" className={classes.patientName}>
+            {get(patientInfo, "name", null)}
+          </Typography>
+          <FontAwesomeIcon
+            icon={faSortDown}
+            size="1x"
+            className={classes.iconArrowDown}
+            onClick={() => this.toggleMobileBanner()}
+          />
+        </div>
+        {isMobileBannerOpened && (
+          <div className={classes.patientBannerMobile}>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>Doctor: </span>
+              {get(patientInfo, "gpName", null)}
+            </Typography>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>D.O.B.: </span>
+              {moment(get(patientInfo, "dateOfBirth", null)).format("DD-MMM-YYYY")}
+            </Typography>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>Phone: </span>
+              {get(patientInfo, "phone", null)}
+            </Typography>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>Email: </span>
+              {get(patientInfo, "email", null)}
+            </Typography>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>Gender: </span>
+              {get(patientInfo, "gender", null)}
+            </Typography>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>NHS No.: </span>
+              {get(patientInfo, "nhsNumber", null)}
+            </Typography>
+            <Typography variant="body2" className={classes.bannerRow}>
+              <span>Address: </span>
+              {get(patientInfo, "address", null)}
+            </Typography>
+            {!resolved ? (
+              <Typography className={classes.bannerRow} variant="caption">
+                More information will be displayed when it becomes available
+              </Typography>
+            ) : null}
+          </div>
+        )}
+      </React.Fragment>
+    )
+  }
 }
 
 export default withStyles(styles)(MobileMenu)

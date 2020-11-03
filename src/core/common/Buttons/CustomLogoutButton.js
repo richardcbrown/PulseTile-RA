@@ -8,25 +8,25 @@ import ExitIcon from "@material-ui/icons/ExitToApp"
 import Tooltip from "@material-ui/core/Tooltip"
 
 const styles = (theme) => ({
-    button: {
-        display: "block",
-        width: 140,
-        height: 40,
-        margin: "8px !important",
-        color: "white",
-        backgroundColor: theme.palette.mainColor,
-        border: `1px solid ${theme.palette.mainColor}`,
-        borderRadius: 25,
-        fontSize: 16,
-        fontWeight: 800,
-        "&:hover": {
-            color: theme.palette.mainColor,
-            backgroundColor: "white",
-        },
+  button: {
+    display: "block",
+    width: 140,
+    height: 40,
+    margin: "8px !important",
+    color: "white",
+    backgroundColor: theme.palette.mainColor,
+    border: `1px solid ${theme.palette.mainColor}`,
+    borderRadius: 25,
+    fontSize: 16,
+    fontWeight: 800,
+    "&:hover": {
+      color: theme.palette.mainColor,
+      backgroundColor: "white",
     },
-    icon: {
-        marginLeft: 10,
-    },
+  },
+  icon: {
+    marginLeft: 10,
+  },
 })
 
 /**
@@ -39,25 +39,25 @@ const styles = (theme) => ({
  * @param {boolean} hideIcon
  */
 const CustomLogoutButton = ({ classes, userLogout, title = "Sign Out", hideIcon }) => {
-    return (
-        <Tooltip title={title}>
-            <IconButton
-                className={classes.button}
-                onClick={() => {
-                    localStorage.setItem("logout", true)
-                    userLogout()
-                }}
-                aria-label="Sign Out"
-            >
-                {title}
-                {!hideIcon && <ExitIcon className={classes.icon} />}
-            </IconButton>
-        </Tooltip>
-    )
+  return (
+    <Tooltip title={title}>
+      <IconButton
+        className={classes.button}
+        onClick={() => {
+          localStorage.setItem("logout", true)
+          userLogout()
+        }}
+        aria-label="Sign Out"
+      >
+        {title}
+        {!hideIcon && <ExitIcon className={classes.icon} />}
+      </IconButton>
+    </Tooltip>
+  )
 }
 
 const mapDispatchToProps = {
-    userLogout,
+  userLogout,
 }
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(CustomLogoutButton))

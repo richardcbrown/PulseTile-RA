@@ -4,7 +4,7 @@
  * @return {boolean}
  */
 export function pageHasTitle(location) {
-    const pathName = location.pathname
-    const pagesWithTitle = ["/charts", "/patients"]
-    return pagesWithTitle.indexOf(pathName) !== -1
+  const pathName = location.pathname
+  const pagesWithTitle = ["/charts", "/patients"]
+  return pagesWithTitle.indexOf(pathName) !== -1
 }

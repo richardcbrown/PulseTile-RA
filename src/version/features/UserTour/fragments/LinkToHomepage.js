@@ -14,11 +14,11 @@ import { PATIENT_SUMMARY } from "../../../../core/config/clientUrls"
  * @constructor
  */
 const LinkToHomepage = ({ classes, toggleMode }) => {
-    return (
-        <Link to={PATIENT_SUMMARY} className={classes.rightBlockButton} onClick={() => toggleMode()} aria-label="Home">
-            <HelpIcon />
-        </Link>
-    )
+  return (
+    <Link to={PATIENT_SUMMARY} className={classes.rightBlockButton} onClick={() => toggleMode()} aria-label="Home">
+      <HelpIcon />
+    </Link>
+  )
 }
 
 export default LinkToHomepage

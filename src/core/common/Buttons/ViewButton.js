@@ -5,11 +5,11 @@ import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 
 const styles = (theme) => ({
-    viewButton: {
-        color: theme.palette.viewButton,
-        fontSize: 16,
-        textTransform: "capitalize",
-    },
+  viewButton: {
+    color: theme.palette.viewButton,
+    fontSize: 16,
+    textTransform: "capitalize",
+  },
 })
 
 /**
@@ -21,9 +21,9 @@ const styles = (theme) => ({
  * @param {shape} record
  */
 const ViewButton = ({ classes, viewAction, record }) => (
-    <Button aria-label="View" onClick={(e) => viewAction(e, record)} className={classes.viewButton}>
-        <Typography className={classes.viewButton}>View</Typography>
-    </Button>
+  <Button aria-label="View" onClick={(e) => viewAction(e, record)} className={classes.viewButton}>
+    <Typography className={classes.viewButton}>View</Typography>
+  </Button>
 )
 
 export default withStyles(styles)(ViewButton)

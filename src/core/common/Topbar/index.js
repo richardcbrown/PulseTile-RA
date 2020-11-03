@@ -17,44 +17,44 @@ import { themeCommonElements } from "../../../version/config/theme.config"
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class CustomTopbar extends Component {
-    componentDidMount() {
-        if (localStorage.getItem("userId") && localStorage.getItem("username")) {
-            this.props.getDemographicsAction()
-        }
+  componentDidMount() {
+    if (localStorage.getItem("userId") && localStorage.getItem("username")) {
+      this.props.getDemographicsAction()
     }
+  }
 
-    render() {
-        const ThemeTopBar = get(themeCommonElements, "topbar", false)
-        if (ThemeTopBar) {
-            return <ThemeTopBar {...this.props} />
-        }
-        return (
-            <AppBar position="static">
-                <TopPart {...this.props} />
-                <LowPart {...this.props} />
-            </AppBar>
-        )
+  render() {
+    const ThemeTopBar = get(themeCommonElements, "topbar", false)
+    if (ThemeTopBar) {
+      return <ThemeTopBar {...this.props} />
     }
+    return (
+      <AppBar position="static">
+        <TopPart {...this.props} />
+        <LowPart {...this.props} />
+      </AppBar>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        isLoading: get(state, "admin.loading", false),
-        location: get(state, "router.location", null),
-        isSidebarOpen: get(state, "admin.ui.sidebarOpen", true),
-        patientInfo: get(state, "custom.demographics.data", null),
-    }
+  return {
+    isLoading: get(state, "admin.loading", false),
+    location: get(state, "router.location", null),
+    isSidebarOpen: get(state, "admin.ui.sidebarOpen", true),
+    patientInfo: get(state, "custom.demographics.data", null),
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        getDemographicsAction() {
-            dispatch(demographicsAction.request())
-        },
-        setSidebarVisibility(params) {
-            dispatch(setSidebarVisibility(params))
-        },
-    }
+  return {
+    getDemographicsAction() {
+      dispatch(demographicsAction.request())
+    },
+    setSidebarVisibility(params) {
+      dispatch(setSidebarVisibility(params))
+    },
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomTopbar)

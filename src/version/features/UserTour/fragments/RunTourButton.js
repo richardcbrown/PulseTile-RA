@@ -19,33 +19,33 @@ import toursStyles from "../styles"
  * @constructor
  */
 const RunUserTour = ({ classes, runTour, shouldRunTour, callback }) => {
-    return (
-        <React.Fragment>
-            <Tooltip title="User Tour">
-                <IconButton
-                    id="icon-tour"
-                    className={classes.rightBlockButton}
-                    aria-haspopup="true"
-                    aria-label="Tour"
-                    color="inherit"
-                    onClick={() => runTour()}
-                >
-                    <HelpIcon />
-                </IconButton>
-            </Tooltip>
-            <Joyride
-                continuous
-                disableOverlayClose={true}
-                showSkipButton={true}
-                showProgress={true}
-                locale={locale}
-                steps={tourSteps}
-                run={shouldRunTour}
-                styles={toursStyles}
-                callback={callback}
-            />
-        </React.Fragment>
-    )
+  return (
+    <React.Fragment>
+      <Tooltip title="User Tour">
+        <IconButton
+          id="icon-tour"
+          className={classes.rightBlockButton}
+          aria-haspopup="true"
+          aria-label="Tour"
+          color="inherit"
+          onClick={() => runTour()}
+        >
+          <HelpIcon />
+        </IconButton>
+      </Tooltip>
+      <Joyride
+        continuous
+        disableOverlayClose={true}
+        showSkipButton={true}
+        showProgress={true}
+        locale={locale}
+        steps={tourSteps}
+        run={shouldRunTour}
+        styles={toursStyles}
+        callback={callback}
+      />
+    </React.Fragment>
+  )
 }
 
 export default RunUserTour

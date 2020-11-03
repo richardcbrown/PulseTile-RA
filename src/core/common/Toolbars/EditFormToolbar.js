@@ -6,9 +6,9 @@ import CancelButton from "../Buttons/CancelButton"
 import CustomSaveButton from "../Buttons/CustomSaveButton"
 
 const styles = (theme) => ({
-    toolbar: {
-        backgroundColor: theme.palette.toolbarColor,
-    },
+  toolbar: {
+    backgroundColor: theme.palette.toolbarColor,
+  },
 })
 
 /**
@@ -21,12 +21,12 @@ const styles = (theme) => ({
  * @constructor
  */
 const EditToolbar = ({ classes, changeViewType, ...props }) => {
-    return (
-        <Toolbar className={classes.toolbar} {...props}>
-            <CancelButton redirectTo={changeViewType} />
-            <CustomSaveButton {...props} />
-        </Toolbar>
-    )
+  return (
+    <Toolbar className={classes.toolbar} {...props}>
+      <CancelButton redirectTo={changeViewType} />
+      <CustomSaveButton {...props} />
+    </Toolbar>
+  )
 }
 
 export default withStyles(styles)(EditToolbar)

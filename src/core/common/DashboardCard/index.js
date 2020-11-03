@@ -17,14 +17,14 @@ import { SHOW_ALL } from "../../pages/PatientSummary/config"
  * @param {shape} classes
  */
 const LoadingItems = ({ classes }) => {
-    return (
-        <List className={classes.list}>
-            <li className={classes.listItem}>
-                <Typography>Loading...</Typography>
-            </li>
-            <div className={classes.emptyRows}></div>
-        </List>
-    )
+  return (
+    <List className={classes.list}>
+      <li className={classes.listItem}>
+        <Typography>Loading...</Typography>
+      </li>
+      <div className={classes.emptyRows}></div>
+    </List>
+  )
 }
 
 /**
@@ -37,10 +37,10 @@ const LoadingItems = ({ classes }) => {
  * @param {shape}   history
  */
 const ListBlock = ({ classes, items, list, history, listOnly }) => {
-    if (items) {
-        return <ItemsList classes={classes} items={items} list={list} history={history} listOnly={listOnly} />
-    }
-    return <LoadingItems classes={classes} />
+  if (items) {
+    return <ItemsList classes={classes} items={items} list={list} history={history} listOnly={listOnly} />
+  }
+  return <LoadingItems classes={classes} />
 }
 
 /**
@@ -51,38 +51,38 @@ const ListBlock = ({ classes, items, list, history, listOnly }) => {
  * @constructor
  */
 export default (props) => {
-    const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings, listOnly } = props
-    if (Object.values(showHeadings).indexOf(list) === -1) {
-        return null
-    }
+  const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings, listOnly } = props
+  if (Object.values(showHeadings).indexOf(list) === -1) {
+    return null
+  }
 
-    const clickHandler = listOnly ? () => {} : () => history.push("/" + list)
+  const clickHandler = listOnly ? () => {} : () => history.push("/" + list)
 
-    return (
-        <Grid item xs={12} sm={6} md={6} lg={3}>
-            <Card className={classes.card}>
-                <div
-                    id={id}
-                    className={listOnly ? classes.topBlockListOnly : classes.topBlock}
-                    aria-label={title}
-                    onClick={clickHandler}
-                >
-                    <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
-                    <h1 className={classes.mainHeading}>
-                        <Typography className={classes.title}>{title}</Typography>
-                    </h1>
-                </div>
-                {(showMode === SHOW_ALL || !showMode || listOnly) && (
-                    <ListBlock
-                        loading={loading}
-                        classes={classes}
-                        items={items}
-                        list={list}
-                        history={history}
-                        listOnly={listOnly}
-                    />
-                )}
-            </Card>
-        </Grid>
-    )
+  return (
+    <Grid item xs={12} sm={6} md={6} lg={3}>
+      <Card className={classes.card}>
+        <div
+          id={id}
+          className={listOnly ? classes.topBlockListOnly : classes.topBlock}
+          aria-label={title}
+          onClick={clickHandler}
+        >
+          <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
+          <h1 className={classes.mainHeading}>
+            <Typography className={classes.title}>{title}</Typography>
+          </h1>
+        </div>
+        {(showMode === SHOW_ALL || !showMode || listOnly) && (
+          <ListBlock
+            loading={loading}
+            classes={classes}
+            items={items}
+            list={list}
+            history={history}
+            listOnly={listOnly}
+          />
+        )}
+      </Card>
+    </Grid>
+  )
 }

@@ -13,34 +13,34 @@ import { faCompressArrowsAlt, faExpandArrowsAlt } from "@fortawesome/free-solid-
 import EditFormToolbar from "../../common/Toolbars/EditFormToolbar"
 
 const styles = (theme) => ({
-    blockTitle: {
-        display: "flex",
-        alignItems: "center",
-        height: 49,
-        color: theme.palette.paperColor,
-        backgroundColor: theme.palette.mainColor,
-        paddingLeft: 15,
+  blockTitle: {
+    display: "flex",
+    alignItems: "center",
+    height: 49,
+    color: theme.palette.paperColor,
+    backgroundColor: theme.palette.mainColor,
+    paddingLeft: 15,
+  },
+  title: {
+    color: theme.palette.paperColor,
+    fontSize: 18,
+    fontWeight: 700,
+  },
+  emptyBlock: {
+    flexGrow: 1,
+  },
+  expandBlockIcon: {
+    height: 20,
+    paddingRight: 20,
+    color: theme.palette.paperColor,
+  },
+  editForm: {
+    "& > div": {
+      paddingTop: 0,
+      paddingLeft: 10,
+      paddingRight: 10,
     },
-    title: {
-        color: theme.palette.paperColor,
-        fontSize: 18,
-        fontWeight: 700,
-    },
-    emptyBlock: {
-        flexGrow: 1,
-    },
-    expandBlockIcon: {
-        height: 20,
-        paddingRight: 20,
-        color: theme.palette.paperColor,
-    },
-    editForm: {
-        "& > div": {
-            paddingTop: 0,
-            paddingLeft: 10,
-            paddingRight: 10,
-        },
-    },
+  },
 })
 
 /**
@@ -58,26 +58,26 @@ const styles = (theme) => ({
  * @constructor
  */
 const EditTemplate = ({ classes, isListOpened, blockTitle, toggleListBlock, children, changeViewType, ...rest }) => (
-    <Grid item xs={12} sm={isListOpened ? 6 : 12}>
-        <div className={classes.blockTitle}>
-            <Typography className={classes.title}>{blockTitle}</Typography>
-            <div className={classes.emptyBlock}></div>
-            <Tooltip title={isListOpened ? "Expand" : "Compress"}>
-                <IconButton onClick={() => toggleListBlock()}>
-                    <FontAwesomeIcon
-                        className={classes.expandBlockIcon}
-                        icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt}
-                        size="1x"
-                    />
-                </IconButton>
-            </Tooltip>
-        </div>
-        <Edit undoable={false} {...rest}>
-            <SimpleForm className={classes.editForm} toolbar={<EditFormToolbar changeViewType={changeViewType} />}>
-                {children}
-            </SimpleForm>
-        </Edit>
-    </Grid>
+  <Grid item xs={12} sm={isListOpened ? 6 : 12}>
+    <div className={classes.blockTitle}>
+      <Typography className={classes.title}>{blockTitle}</Typography>
+      <div className={classes.emptyBlock}></div>
+      <Tooltip title={isListOpened ? "Expand" : "Compress"}>
+        <IconButton onClick={() => toggleListBlock()}>
+          <FontAwesomeIcon
+            className={classes.expandBlockIcon}
+            icon={isListOpened ? faExpandArrowsAlt : faCompressArrowsAlt}
+            size="1x"
+          />
+        </IconButton>
+      </Tooltip>
+    </div>
+    <Edit undoable={false} {...rest}>
+      <SimpleForm className={classes.editForm} toolbar={<EditFormToolbar changeViewType={changeViewType} />}>
+        {children}
+      </SimpleForm>
+    </Edit>
+  </Grid>
 )
 
 export default withStyles(styles)(EditTemplate)

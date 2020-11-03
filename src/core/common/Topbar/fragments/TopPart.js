@@ -12,15 +12,15 @@ import Tooltip from "@material-ui/core/Tooltip"
 import logo from "../../../images/pulsetile-core-logo.png"
 
 const styles = {
-    whitePart: {
-        backgroundColor: "white",
-    },
-    backButton: {
-        color: "#0D672F",
-    },
-    userMenuButton: {
-        color: "#0D672F",
-    },
+  whitePart: {
+    backgroundColor: "white",
+  },
+  backButton: {
+    color: "#0D672F",
+  },
+  userMenuButton: {
+    color: "#0D672F",
+  },
 }
 
 /**
@@ -30,67 +30,67 @@ const styles = {
  * @constructor
  */
 class TopPart extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            anchorEl: null,
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      anchorEl: null,
     }
+  }
 
-    handleMenu() {
-        return (event) => {
-            this.setState({ anchorEl: event.currentTarget })
-        }
+  handleMenu() {
+    return (event) => {
+      this.setState({ anchorEl: event.currentTarget })
     }
-    handleClose() {
-        this.setState({ anchorEl: null })
-    }
+  }
+  handleClose() {
+    this.setState({ anchorEl: null })
+  }
 
-    render() {
-        const { classes, history, logout } = this.props
-        const { anchorEl } = this.state
-        const isTopbarMenuOpen = Boolean(anchorEl)
-        return (
-            <Toolbar className={classes.whitePart}>
-                <Tooltip title="Back">
-                    <IconButton className={classes.backButton} onClick={() => history.goBack()} color="inherit">
-                        <BackIcon />
-                    </IconButton>
-                </Tooltip>
-                <CardMedia
-                    component="img"
-                    alt="Pulse Tile"
-                    className={classes.logo}
-                    height="38px"
-                    image={logo}
-                    title="Pulse Tile"
-                />
-                <React.Fragment>
-                    <Tooltip title="User panel">
-                        <IconButton
-                            className={classes.userNemuButton}
-                            aria-owns={isTopbarMenuOpen ? "menu-appbar" : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                    </Tooltip>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                        transformOrigin={{ vertical: "top", horizontal: "right" }}
-                        open={isTopbarMenuOpen}
-                        onClose={this.handleClose}
-                    >
-                        {logout}
-                    </Menu>
-                </React.Fragment>
-            </Toolbar>
-        )
-    }
+  render() {
+    const { classes, history, logout } = this.props
+    const { anchorEl } = this.state
+    const isTopbarMenuOpen = Boolean(anchorEl)
+    return (
+      <Toolbar className={classes.whitePart}>
+        <Tooltip title="Back">
+          <IconButton className={classes.backButton} onClick={() => history.goBack()} color="inherit">
+            <BackIcon />
+          </IconButton>
+        </Tooltip>
+        <CardMedia
+          component="img"
+          alt="Pulse Tile"
+          className={classes.logo}
+          height="38px"
+          image={logo}
+          title="Pulse Tile"
+        />
+        <React.Fragment>
+          <Tooltip title="User panel">
+            <IconButton
+              className={classes.userNemuButton}
+              aria-owns={isTopbarMenuOpen ? "menu-appbar" : undefined}
+              aria-haspopup="true"
+              onClick={this.handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+            open={isTopbarMenuOpen}
+            onClose={this.handleClose}
+          >
+            {logout}
+          </Menu>
+        </React.Fragment>
+      </Toolbar>
+    )
+  }
 }
 
 export default withStyles(styles)(TopPart)

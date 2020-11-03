@@ -5,27 +5,27 @@ import { withStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 
 const styles = (theme) => ({
-    tableHeaderBlock: {
-        background: theme.tableHeader.tableHeaderBlock.background,
-        backgroundSize: "cover",
-        color: "white",
-        paddingLeft: "14px",
-        paddingTop: "25px",
-        paddingBottom: "14px",
-    },
-    mainHeader: {
-        margin: 0,
-    },
-    title: {
-        marginTop: 0,
-        color: "#fff",
-        fontSize: 24,
-        fontWeight: 800,
-    },
-    description: {
-        marginTop: 10,
-        color: "#fff",
-    },
+  tableHeaderBlock: {
+    background: theme.tableHeader.tableHeaderBlock.background,
+    backgroundSize: "cover",
+    color: "white",
+    paddingLeft: "14px",
+    paddingTop: "25px",
+    paddingBottom: "14px",
+  },
+  mainHeader: {
+    margin: 0,
+  },
+  title: {
+    marginTop: 0,
+    color: "#fff",
+    fontSize: 24,
+    fontWeight: 800,
+  },
+  description: {
+    marginTop: 10,
+    color: "#fff",
+  },
 })
 
 /**
@@ -36,31 +36,31 @@ const styles = (theme) => ({
  * @param {string} resource
  */
 const TableHeader = ({ classes, resource, translate }) => {
-    const title = translate("tableHeaders." + resource + ".title")
-    let description = translate("tableHeaders." + resource + ".description")
-    let subText = translate("tableHeaders." + resource + ".subText")
+  const title = translate("tableHeaders." + resource + ".title")
+  let description = translate("tableHeaders." + resource + ".description")
+  let subText = translate("tableHeaders." + resource + ".subText")
 
-    if (title === "tableHeaders." + resource + ".title") {
-        return null
-    }
+  if (title === "tableHeaders." + resource + ".title") {
+    return null
+  }
 
-    if (description === "tableHeaders." + resource + ".description") {
-        description = null
-    }
+  if (description === "tableHeaders." + resource + ".description") {
+    description = null
+  }
 
-    if (subText === "tableHeaders." + resource + ".subText") {
-        subText = null
-    }
+  if (subText === "tableHeaders." + resource + ".subText") {
+    subText = null
+  }
 
-    return (
-        <div className={classes.tableHeaderBlock}>
-            <h1 className={classes.mainHeader}>
-                <Typography className={classes.title}>{title}</Typography>
-            </h1>
-            {(description && <Typography className={classes.description}>{description}</Typography>) || null}
-            {(subText && <Typography className={classes.description}>{subText}</Typography>) || null}
-        </div>
-    )
+  return (
+    <div className={classes.tableHeaderBlock}>
+      <h1 className={classes.mainHeader}>
+        <Typography className={classes.title}>{title}</Typography>
+      </h1>
+      {(description && <Typography className={classes.description}>{description}</Typography>) || null}
+      {(subText && <Typography className={classes.description}>{subText}</Typography>) || null}
+    </div>
+  )
 }
 
 export default withStyles(styles)(translate(TableHeader))

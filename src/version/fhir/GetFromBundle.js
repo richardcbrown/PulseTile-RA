@@ -4,10 +4,10 @@
  * @returns {fhir.Resource[]}
  */
 export function getFromBundle(bundle, resourceType) {
-    const resources =
-        (bundle.entry &&
-            bundle.entry.map((entry) => entry.resource).filter((res) => !!res && res.resourceType === resourceType)) ||
-        []
+  const resources =
+    (bundle.entry &&
+      bundle.entry.map((entry) => entry.resource).filter((res) => !!res && res.resourceType === resourceType)) ||
+    []
 
-    return /** @type {fhir.Resource[]} */ (resources)
+  return /** @type {fhir.Resource[]} */ (resources)
 }

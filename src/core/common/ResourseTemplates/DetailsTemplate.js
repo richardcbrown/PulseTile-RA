@@ -7,34 +7,34 @@ import React, { Component } from "react"
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 class DetailsTemplate extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.state = {
-            viewType: this.props.mode,
-        }
+    this.state = {
+      viewType: this.props.mode,
     }
+  }
 
-    changeViewType() {
-        return (viewType) => {
-            this.setState({
-                viewType: viewType,
-            })
-        }
+  changeViewType() {
+    return (viewType) => {
+      this.setState({
+        viewType: viewType,
+      })
     }
+  }
 
-    render() {
-        const { classes, show, edit, ...rest } = this.props
-        const { viewType } = this.state
-        const ShowTemplate = show
-        const EditTemplate = edit
-        if (viewType === "show") {
-            return <ShowTemplate changeViewType={this.changeViewType} {...this.props} />
-        } else if (viewType === "edit") {
-            return <EditTemplate changeViewType={this.changeViewType} {...this.props} />
-        }
-        return null
+  render() {
+    const { classes, show, edit, ...rest } = this.props
+    const { viewType } = this.state
+    const ShowTemplate = show
+    const EditTemplate = edit
+    if (viewType === "show") {
+      return <ShowTemplate changeViewType={this.changeViewType} {...this.props} />
+    } else if (viewType === "edit") {
+      return <EditTemplate changeViewType={this.changeViewType} {...this.props} />
     }
+    return null
+  }
 }
 
 export default DetailsTemplate

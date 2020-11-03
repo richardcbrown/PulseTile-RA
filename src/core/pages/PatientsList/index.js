@@ -15,38 +15,38 @@ import PatientShow from "./PatientShow"
  * @constructor
  */
 class PatientsList extends Component {
-    /**
-     * This function redirects to Patient Summary page
-     *
-     * @author Bogdan Shcherban <bsc@piogroup.net>
-     * @param {shape} e
-     * @param {shape} record
-     */
-    redirectToSummary(e, record) {
-        e.stopPropagation()
-        localStorage.setItem("patientId", record.nhsNumber)
-        this.props.history.push("/summary")
-    }
+  /**
+   * This function redirects to Patient Summary page
+   *
+   * @author Bogdan Shcherban <bsc@piogroup.net>
+   * @param {shape} e
+   * @param {shape} record
+   */
+  redirectToSummary(e, record) {
+    e.stopPropagation()
+    localStorage.setItem("patientId", record.nhsNumber)
+    this.props.history.push("/summary")
+  }
 
-    render() {
-        return (
-            <ListTemplate
-                basePath="/patients"
-                create={PatientCreate}
-                edit={PatientEdit}
-                show={PatientShow}
-                resourceUrl="patients"
-                title="Patients List"
-                {...this.props}
-            >
-                <TextField source="name" label="Name" />
-                <TextField source="address" label="Address" />
-                <DateField source="dateOfBirth" label="Born (age)" />
-                <TextField source="nhsNumber" label="CHI No." />
-                <ViewButton viewAction={this.redirectToSummary} />
-            </ListTemplate>
-        )
-    }
+  render() {
+    return (
+      <ListTemplate
+        basePath="/patients"
+        create={PatientCreate}
+        edit={PatientEdit}
+        show={PatientShow}
+        resourceUrl="patients"
+        title="Patients List"
+        {...this.props}
+      >
+        <TextField source="name" label="Name" />
+        <TextField source="address" label="Address" />
+        <DateField source="dateOfBirth" label="Born (age)" />
+        <TextField source="nhsNumber" label="CHI No." />
+        <ViewButton viewAction={this.redirectToSummary} />
+      </ListTemplate>
+    )
+  }
 }
 
 export default PatientsList

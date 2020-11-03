@@ -12,36 +12,40 @@ import MenuItems from "./MenuItems"
 import { getMenuItems } from "./getMenuType"
 
 const styles = (theme) => ({
-    sidebarBlock: {
-        maxWidth: 240,
-        backgroundColor: "#fff",
-        "& div": {
-            marginTop: 0,
-        },
+  sidebarBlock: {
+    maxWidth: 240,
+    backgroundColor: "#fff",
+    "& div": {
+      marginTop: 0,
     },
-    mobileSidebar: {
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-        backgroundColor: theme.palette.paperColor,
-        zIndex: 999999999999,
+  },
+  mobileSidebar: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    backgroundColor: theme.palette.paperColor,
+    zIndex: 999999999999,
+  },
+  menuBlock: {
+    border: `1px solid ${theme.palette.borderColor}`,
+  },
+  menuItem: {
+    paddingTop: "16px",
+    paddingBottom: "16px",
+    color: `${theme.palette.mainColor} !important`,
+    borderBottom: `1px solid ${theme.palette.borderColor}`,
+    "&:hover": {
+      backgroundColor: theme.palette.mainColor,
+      color: "#fff !important",
     },
-    menuBlock: {
-        border: `1px solid ${theme.palette.borderColor}`,
-    },
-    menuItem: {
-        color: `${theme.palette.mainColor} !important`,
-        borderBottom: `1px solid ${theme.palette.borderColor}`,
-        "&:hover": {
-            backgroundColor: theme.palette.mainColor,
-            color: "#fff !important",
-        },
-    },
-    menuItemSelected: {
-        backgroundColor: theme.palette.mainColor + "! important",
-        color: "#fff !important",
-        borderBottom: `1px solid ${theme.palette.borderColor}`,
-    },
+  },
+  menuItemSelected: {
+    paddingTop: "16px",
+    paddingBottom: "16px",
+    backgroundColor: theme.palette.mainColor + "! important",
+    color: "#fff !important",
+    borderBottom: `1px solid ${theme.palette.borderColor}`,
+  },
 })
 
 /**
@@ -50,41 +54,31 @@ const styles = (theme) => ({
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 const CustomSidebar = ({ classes, isSidebarOpen, onMenuClick, location }) => {
-    const currentPathname = get(location, "pathname", null)
-    const pathNameArray = currentPathname.split("/")
-    const currentList = "/" + pathNameArray[1]
-    const menuItems = getMenuItems(currentPathname)
-    return (
-        <Responsive
-            small={
-                isSidebarOpen ? null : (
-                    <MobileMenu
-                        classes={classes}
-                        menuItems={menuItems}
-                        currentList={currentList}
-                        onMenuClick={onMenuClick}
-                    />
-                )
-            }
-            medium={
-                isSidebarOpen ? (
-                    <Sidebar className={classes.sidebarBlock}>
-                        <MenuItems
-                            classes={classes}
-                            menuItems={menuItems}
-                            currentList={currentList}
-                            onMenuClick={onMenuClick}
-                        />
-                    </Sidebar>
-                ) : null
-            }
-        ></Responsive>
-    )
+  const currentPathname = get(location, "pathname", null)
+  const pathNameArray = currentPathname.split("/")
+  const currentList = "/" + pathNameArray[1]
+  const menuItems = getMenuItems(currentPathname)
+  return (
+    <Responsive
+      small={
+        isSidebarOpen ? null : (
+          <MobileMenu classes={classes} menuItems={menuItems} currentList={currentList} onMenuClick={onMenuClick} />
+        )
+      }
+      medium={
+        isSidebarOpen ? (
+          <Sidebar className={classes.sidebarBlock}>
+            <MenuItems classes={classes} menuItems={menuItems} currentList={currentList} onMenuClick={onMenuClick} />
+          </Sidebar>
+        ) : null
+      }
+    ></Responsive>
+  )
 }
 
 const mapStateToProps = (state) => ({
-    resources: getResources(state),
-    isSidebarOpen: state.admin.ui.sidebarOpen,
+  resources: getResources(state),
+  isSidebarOpen: state.admin.ui.sidebarOpen,
 })
 
 export default withRouter(connect(mapStateToProps, null)(withStyles(styles)(CustomSidebar)))

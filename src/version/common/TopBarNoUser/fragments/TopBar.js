@@ -8,31 +8,31 @@ import helmLogo from "../../../images/helm-logo.png"
 import nhsLogo from "../../../images/nhs.png"
 
 const styles = (theme) => ({
-    topPart: {
-        display: "flex",
-        backgroundColor: "white",
-        justifyContent: "space-around",
-        border: `1px solid ${theme.palette.borderColor}`,
-        minHeight: 54,
-        padding: 0,
+  topPart: {
+    display: "flex",
+    backgroundColor: "white",
+    justifyContent: "space-around",
+    border: `1px solid ${theme.palette.borderColor}`,
+    minHeight: 54,
+    padding: 0,
+  },
+  mainLogoItem: {
+    display: "inline-flex",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 9,
+  },
+  nhsLogo: {
+    [theme.breakpoints.only("xs")]: {
+      display: "none",
     },
-    mainLogoItem: {
-        display: "inline-flex",
-        justifyContent: "center",
-        alignItems: "center",
-        paddingLeft: 9,
-    },
-    nhsLogo: {
-        [theme.breakpoints.only("xs")]: {
-            display: "none",
-        },
-        width: "auto",
-        maxWidth: "100%",
-        marginRight: 24,
-    },
-    emptyBlock: {
-        flexGrow: 1,
-    },
+    width: "auto",
+    maxWidth: "100%",
+    marginRight: 24,
+  },
+  emptyBlock: {
+    flexGrow: 1,
+  },
 })
 
 /**
@@ -41,30 +41,30 @@ const styles = (theme) => ({
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
 const TopPart = ({ classes }) => {
-    return (
-        <Toolbar className={classes.topPart}>
-            <div className={classes.mainLogoItem}>
-                <CardMedia
-                    id="logo-image"
-                    className={classes.image}
-                    component="img"
-                    alt="Pulse Tile"
-                    height="38px"
-                    image={helmLogo}
-                    title="Pulse Tile"
-                />
-            </div>
-            <div className={classes.emptyBlock}></div>
-            <CardMedia
-                className={classes.nhsLogo}
-                component="img"
-                alt="Pulse Tile"
-                height="29px"
-                image={nhsLogo}
-                title="Pulse Tile"
-            />
-        </Toolbar>
-    )
+  return (
+    <Toolbar className={classes.topPart}>
+      <div className={classes.mainLogoItem}>
+        <CardMedia
+          id="logo-image"
+          className={classes.image}
+          component="img"
+          alt="Pulse Tile"
+          height="38px"
+          image={helmLogo}
+          title="Pulse Tile"
+        />
+      </div>
+      <div className={classes.emptyBlock}></div>
+      <CardMedia
+        className={classes.nhsLogo}
+        component="img"
+        alt="Pulse Tile"
+        height="29px"
+        image={nhsLogo}
+        title="Pulse Tile"
+      />
+    </Toolbar>
+  )
 }
 
 export default withStyles(styles)(TopPart)

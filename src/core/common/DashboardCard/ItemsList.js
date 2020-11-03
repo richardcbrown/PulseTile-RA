@@ -14,31 +14,29 @@ import Typography from "@material-ui/core/Typography"
  * @constructor
  */
 const ItemsList = ({ classes, items, list, history, listOnly }) => {
-    if (items && items.length === 0) {
-        return (
-            <List className={classes.list}>
-                <li className={classes.listItem}>
-                    <Typography>No data</Typography>
-                </li>
-            </List>
-        )
-    } else {
-        return (
-            <List className={classes.list}>
-                {items.map((item, key) => {
-                    const onClick =
-                        list && item.sourceId
-                            ? () => history.push("/" + list + "/" + item.sourceId + "/show")
-                            : () => {}
-                    return (
-                        <li key={key} className={classes.listItem} onClick={onClick}>
-                            <Typography>{item.text}</Typography>
-                        </li>
-                    )
-                })}
-            </List>
-        )
-    }
+  if (items && items.length === 0) {
+    return (
+      <List className={classes.list}>
+        <li className={classes.listItem}>
+          <Typography>No data</Typography>
+        </li>
+      </List>
+    )
+  } else {
+    return (
+      <List className={classes.list}>
+        {items.map((item, key) => {
+          const onClick =
+            list && item.sourceId ? () => history.push("/" + list + "/" + item.sourceId + "/show") : () => {}
+          return (
+            <li key={key} className={classes.listItem} onClick={onClick}>
+              <Typography>{item.text}</Typography>
+            </li>
+          )
+        })}
+      </List>
+    )
+  }
 }
 
 export default ItemsList
