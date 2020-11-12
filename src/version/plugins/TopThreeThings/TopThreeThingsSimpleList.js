@@ -102,6 +102,8 @@ class TopThreeThingsSimpleList extends Component {
   }
 
   componentDidMount() {
+    window.analytics.page({ url: window.location.hash })
+
     const { getBundle } = this.props
 
     getBundle("TopThreeThingsList", "Questionnaire", querystring.stringify({ identifier: "http://test.com|test" }))

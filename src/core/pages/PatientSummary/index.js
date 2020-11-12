@@ -97,6 +97,8 @@ const styles = (theme) => ({
 
 class PatientSummaryInfo extends Component {
   componentDidMount() {
+    window.analytics.page({ url: window.location.hash })
+
     if (localStorage.getItem("userId") && localStorage.getItem("username")) {
       this.props.getPatientSynopsis()
     }

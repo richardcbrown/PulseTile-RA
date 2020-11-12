@@ -21,6 +21,10 @@ const styles = {
 }
 
 class NhsWidgets extends Component {
+  componentDidMount() {
+    window.analytics.page({ url: window.location.hash })
+  }
+
   render() {
     const { classes } = this.props
 

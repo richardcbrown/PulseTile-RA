@@ -107,6 +107,10 @@ class Directory extends Component {
     super(props)
   }
 
+  componentDidMount() {
+    window.analytics.page({ url: window.location.hash })
+  }
+
   pageSelected(pageIndex) {
     const page = directoryPages[pageIndex]
     this.props.history.push(`/leeds-information/${page.title.toLowerCase().split(" ").join("-")}`)

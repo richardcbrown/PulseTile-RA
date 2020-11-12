@@ -132,6 +132,10 @@ const QuestionnaireResponseItemCreator = ({ item, onItemChange, responseItem, in
   const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
+    window.analytics.page({ url: window.location.hash })
+  }, [])
+
+  useEffect(() => {
     const maxLengthError = value && value.length > item.maxLength
 
     /** @type {fhir.QuestionnaireResponseItem} */
