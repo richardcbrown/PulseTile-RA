@@ -13,6 +13,7 @@ import { getFhirResourcesAction } from "../../actions/getFhirResourcesAction"
 import querystring from "query-string"
 import { getFromBundle } from "../../fhir/GetFromBundle"
 import { createFhirResourceAction } from "../../actions/createFhirResourceAction"
+import { sign } from "jsonwebtoken"
 
 const styles = {
   createBlock: {
@@ -46,72 +47,76 @@ const conditionalRequired = (message, target) => (value, allValues) => {
   return undefined
 }
 
-/** @type {fhir.Questionnaire} */
-const questionnaire = {
-  resourceType: "Questionnaire",
-  status: "active",
-  identifier: [
-    {
-      system: "http://test.com",
-      value: "test",
-    },
-  ],
-  item: [
-    {
-      linkId: "item1",
-      type: "group",
-      item: [
-        {
-          linkId: "title1",
-          type: "string",
-          text: "#1",
-          maxLength: 75,
-        },
-        {
-          linkId: "description1",
-          type: "text",
-          text: "Description #1",
-          maxLength: 500,
-        },
-      ],
-    },
-    {
-      linkId: "item2",
-      type: "group",
-      item: [
-        {
-          linkId: "title2",
-          type: "string",
-          text: "#2",
-          maxLength: 75,
-        },
-        {
-          linkId: "description2",
-          type: "text",
-          text: "Description #2",
-          maxLength: 500,
-        },
-      ],
-    },
-    {
-      linkId: "item3",
-      type: "group",
-      item: [
-        {
-          linkId: "title3",
-          type: "string",
-          text: "#3",
-          maxLength: 75,
-        },
-        {
-          linkId: "description3",
-          type: "text",
-          text: "Description #3",
-          maxLength: 500,
-        },
-      ],
-    },
-  ],
+/**
+ *
+ * @param {fhir.QuestionnaireItem[] | fhir.QuestionnaireResponseItem[]} items
+ * @returns {fhir.QuestionnaireItem[] | fhir.QuestionnaireResponseItem[]}
+ */
+const flattenItems = (items) => {
+  const flattened = []
+
+  items.forEach((item) => {
+    if (item.item) {
+      const subItems = item.item
+
+      if (!subItems || !subItems.length) {
+        return
+      }
+
+      flattened.push(...subItems.map((si) => ({ ...si, linkId: `${item.linkId}::${si.linkId}` })))
+    } else {
+      flattened.push(item)
+    }
+  })
+
+  return flattened
+}
+
+/**
+ * @param {fhir.QuestionnaireResponseItem} item
+ * @returns {boolean}
+ */
+const isEmptyGroup = (item) => {
+  // not a group item
+  if (!item.item) {
+    return false
+  }
+
+  const completedAnswers = item.item.map((item) => !!(item.answer && item.answer[0] && item.answer[0].valueString))
+
+  // check if every item in group is unanswered
+  return completedAnswers.every((completed) => !completed)
+}
+
+/**
+ * @param {fhir.QuestionnaireResponseItem[]} responseItems
+ * @returns {fhir.QuestionnaireResponseItem[]}
+ */
+const rebuildItems = (responseItems) => {
+  const rebuiltItems = []
+
+  responseItems.forEach((ri) => {
+    const [groupId, subLinkId] = ri.linkId.split("::")
+
+    // item not in a group
+    if (!subLinkId) {
+      responseItems.push({ ...ri, linkId: groupId })
+    }
+
+    const groupItem = rebuiltItems.find((ri) => ri.linkId === groupId)
+
+    if (groupItem) {
+      groupItem.item = groupItem.item || []
+      groupItem.item.push({ ...ri, linkId: subLinkId })
+    } else {
+      rebuiltItems.push({
+        linkId: groupId,
+        item: [{ ...ri, linkId: subLinkId }],
+      })
+    }
+  })
+
+  return rebuiltItems.filter((ri) => !isEmptyGroup(ri))
 }
 
 /**
@@ -124,91 +129,10 @@ const questionnaire = {
 /**
  * @type {import('react').FunctionComponent<QuestionnaireResponseItemCreatorProps>}
  */
-const QuestionnaireResponseItemCreator = ({ item, onItemChange, responseItem, initialResponseItem }) => {
+const QuestionnaireResponseItemCreator = ({ item, setValue, value, error, errorMessage }) => {
   const { type } = item
 
-  const [value, setValue] = useState("")
-  const [error, setError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
-
-  useEffect(() => {
-    window.analytics.page({ url: window.location.hash })
-  }, [])
-
-  useEffect(() => {
-    const maxLengthError = value && value.length > item.maxLength
-
-    /** @type {fhir.QuestionnaireResponseItem} */
-    const responseItem = {
-      linkId: item.linkId,
-      text: item.text,
-      answer: [{ valueString: value }],
-    }
-
-    onItemChange(responseItem)
-
-    if (maxLengthError) {
-      setError(true)
-      setErrorMessage(`Must be ${item.maxLength} characters or less`)
-      return
-    }
-
-    setError(false)
-    setErrorMessage("")
-  }, [value])
-
-  useEffect(() => {
-    if (!initialResponseItem) {
-      return
-    }
-
-    const value = getValue(initialResponseItem)
-
-    setValue(value)
-  }, [initialResponseItem])
-
-  function getResponseItem(item, responseItem) {
-    const responseItems = (responseItem && responseItem.item) || []
-
-    const response = responseItems.find((ri) => ri.linkId === item.linkId) || null
-
-    return response
-  }
-
-  /**
-   * @param {fhir.QuestionnaireResponseItem} responseItem
-   */
-  function getValue(responseItem) {
-    return ((responseItem && (responseItem.answer || [])[0]) || {}).valueString || ""
-  }
-
   switch (type) {
-    case "group": {
-      const subItems = item.item || []
-
-      const groupItemChanged = (response) => {
-        const items = (responseItem && responseItem.item) || []
-
-        const newItems = items.filter((i) => i.linkId !== response.linkId)
-
-        newItems.push(response)
-
-        onItemChange({ linkId: item.linkId, item: newItems })
-      }
-
-      return (
-        <>
-          {subItems.map((si) => (
-            <QuestionnaireResponseItemCreator
-              responseItem={getResponseItem(si, responseItem)}
-              item={si}
-              onItemChange={groupItemChanged}
-              initialResponseItem={getResponseItem(si, initialResponseItem)}
-            />
-          ))}
-        </>
-      )
-    }
     case "string":
     case "text": {
       return (
@@ -243,43 +167,85 @@ const QuestionnaireResponseItemCreator = ({ item, onItemChange, responseItem, in
 /**
  * @type {import('react').FunctionComponent<QuestionnaireResponseCreatorProps>}
  */
-const QuestionnaireResponseCreator = ({ questionnaire, createQuestionnaireResponse, questionnaireResponse }) => {
+const QuestionnaireResponseCreator = ({
+  questionnaire,
+  createQuestionnaireResponse,
+  questionnaireResponse,
+  validators,
+}) => {
   const { item } = questionnaire
 
-  const [response, setResponse] = useState({ resourceType: "QuestionnaireResponse" })
+  const [errors, setErrors] = useState([])
+
+  /**
+   * @type {fhir.QuestionnaireResponseItem[]}
+   */
+  const initialResponseItems = []
+
+  const [responseItems, setResponseItems] = useState(initialResponseItems)
 
   useEffect(() => {
     if (questionnaireResponse) {
       const item = questionnaireResponse.item || []
 
-      setResponse({ resourceType: "QuestionnaireResponse", item })
+      const existingItems = flattenItems(item)
+
+      const filteredInitialItems = responseItems.filter((ri) => !existingItems.some((ei) => ei.linkId === ri.linkId))
+
+      setResponseItems([...existingItems, ...filteredInitialItems])
     }
   }, [questionnaireResponse])
 
-  function updateResponse(responseItem) {
-    const { item = [] } = response
+  useEffect(() => {
+    const initialItems = flattenItems(questionnaire.item || []).map((item) => ({
+      linkId: item.linkId,
+    }))
 
-    const newItems = item.filter((i) => i.linkId !== responseItem.linkId)
+    setResponseItems(initialItems)
+  }, [questionnaire])
 
-    newItems.push(responseItem)
-
-    setResponse({ ...response, item: newItems })
-  }
-
-  function getResponseItem(item, response) {
-    if (!response) {
-      return null
-    }
-
-    const responseItems = response.item || []
-
-    const responseItem = responseItems.find((ri) => ri.linkId === item.linkId) || null
-
-    return responseItem
-  }
+  const flattenedItems = flattenItems(item)
 
   if (!item) {
     return null
+  }
+
+  /**
+   * @param {string} itemKey
+   * @param {string} answerItem
+   */
+  function setResponseValue(itemKey, answerItem) {
+    const filteredResponses = responseItems.filter((ri) => ri.linkId !== itemKey)
+    const newResponseItems = [...filteredResponses, { linkId: itemKey, answer: [{ valueString: answerItem }] }]
+
+    const questionItem = flattenedItems.find((fi) => fi.linkId === itemKey)
+
+    const results = validators
+      .map((validate) => validate(newResponseItems, questionItem))
+      .reduce((a, b) => a.concat(b, []))
+
+    const existingErrors = errors.filter((error) => !results.some((res) => res.linkId === error.linkId))
+
+    setErrors([...results, ...existingErrors])
+    setResponseItems(newResponseItems)
+  }
+
+  function getResponseValue(itemKey) {
+    const responseItem = responseItems.find((item) => item.linkId === itemKey)
+
+    if (!responseItem) {
+      return ""
+    }
+
+    const { answer } = responseItem
+
+    if (!answer) {
+      return ""
+    }
+
+    const [firstAnswer] = answer
+
+    return (firstAnswer && firstAnswer.valueString) || ""
   }
 
   return (
@@ -287,14 +253,19 @@ const QuestionnaireResponseCreator = ({ questionnaire, createQuestionnaireRespon
       <Grid item container spacing={4} style={{ margin: 0, width: "100%" }} xs={12}>
         <Grid item xs={12}>
           <FormGroup>
-            {item.map((qItem) => (
-              <QuestionnaireResponseItemCreator
-                responseItem={getResponseItem(qItem, response)}
-                item={qItem}
-                onItemChange={updateResponse}
-                initialResponseItem={getResponseItem(qItem, questionnaireResponse)}
-              />
-            ))}
+            {flattenedItems.map((fi) => {
+              const { error, errorMessage } = errors.find((err) => err.item === fi.linkId) || {}
+
+              return (
+                <QuestionnaireResponseItemCreator
+                  value={getResponseValue(fi.linkId)}
+                  error={error}
+                  errorMessage={errorMessage}
+                  item={fi}
+                  setValue={(value) => setResponseValue(fi.linkId, value)}
+                />
+              )
+            })}
 
             <FormControl>
               <TextField
@@ -321,15 +292,21 @@ const QuestionnaireResponseCreator = ({ questionnaire, createQuestionnaireRespon
         <CreateFormToolbar
           handleSave={() => {
             /** @type {fhir.QuestionnaireResponse} */
-            const questionnaireResponse = { ...response, status: "completed", authored: new Date().toISOString() }
+            const questionnaireResponse = {
+              resourceType: "QuestionnaireResponse",
+              status: "completed",
+              authored: new Date().toISOString(),
+            }
 
             questionnaireResponse.questionnaire = {
               reference: `${questionnaire.resourceType}/${questionnaire.id}`,
             }
 
+            questionnaireResponse.items = rebuildItems(responseItems)
+
             createQuestionnaireResponse(questionnaireResponse)
           }}
-          disabled={false}
+          disabled={errors.some((err) => err.error === true)}
         />
       </Grid>
     </Grid>
@@ -389,6 +366,76 @@ class TopThreeThingsCreate extends Component {
 
     const breadcrumbsResource = [{ url: "/" + resourceUrl, title: title, isActive: false }]
 
+    const maxLengthValidator = (responseItems, questionItem) => {
+      const responseItem = responseItems.find((ri) => ri.linkId === questionItem.linkId)
+
+      if (!questionItem.maxLength) {
+        return [
+          {
+            item: responseItem.linkId,
+            error: false,
+          },
+        ]
+      }
+
+      if (!responseItem) {
+        return [
+          {
+            item: responseItem.linkId,
+            error: false,
+          },
+        ]
+      }
+
+      const { answer } = responseItem
+
+      if (!answer) {
+        return [
+          {
+            item: responseItem.linkId,
+            error: false,
+          },
+        ]
+      }
+
+      const answerString = answer[0].valueString || ""
+
+      if (answerString.length <= questionItem.maxLength) {
+        return [
+          {
+            item: responseItem.linkId,
+            error: false,
+          },
+        ]
+      }
+
+      return [
+        {
+          item: responseItem.linkId,
+          error: true,
+          errorMessage: `Must be ${questionItem.maxLength} characters or less`,
+        },
+      ]
+    }
+
+    const groupCompletedValidator = (responseItems, questionItem) => {
+      const group = questionItem.linkId.split("::")[0]
+
+      const groupItems = responseItems.filter((ri) => ri.linkId.startsWith(group))
+
+      const anyCompleted = groupItems.some((gi) => ((gi.answer || [])[0] || {}).valueString)
+
+      if (!anyCompleted) {
+        return groupItems.map((gi) => ({ item: gi.linkId, error: false }))
+      }
+
+      const incompleteItems = groupItems.filter(
+        (gi) => gi.linkId.includes("title") && !!!((gi.answer || [])[0] || {}).valueString
+      )
+
+      return incompleteItems.map((ii) => ({ item: ii.linkId, error: true, errorMessage: "Subject is required" }))
+    }
+
     return (
       <React.Fragment>
         <Breadcrumbs resource={breadcrumbsResource} />
@@ -400,6 +447,7 @@ class TopThreeThingsCreate extends Component {
                 questionnaire={questionnaire}
                 questionnaireResponse={questionnaireResponse}
                 createQuestionnaireResponse={(response) => createResource(response)}
+                validators={[maxLengthValidator, groupCompletedValidator]}
               />
             </Paper>
           ) : null}
