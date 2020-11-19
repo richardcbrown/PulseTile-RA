@@ -527,6 +527,8 @@ class TopThreeThingsCreate extends Component {
         (gi) => gi.linkId.includes("title") && !!!((gi.answer || [])[0] || {}).valueString
       )
 
+      console.log(incompleteItems)
+
       return incompleteItems.map((ii) => ({ item: ii.linkId, error: true, errorMessage: "Subject is required" }))
     }
 

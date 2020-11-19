@@ -124,10 +124,30 @@ const styles = (theme) => {
   }
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+}
+
+const SlideDetails = ({ details }) => {
+  const ref = useRef()
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    render(<ReactMarkdown children={details} />, ref.current)
+  }, [ref.current])
+
+  return <div ref={ref}></div>
+}
+
 class InitializePage extends Component {
   componentDidMount() {
     const { status } = this.props
-
     if (!token || status !== "found") {
       this.props.initializeAction()
       this.interval = window.setInterval(() => this.props.initializeAction(), 5000)
@@ -138,12 +158,10 @@ class InitializePage extends Component {
 
   componentDidUpdate() {
     const { status, error } = this.props
-
     if (error) {
       clearInterval(this.interval)
       return
     }
-
     if (token && status === "found") {
       clearInterval(this.interval)
       this.props.checkTermsAction()
