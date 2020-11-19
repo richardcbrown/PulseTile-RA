@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography"
  * @constructor
  */
 const PatientBanner = ({ classes, patientInfo }) => {
-  const resolved = get(patientInfo, "resolved", false)
+  const resolved = get(patientInfo, "resolved", null)
 
   return (
     <Grid className={classes.patientInfo} container spacing={0}>
@@ -55,9 +55,12 @@ const PatientBanner = ({ classes, patientInfo }) => {
           {get(patientInfo, "address", null)}
         </Typography>
       </Grid>
-      {!resolved ? (
+      {resolved === false ? (
         <Grid className={classes.gridBlock} item xs={12}>
-          <Typography variant="caption">More information will be displayed when it becomes available</Typography>
+          <Typography variant="caption">
+            Helm is working to obtain your details from the server. They will automatically update when received. Thank
+            you for your patience.
+          </Typography>
         </Grid>
       ) : null}
     </Grid>

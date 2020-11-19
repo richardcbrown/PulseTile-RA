@@ -83,7 +83,7 @@ class MobileMenu extends Component {
   render() {
     const { classes, setSidebarVisibility, isSidebarOpen, patientInfo } = this.props
     const { isMobileBannerOpened } = this.state
-    const resolved = get(patientInfo, "resolved", false)
+    const resolved = get(patientInfo, "resolved", null)
     return (
       <React.Fragment>
         <div className={classes.menuAndBannerMobile}>
@@ -132,9 +132,10 @@ class MobileMenu extends Component {
               <span>Address: </span>
               {get(patientInfo, "address", null)}
             </Typography>
-            {!resolved ? (
+            {!resolved === false ? (
               <Typography className={classes.bannerRow} variant="caption">
-                More information will be displayed when it becomes available
+                Helm is working to obtain your details from the server. They will automatically update when received.
+                Thank you for your patience.
               </Typography>
             ) : null}
           </div>

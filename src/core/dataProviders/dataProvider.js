@@ -7,7 +7,6 @@ import sort, { ASC, DESC } from "sort-array-objects"
 import pluginFilters from "../config/pluginFilters"
 import { token, domainName } from "../token"
 
-import dummyPatients from "../pages/PatientsList/dummyPatients"
 import { httpErrorAction } from "../actions/httpErrorAction"
 
 const apiPatientsUser = "api/patient/fhir"
@@ -305,46 +304,6 @@ const dataProvider = (type, resource, params) => {
     })
 }
 
-const fakePatientsProvider = (type, resource, params) => {
-  switch (type) {
-    case GET_LIST:
-      const pageNumber = get(params, "pagination.page", 1)
-      const numberPerPage = get(params, "pagination.perPage", 10)
-      const results = getResultsFromResponse(resource, dummyPatients, params)
-      const resultsFiltering = getFilterResults(resource, results, params)
-      const resultsSorting = getSortedResults(resultsFiltering, params)
-      const startItem = (pageNumber - 1) * numberPerPage
-      const endItem = pageNumber * numberPerPage
-      const paginationResults = resultsSorting.slice(startItem, endItem)
-      return {
-        data: paginationResults,
-        total: resultsSorting.length,
-      }
-
-    case GET_ONE:
-    case UPDATE:
-      let response = {}
-      for (let i = 0, n = dummyPatients.length; i < n; i++) {
-        let item = dummyPatients[i]
-        if (item.id === params.id) {
-          response = item
-          break
-        }
-      }
-      return {
-        data: Object.assign({ id: params.id }, response),
-      }
-
-    case CREATE:
-      return {
-        data: Object.assign({ id: params.data.nhsNumber }, params.data),
-      }
-
-    default:
-      return { data: "No results" }
-  }
-}
-
 /**
  * This function provides requests/response to server
  *
@@ -354,8 +313,5 @@ const fakePatientsProvider = (type, resource, params) => {
  * @param {shape}  params
  */
 export default (type, resource, params) => {
-  if (resource === `patients`) {
-    return fakePatientsProvider(type, resource, params)
-  }
   return dataProvider(type, resource, params)
 }

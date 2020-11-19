@@ -7,19 +7,29 @@ import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar"
 import TableHeader from "../../../core/common/TableHeader"
 import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import backgroundImage from "../../images/Artboard.png"
-import { Typography, TextField, Paper, FormGroup, FormControl, FormHelperText } from "@material-ui/core"
-import { flattenComposition, transformComposition } from "../../fhir/composition"
+import { Typography, TextField, Paper, FormGroup, FormControl, FormHelperText, IconButton } from "@material-ui/core"
 import { getFhirResourcesAction } from "../../actions/getFhirResourcesAction"
 import querystring from "query-string"
 import { getFromBundle } from "../../fhir/GetFromBundle"
 import { createFhirResourceAction } from "../../actions/createFhirResourceAction"
-import { sign } from "jsonwebtoken"
+import { Info } from "@material-ui/icons"
+import GeneralDialog from "../../common/Dialogs/GeneralDialog"
+import ConfirmButton from "../../common/Buttons/ConfirmButton"
 
 const styles = {
   createBlock: {
     padding: "24px",
     background: `url(${backgroundImage})`,
     backgroundSize: "cover",
+  },
+  labelBlock: {
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  labelBlockTitle: {
+    marginTop: 16,
+    marginBottom: 8,
+    width: 256,
   },
 }
 
@@ -129,27 +139,49 @@ const rebuildItems = (responseItems) => {
 /**
  * @type {import('react').FunctionComponent<QuestionnaireResponseItemCreatorProps>}
  */
-const QuestionnaireResponseItemCreator = ({ item, setValue, value, error, errorMessage }) => {
+const QuestionnaireResponseItemCreator = ({ classes, item, setValue, value, error, errorMessage, children }) => {
   const { type } = item
 
   switch (type) {
     case "string":
     case "text": {
       return (
-        <FormControl>
-          <TextField
-            error={error}
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-            label={item.text}
-            fullWidth={type === "text"}
-          />
-          {!error ? (
-            <CharacterCount limit={item.maxLength} value={value} />
+        <>
+          {children ? (
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+              <FormControl className={type === "text" ? classes.labelBlock : classes.labelBlockTitle}>
+                <TextField
+                  error={error}
+                  value={value}
+                  onChange={(event) => setValue(event.target.value)}
+                  label={item.text}
+                  fullWidth={type === "text"}
+                />
+                {!error ? (
+                  <CharacterCount limit={item.maxLength} value={value} />
+                ) : (
+                  <FormHelperText error={error}>{errorMessage}</FormHelperText>
+                )}
+              </FormControl>
+              {children ? children : null}
+            </div>
           ) : (
-            <FormHelperText error={error}>{errorMessage}</FormHelperText>
+            <FormControl className={type === "text" ? classes.labelBlock : classes.labelBlockTitle}>
+              <TextField
+                error={error}
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
+                label={item.text}
+                fullWidth={type === "text"}
+              />
+              {!error ? (
+                <CharacterCount limit={item.maxLength} value={value} />
+              ) : (
+                <FormHelperText error={error}>{errorMessage}</FormHelperText>
+              )}
+            </FormControl>
           )}
-        </FormControl>
+        </>
       )
     }
     default: {
@@ -172,10 +204,12 @@ const QuestionnaireResponseCreator = ({
   createQuestionnaireResponse,
   questionnaireResponse,
   validators,
+  classes,
 }) => {
   const { item } = questionnaire
 
   const [errors, setErrors] = useState([])
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   /**
    * @type {fhir.QuestionnaireResponseItem[]}
@@ -224,9 +258,27 @@ const QuestionnaireResponseCreator = ({
       .map((validate) => validate(newResponseItems, questionItem))
       .reduce((a, b) => a.concat(b, []))
 
-    const existingErrors = errors.filter((error) => !results.some((res) => res.linkId === error.linkId))
+    let deduplictedErrors = []
 
-    setErrors([...results, ...existingErrors])
+    for (let i = results.length - 1; i >= 0; i--) {
+      const current = results[i]
+
+      if (!deduplictedErrors.find((de) => de.linkId === current.linkId)) {
+        deduplictedErrors.push(current)
+      }
+
+      if (current.error === false) {
+        continue
+      }
+
+      deduplictedErrors = deduplictedErrors.filter((de) => de.linkId !== current.linkId)
+
+      deduplictedErrors.push(current)
+    }
+
+    const existingErrors = errors.filter((error) => !deduplictedErrors.some((res) => res.linkId === error.linkId))
+
+    setErrors([...deduplictedErrors, ...existingErrors])
     setResponseItems(newResponseItems)
   }
 
@@ -248,68 +300,110 @@ const QuestionnaireResponseCreator = ({
     return (firstAnswer && firstAnswer.valueString) || ""
   }
 
+  function disabled() {
+    return (
+      errors.some((err) => err.error === true) ||
+      responseItems.every((ri) => {
+        const { answer } = ri
+
+        return !answer || !answer[0] || !answer[0].valueString
+      })
+    )
+  }
+
   return (
-    <Grid container spacing={0} style={{ margin: 0, width: "100%" }}>
-      <Grid item container spacing={4} style={{ margin: 0, width: "100%" }} xs={12}>
-        <Grid item xs={12}>
-          <FormGroup>
-            {flattenedItems.map((fi) => {
-              const { error, errorMessage } = errors.find((err) => err.item === fi.linkId) || {}
+    <>
+      <GeneralDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        title={"Top Three Things Advice"}
+        message={
+          "Please use this space to tell us three things you feel it would be helpful for your healthcare professional to know, which may not be in your existing health and care record. This might include details such as being a carer and for whom, challenges you have with communicating or emergency contact information. It can be anything you think would be useful and matters to you."
+        }
+        options={[<ConfirmButton label="Ok" onClick={() => setDialogOpen(false)} />]}
+      />
+      <Grid container spacing={0} style={{ margin: 0, width: "100%" }}>
+        <Grid item container spacing={4} style={{ margin: 0, width: "100%" }} xs={12}>
+          <Grid item xs={12}>
+            <FormGroup>
+              {flattenedItems.map((fi, index) => {
+                const { error, errorMessage } = errors.find((err) => err.item === fi.linkId) || {}
 
-              return (
-                <QuestionnaireResponseItemCreator
-                  value={getResponseValue(fi.linkId)}
-                  error={error}
-                  errorMessage={errorMessage}
-                  item={fi}
-                  setValue={(value) => setResponseValue(fi.linkId, value)}
+                return (
+                  <>
+                    {index === 0 ? (
+                      <QuestionnaireResponseItemCreator
+                        classes={classes}
+                        value={getResponseValue(fi.linkId)}
+                        error={error}
+                        errorMessage={errorMessage}
+                        item={fi}
+                        setValue={(value) => setResponseValue(fi.linkId, value)}
+                      >
+                        {
+                          <IconButton aria-label="Top Three Things Advice" onClick={() => setDialogOpen(true)}>
+                            <Info />
+                          </IconButton>
+                        }
+                      </QuestionnaireResponseItemCreator>
+                    ) : (
+                      <QuestionnaireResponseItemCreator
+                        classes={classes}
+                        value={getResponseValue(fi.linkId)}
+                        error={error}
+                        errorMessage={errorMessage}
+                        item={fi}
+                        setValue={(value) => setResponseValue(fi.linkId, value)}
+                      />
+                    )}
+                  </>
+                )
+              })}
+
+              <FormControl>
+                <TextField
+                  className={classes.labelBlock}
+                  label="Author"
+                  defaultValue={localStorage.getItem("username")}
+                  disabled={true}
+                  fullWidth
                 />
-              )
-            })}
+              </FormControl>
+              <FormControl>
+                <TextField
+                  className={classes.labelBlock}
+                  label="Date"
+                  defaultValue={moment().format("MM/DD/YYYY")}
+                  disabled={true}
+                  fullWidth
+                />
+              </FormControl>
+            </FormGroup>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          <CreateFormToolbar
+            handleSave={() => {
+              /** @type {fhir.QuestionnaireResponse} */
+              const questionnaireResponse = {
+                resourceType: "QuestionnaireResponse",
+                status: "completed",
+                authored: new Date().toISOString(),
+              }
 
-            <FormControl>
-              <TextField
-                // className={classes.labelBlock}
-                label="Author"
-                defaultValue={localStorage.getItem("username")}
-                disabled={true}
-                fullWidth
-              />
-            </FormControl>
-            <FormControl>
-              <TextField
-                // className={classes.labelBlock}
-                label="Date"
-                defaultValue={moment().format("MM/DD/YYYY")}
-                disabled={true}
-                fullWidth
-              />
-            </FormControl>
-          </FormGroup>
+              questionnaireResponse.questionnaire = {
+                reference: `${questionnaire.resourceType}/${questionnaire.id}`,
+              }
+
+              questionnaireResponse.items = rebuildItems(responseItems)
+
+              createQuestionnaireResponse(questionnaireResponse)
+            }}
+            disabled={disabled()}
+          />
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <CreateFormToolbar
-          handleSave={() => {
-            /** @type {fhir.QuestionnaireResponse} */
-            const questionnaireResponse = {
-              resourceType: "QuestionnaireResponse",
-              status: "completed",
-              authored: new Date().toISOString(),
-            }
-
-            questionnaireResponse.questionnaire = {
-              reference: `${questionnaire.resourceType}/${questionnaire.id}`,
-            }
-
-            questionnaireResponse.items = rebuildItems(responseItems)
-
-            createQuestionnaireResponse(questionnaireResponse)
-          }}
-          disabled={errors.some((err) => err.error === true)}
-        />
-      </Grid>
-    </Grid>
+    </>
   )
 }
 
@@ -444,6 +538,7 @@ class TopThreeThingsCreate extends Component {
           {questionnaire ? (
             <Paper elevation={0}>
               <QuestionnaireResponseCreator
+                classes={classes}
                 questionnaire={questionnaire}
                 questionnaireResponse={questionnaireResponse}
                 createQuestionnaireResponse={(response) => createResource(response)}

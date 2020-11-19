@@ -58,7 +58,12 @@ const TableHeader = ({ classes, resource, translate }) => {
         <Typography className={classes.title}>{title}</Typography>
       </h1>
       {(description && <Typography className={classes.description}>{description}</Typography>) || null}
-      {(subText && <Typography className={classes.description}>{subText}</Typography>) || null}
+      {(subText && (
+        <Typography className={classes.description}>
+          <div dangerouslySetInnerHTML={{ __html: subText }}></div>
+        </Typography>
+      )) ||
+        null}
     </div>
   )
 }
