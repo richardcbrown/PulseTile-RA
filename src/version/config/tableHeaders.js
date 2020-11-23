@@ -25,4 +25,7 @@ export default {
     subText:
       "Please note this section is under development and some of the results may not provide complete and relevant information at this time. We would value your feedback on this section.",
   },
+  settings: {
+    title: "Settings",
+  },
 }

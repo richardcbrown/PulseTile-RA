@@ -1,11 +1,5 @@
-import createSynopsisSagas from "../../core/sagas/createSynopsisSagas"
 import createFhirSynopsisSaga, { createFhirBundleSaga, createFhirResourceSaga } from "./fhirSaga"
-import {
-  SYNOPSIS_VACCINATIONS_ACTION,
-  synopsisVaccinationsAction,
-  SYNOPSIS_TOP_THREE_THINGS_ACTION,
-  synopsisTopThreeThingsAction,
-} from "../actions/synopsisActions"
+import { SYNOPSIS_TOP_THREE_THINGS_ACTION, synopsisTopThreeThingsAction } from "../actions/synopsisActions"
 import { GET_FHIR_RESOURCES_ACTION, getFhirResourcesAction } from "../actions/getFhirResourcesAction"
 import { CREATE_FHIR_RESOURCE_ACTION, createFhirResourceAction } from "../actions/createFhirResourceAction"
 
@@ -16,6 +10,7 @@ import { topThreeThingsSaga } from "./topThreeThingsSagas"
 import { getNhsServicesSaga } from "./nhsServicesSagas"
 import { getLeedsServicesSaga } from "./leedsServicesSagas"
 import { getLoopServicesSaga } from "./loopSagas"
+import { getPreferencesSaga, savePreferencesSaga } from "./preferencesSagas"
 
 /**
  * This componenr returns array of version sagas
@@ -24,7 +19,6 @@ import { getLoopServicesSaga } from "./loopSagas"
  * @return {array}
  */
 export default [
-  createSynopsisSagas(SYNOPSIS_VACCINATIONS_ACTION, synopsisVaccinationsAction, "vaccinations"),
   createFhirSynopsisSaga(
     SYNOPSIS_TOP_THREE_THINGS_ACTION,
     synopsisTopThreeThingsAction,
@@ -40,4 +34,6 @@ export default [
   getNhsServicesSaga,
   getLeedsServicesSaga,
   getLoopServicesSaga,
+  getPreferencesSaga,
+  savePreferencesSaga,
 ]

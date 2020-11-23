@@ -10,6 +10,7 @@ import CustomTopBar from "./Topbar"
 import CustomFooter from "./Footer"
 
 import { getCurrentTheme } from "../config/styles"
+import { getPreferencesAction } from "../../version/actions/preferencesActions"
 
 const styles = {
   root: {
@@ -37,7 +38,13 @@ const styles = {
  * @author Bogdan Shcherban <bsc@piogroup.net>
  * @constructor
  */
-const CustomLayout = ({ classes, ...rest }) => {
+const CustomLayout = ({ classes, preferences, getPreferences, ...rest }) => {
+  const { data, loading } = preferences
+
+  if (!data && !loading) {
+    getPreferences()
+  }
+
   return (
     <Layout
       {...rest}
@@ -50,10 +57,17 @@ const CustomLayout = ({ classes, ...rest }) => {
 }
 
 const mapStateToProps = (state) => {
-  const isContrastMode = get(state, "custom.contrastMode.data", false)
+  const preferences = get(state, "custom.preferences", {})
   return {
-    theme: getCurrentTheme(isContrastMode),
+    theme: getCurrentTheme(false),
+    preferences,
   }
 }
 
-export default connect(mapStateToProps, null)(withStyles(styles)(CustomLayout))
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPreferences: () => dispatch(getPreferencesAction.request()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CustomLayout))

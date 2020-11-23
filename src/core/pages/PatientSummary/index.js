@@ -6,14 +6,7 @@ import { withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 
 import DashboardCard from "../../common/DashboardCard"
-import {
-  synopsisAllergiesAction,
-  synopsisContactsAction,
-  synopsisMedicationsAction,
-  synopsisProblemsAction,
-} from "../../actions/synopsisActions"
 import { synopsisData, getSynopsisProps } from "./config"
-import SettingsDialog from "./SettingsDialog"
 import Breadcrumbs from "../../common/Breadcrumbs"
 import { themeCommonElements } from "../../../version/config/theme.config"
 import { nonCoreSynopsisActions } from "../../../version/config/nonCoreSynopsis"
@@ -140,8 +133,6 @@ class PatientSummaryInfo extends Component {
 const mapStateToProps = (state) => {
   const patientSummaryProps = {
     loading: state.custom.demographics.loading,
-    showMode: state.custom.showMode.data,
-    showHeadings: state.custom.showHeadings.data,
   }
 
   const synopsisProps = getSynopsisProps(state)

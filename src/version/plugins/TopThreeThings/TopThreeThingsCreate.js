@@ -395,7 +395,7 @@ const QuestionnaireResponseCreator = ({
                 reference: `${questionnaire.resourceType}/${questionnaire.id}`,
               }
 
-              questionnaireResponse.items = rebuildItems(responseItems)
+              questionnaireResponse.item = rebuildItems(responseItems)
 
               createQuestionnaireResponse(questionnaireResponse)
             }}

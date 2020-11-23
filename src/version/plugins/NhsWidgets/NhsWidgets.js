@@ -44,7 +44,6 @@ const nhsWidgets = [
 
 const useStyles = makeStyles({
   createBlock: {
-    padding: "24px",
     background: `url(${backgroundImage})`,
     backgroundSize: "cover",
     margin: 0,

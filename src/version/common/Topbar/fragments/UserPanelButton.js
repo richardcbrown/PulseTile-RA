@@ -9,8 +9,11 @@ import PersonIcon from "@material-ui/icons/Person"
 import Tooltip from "@material-ui/core/Tooltip"
 
 import CustomLogoutButton from "../../../../core/common/Buttons/CustomLogoutButton"
+import { ReactComponent as SettingsIcon } from "../../../images/Icons/Settings.svg"
+import { SvgIcon } from "@material-ui/core"
+import { withRouter } from "react-router-dom"
 
-const styles = {
+const styles = (theme) => ({
   userPanel: {
     minWidth: 220,
     padding: 12,
@@ -24,7 +27,26 @@ const styles = {
     fontSize: 14,
     marginBottom: 7,
   },
-}
+  button: {
+    display: "block",
+    width: 140,
+    height: 40,
+    margin: "8px !important",
+    color: "white",
+    backgroundColor: theme.palette.mainColor,
+    border: `1px solid ${theme.palette.mainColor}`,
+    borderRadius: 25,
+    fontSize: 16,
+    fontWeight: 800,
+    "&:hover": {
+      color: theme.palette.mainColor,
+      backgroundColor: "white",
+    },
+  },
+  icon: {
+    marginLeft: 10,
+  },
+})
 
 /**
  * This component returns User panel popover
@@ -57,7 +79,7 @@ class UserPanelButton extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, history } = this.props
     const { isOpen, anchorEl } = this.state
     return (
       <div className={classes.rightBlockItem} ref={this.button}>
@@ -80,7 +102,7 @@ class UserPanelButton extends Component {
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "right" }}
           open={isOpen}
-          onClose={this.handleClose}
+          onClose={() => this.handleClose()}
         >
           <Card className={classes.userPanel}>
             <Typography variant="h1" className={classes.userName}>
@@ -90,6 +112,13 @@ class UserPanelButton extends Component {
               <span>User role:</span> {localStorage.getItem("role")}
             </Typography>
             <CustomLogoutButton classes={classes} />
+
+            <IconButton className={classes.button} onClick={() => history.push("/Settings")}>
+              Settings
+              <SvgIcon className={classes.icon} viewBox="0 0 28 29" fontSize="small">
+                <SettingsIcon />
+              </SvgIcon>
+            </IconButton>
           </Card>
         </Popover>
       </div>
@@ -97,4 +126,4 @@ class UserPanelButton extends Component {
   }
 }
 
-export default withStyles(styles)(UserPanelButton)
+export default withStyles(styles)(withRouter(UserPanelButton))

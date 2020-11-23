@@ -27,11 +27,11 @@ export const checkTermsSaga = takeEvery(CHECK_TERMS_ACTION.REQUEST, function* (a
         return res.json()
       })
       .then((response) => {
-        const isJwtMessage = (status, message) => {
-          return Number(status) === 400 && typeof message === "string" && message.includes("JWT")
+        const isJwtMessage = (status) => {
+          return Number(status) === 401 || Number(status) === 403
         }
 
-        if (isJwtMessage(statusCode, response.error)) {
+        if (isJwtMessage(statusCode)) {
           document.cookie = "JSESSIONID=;"
           document.cookie = "META=;"
           localStorage.removeItem("userId")
