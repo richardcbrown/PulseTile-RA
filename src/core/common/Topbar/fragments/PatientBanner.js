@@ -25,7 +25,7 @@ const PatientBanner = ({ classes, patientInfo }) => {
                 </Typography>
                 <Typography variant="body2">
                     <span className={classes.keyName}>Doctor: </span>
-                    {get(patientInfo, 'gpName', null)}
+                    {get(patientInfo, 'gpFullAddress', null)}
                 </Typography>
             </Grid>
             <Grid className={classes.gridBlock} item xs={6} lg={2}>
