@@ -98,7 +98,7 @@ class PatientSummaryInfo extends Component {
   }
 
   render() {
-    const { classes, loading, showMode, showHeadings, location } = this.props
+    const { classes, loading, showMode, displayMode, location } = this.props
     const breadcrumbsResource = [{ url: location.pathname, title: "Patient Summary", isActive: false }]
     const FeedsPanels = get(themeCommonElements, "feedsPanels", false)
     return (
@@ -110,8 +110,7 @@ class PatientSummaryInfo extends Component {
             return (
               <DashboardCard
                 key={key}
-                showMode={showMode}
-                showHeadings={showHeadings}
+                showMode={displayMode}
                 id={item.id}
                 title={item.title}
                 list={item.list}
@@ -131,22 +130,23 @@ class PatientSummaryInfo extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const preferences = get(state, "custom.preferences", {})
+
+  const userPrefs = (preferences && preferences.data && preferences.data.preferences) || {}
+
+  const displayMode = get(userPrefs, "general.preferences.patientSummary", "headingsandlist")
+
   const patientSummaryProps = {
     loading: state.custom.demographics.loading,
   }
 
   const synopsisProps = getSynopsisProps(state)
 
-  return Object.assign({}, patientSummaryProps, synopsisProps)
+  return Object.assign({ displayMode }, patientSummaryProps, synopsisProps)
 }
 
 const mapDispatchToProps = (dispatch) => {
-  const coreSynopsisActions = [
-    // synopsisAllergiesAction,
-    // synopsisContactsAction,
-    // synopsisProblemsAction,
-    // synopsisMedicationsAction,
-  ]
+  const coreSynopsisActions = []
 
   const synopsisActions = coreSynopsisActions.concat(nonCoreSynopsisActions)
 

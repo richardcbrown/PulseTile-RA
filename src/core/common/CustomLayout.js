@@ -58,8 +58,13 @@ const CustomLayout = ({ classes, preferences, getPreferences, ...rest }) => {
 
 const mapStateToProps = (state) => {
   const preferences = get(state, "custom.preferences", {})
+
+  const userPrefs = (preferences && preferences.data && preferences.data.preferences) || {}
+
+  const contrastMode = get(userPrefs, "general.preferences.contrastMode", false)
+
   return {
-    theme: getCurrentTheme(false),
+    theme: getCurrentTheme(contrastMode),
     preferences,
   }
 }

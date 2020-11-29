@@ -3,8 +3,15 @@ import {
   AccordionDetails,
   AccordionSummary,
   Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
   Grid,
   makeStyles,
+  Radio,
+  RadioGroup,
   SvgIcon,
   Typography,
 } from "@material-ui/core"
@@ -30,6 +37,36 @@ const useStyles = makeStyles({
     alignContent: "flex-start",
   },
 })
+
+function getEditorForPreferenceItem(item, value, setValue) {
+  switch (item.editor) {
+    case "radio": {
+      return (
+        <FormControl margin="normal" component="fieldset">
+          <FormLabel component="legend">{item.title}</FormLabel>
+          <RadioGroup
+            aria-label={item.description || item.title}
+            name={item.title}
+            value={value}
+            onChange={(_, value) => setValue(value)}
+          >
+            {item.enum.map((enumval, index) => (
+              <FormControlLabel
+                value={enumval}
+                control={<Radio />}
+                label={(item.enumLabels && item.enumLabels[index]) || enumval}
+              />
+            ))}
+          </RadioGroup>
+          <FormHelperText>{item.description}</FormHelperText>
+        </FormControl>
+      )
+    }
+    default: {
+      return null
+    }
+  }
+}
 
 const Settings = (props) => {
   const { savePreferences } = props
@@ -76,9 +113,7 @@ const Settings = (props) => {
       <Breadcrumbs resource={breadcrumbsResource} />
       <TableHeader resource={resourceUrl} />
       <Grid container spacing={4} className={classes.createBlock}>
-        {JSON.stringify(data)}
-
-        {Object.keys(schema).map((schemaItem) => {
+        {Object.keys(schema).map((schemaItem, index) => {
           const { title, preferences } = schema[schemaItem]
 
           return (
@@ -90,38 +125,59 @@ const Settings = (props) => {
                       <ChevronUp />
                     </SvgIcon>
                   }
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+                  aria-controls={`panel${index}a-content`}
+                  id={`panel${index}a-header`}
                   className={accordionStyles.mainHeader}
                 >
                   <Typography variant="h5">{title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {Object.keys(preferences).map((pref) => {
-                    const item = preferences[pref]
-                    const settingKey = [schemaItem, "preferences", pref].join(".")
+                  <FormGroup>
+                    {Object.keys(preferences).map((pref) => {
+                      const item = preferences[pref]
+                      const settingKey = [schemaItem, "preferences", pref].join(".")
 
-                    switch (item.type) {
-                      case "boolean": {
-                        return (
-                          <Checkbox
-                            checked={getPreferenceValue(settingKey, false)}
-                            onChange={() => setPreferenceValue(settingKey, !getPreferenceValue(settingKey, false))}
-                          />
+                      if (item.editor) {
+                        return getEditorForPreferenceItem(
+                          item,
+                          getPreferenceValue(settingKey, item.defaultValue),
+                          (value) => setPreferenceValue(settingKey, value)
                         )
                       }
-                      case "link": {
-                        return (
-                          <a href={item.url} target={item.target} rel="noopener noreferrer">
-                            {item.title}
-                          </a>
-                        )
+
+                      switch (item.type) {
+                        case "boolean": {
+                          return (
+                            <FormControl margin="normal">
+                              <FormControlLabel
+                                aria-label={item.description || item.title}
+                                control={
+                                  <Checkbox
+                                    checked={getPreferenceValue(settingKey, false)}
+                                    onChange={() =>
+                                      setPreferenceValue(settingKey, !getPreferenceValue(settingKey, false))
+                                    }
+                                  />
+                                }
+                                label={<Typography>{item.title}</Typography>}
+                              />
+                              <FormHelperText>{item.description}</FormHelperText>
+                            </FormControl>
+                          )
+                        }
+                        case "link": {
+                          return (
+                            <a href={item.url} target={item.target} rel="noopener noreferrer">
+                              {item.title}
+                            </a>
+                          )
+                        }
+                        default: {
+                          return null
+                        }
                       }
-                      default: {
-                        return null
-                      }
-                    }
-                  })}
+                    })}
+                  </FormGroup>
                 </AccordionDetails>
               </Accordion>
             </Grid>

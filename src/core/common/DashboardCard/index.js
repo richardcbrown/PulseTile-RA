@@ -51,10 +51,7 @@ const ListBlock = ({ classes, items, list, history, listOnly }) => {
  * @constructor
  */
 export default (props) => {
-  const { id, classes, title, items, loading, icon, list, history, showMode, showHeadings, listOnly } = props
-  if (Object.values(showHeadings).indexOf(list) === -1) {
-    return null
-  }
+  const { id, classes, title, items, loading, icon, list, history, showMode, listOnly } = props
 
   const clickHandler = listOnly ? () => {} : () => history.push("/" + list)
 

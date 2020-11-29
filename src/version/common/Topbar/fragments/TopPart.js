@@ -9,7 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar"
 import helmLogo from "../../../images/helm-logo.png"
 import nhsLogo from "../../../images/nhs.png"
 import UserTour from "../../../features/UserTour"
-// import ContrastMode from "../../../features/ContrastMode"
+import ContrastMode from "../../../features/ContrastMode"
 import UserPanelButton from "./UserPanelButton"
 
 const styles = (theme) => ({
@@ -121,7 +121,7 @@ const TopPart = ({ classes, logout, location, history }) => {
         title="Pulse Tile"
       />
       <UserTour classes={classes} location={location} />
-      {/* <ContrastMode classes={classes} /> */}
+      <ContrastMode classes={classes} />
       <UserPanelButton classes={classes} history={history} />
     </Toolbar>
   )

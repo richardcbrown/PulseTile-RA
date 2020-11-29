@@ -447,7 +447,7 @@ class TopThreeThingsCreate extends Component {
       "QuestionnaireResponse",
       querystring.stringify({
         questionnaire: `${questionnaire.resourceType}/${questionnaire.id}`,
-        _sort: "-authored",
+        _sort: "authored",
       })
     )
   }

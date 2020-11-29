@@ -18,8 +18,8 @@ export const coreSynopsisData = [
 const totalSynopsisData = coreSynopsisData.concat(nonCoreSynopsisData)
 export const synopsisData = totalSynopsisData.filter((item) => item.isActive)
 
-export const SHOW_HEADING = "heading"
-export const SHOW_ALL = "headingAndList"
+export const SHOW_HEADING = "headings"
+export const SHOW_ALL = "headingsandlist"
 
 export const showModesArray = [
   { type: SHOW_HEADING, label: "Headings" },
