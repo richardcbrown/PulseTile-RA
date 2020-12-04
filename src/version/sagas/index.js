@@ -22,8 +22,8 @@ export default [
   createFhirSynopsisSaga(
     SYNOPSIS_TOP_THREE_THINGS_ACTION,
     synopsisTopThreeThingsAction,
-    "Composition",
-    "_sort=date&_count=1&type=https://fhir.myhelm.org/STU3/ValueSet/phr-composition-type-1|T3T"
+    "QuestionnaireResponse",
+    "_sort=-authored&_count=1&questionnaire.identifier=http://test.com|test"
   ),
   createFhirBundleSaga(GET_FHIR_RESOURCES_ACTION, getFhirResourcesAction),
   createFhirResourceSaga(CREATE_FHIR_RESOURCE_ACTION, createFhirResourceAction),

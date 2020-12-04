@@ -22,7 +22,6 @@ const Homepage = get(themeCommonElements, "homePage")
 const i18nProvider = {
   getLocale: () => "en",
   translate: (key, options) => {
-    console.log(key, options)
     return get(translations, `en.${key}`)
   },
 }

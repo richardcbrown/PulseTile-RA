@@ -106,7 +106,7 @@ class MobileMenu extends Component {
           <div className={classes.patientBannerMobile}>
             <Typography variant="body2" className={classes.bannerRow}>
               <span>Doctor: </span>
-              {get(patientInfo, "gpName", null)}
+              {get(patientInfo, "gpFullAddress", null)}
             </Typography>
             <Typography variant="body2" className={classes.bannerRow}>
               <span>D.O.B.: </span>

@@ -22,7 +22,7 @@ const PatientBanner = ({ classes, patientInfo }) => {
         <Typography variant="h6">{get(patientInfo, "name", null)}</Typography>
         <Typography variant="body2">
           <span className={classes.keyName}>Doctor: </span>
-          {get(patientInfo, "gpName", null)}
+          {get(patientInfo, "gpFullAddress", null)}
         </Typography>
       </Grid>
       <Grid className={classes.gridBlock} item xs={6} lg={2}>

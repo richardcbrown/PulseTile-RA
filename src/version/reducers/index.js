@@ -8,7 +8,7 @@ import {
 } from "../actions/synopsisActions"
 
 import createCustomReducer from "../../core/reducers/createCustomReducer"
-import fhirReducer from "./fhirReducer"
+import fhirReducer, { createFhirResourceReducer } from "./fhirReducer"
 import preferencesReducer from "./preferencesReducer"
 
 /**
@@ -25,5 +25,6 @@ export default {
   "leeds-informationSynopsis": createCustomReducer(SYNOPSIS_LOOPSERVICES_ACTION, "data.synopsis"),
   terms,
   fhir: fhirReducer,
+  createFhirResource: createFhirResourceReducer,
   preferences: preferencesReducer,
 }

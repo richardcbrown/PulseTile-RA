@@ -7,7 +7,16 @@ import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar"
 import TableHeader from "../../../core/common/TableHeader"
 import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import backgroundImage from "../../images/Artboard.png"
-import { Typography, TextField, Paper, FormGroup, FormControl, FormHelperText, IconButton } from "@material-ui/core"
+import {
+  Typography,
+  TextField,
+  Paper,
+  FormGroup,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  CircularProgress,
+} from "@material-ui/core"
 import { getFhirResourcesAction } from "../../actions/getFhirResourcesAction"
 import querystring from "query-string"
 import { getFromBundle } from "../../fhir/GetFromBundle"
@@ -231,6 +240,10 @@ const QuestionnaireResponseCreator = ({
   }, [questionnaireResponse])
 
   useEffect(() => {
+    if (questionnaireResponse) {
+      return
+    }
+
     const initialItems = flattenItems(questionnaire.item || []).map((item) => ({
       linkId: item.linkId,
     }))
@@ -442,18 +455,29 @@ class TopThreeThingsCreate extends Component {
 
     this.setState({ responseRequested: true })
 
+    this.getQuestionnaireResponse()
+  }
+
+  getQuestionnaireResponse() {
+    const { questionnaire, getBundle } = this.props
+
+    if (!questionnaire) {
+      return
+    }
+
     getBundle(
       "TopThreeThings",
       "QuestionnaireResponse",
       querystring.stringify({
         questionnaire: `${questionnaire.resourceType}/${questionnaire.id}`,
-        _sort: "authored",
+        _sort: "-authored",
+        _count: 1,
       })
     )
   }
 
   render() {
-    const { classes, createResource, questionnaire, questionnaireResponse } = this.props
+    const { classes, createResource, questionnaire, questionnaireResponse, loading } = this.props
 
     const resourceUrl = "top3Things"
     const title = "Top Three Things"
@@ -537,17 +561,42 @@ class TopThreeThingsCreate extends Component {
         <Breadcrumbs resource={breadcrumbsResource} />
         <TableHeader resource={resourceUrl} />
         <Grid item xs={12} sm={12} className={classes.createBlock}>
-          {questionnaire ? (
+          {questionnaire && !loading ? (
             <Paper elevation={0}>
               <QuestionnaireResponseCreator
                 classes={classes}
                 questionnaire={questionnaire}
                 questionnaireResponse={questionnaireResponse}
-                createQuestionnaireResponse={(response) => createResource(response)}
+                createQuestionnaireResponse={(resource) =>
+                  createResource({ resource, completedAction: () => this.getQuestionnaireResponse() })
+                }
                 validators={[maxLengthValidator, groupCompletedValidator]}
               />
             </Paper>
-          ) : null}
+          ) : (
+            <Paper elevation={0}>
+              <Grid container spacing={0}>
+                <Grid item xs={12} style={{ position: "relative", height: 300 }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      bottom: 0,
+                      right: 0,
+                      background: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#3596f4",
+                    }}
+                  >
+                    <CircularProgress size={70} color="inherit" />
+                  </div>
+                </Grid>
+              </Grid>
+            </Paper>
+          )}
         </Grid>
       </React.Fragment>
     )
@@ -555,41 +604,58 @@ class TopThreeThingsCreate extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { fhir } = state.custom
+  const { fhir, createFhirResource } = state.custom
 
   //const { componentKey, resourceType } = ownProps
 
   const componentKey = "TopThreeThings"
-  const resourceType = "Questionnaire"
+  const questionnaireResourceType = "Questionnaire"
+  const questionnaireResponseResourceType = "QuestionnaireResponse"
 
-  const questionnaireBundle =
-    (fhir[componentKey] && fhir[componentKey][resourceType] && fhir[componentKey][resourceType].data) || null
+  const createResource =
+    (createFhirResource[componentKey] &&
+      createFhirResource[componentKey][questionnaireResponseResourceType] &&
+      createFhirResource[componentKey][questionnaireResponseResourceType]) ||
+    {}
 
-  const questionnaireResponseBundle =
+  const questionnaireData =
     (fhir[componentKey] &&
-      fhir[componentKey]["QuestionnaireResponse"] &&
-      fhir[componentKey]["QuestionnaireResponse"].data) ||
-    null
+      fhir[componentKey][questionnaireResourceType] &&
+      fhir[componentKey][questionnaireResourceType]) ||
+    {}
 
-  const questionnaire = /** @type {fhir.Questionnaire | null} */ ((questionnaireBundle &&
-    getFromBundle(questionnaireBundle, "Questionnaire")[0]) ||
+  const questionnaireResponseData =
+    (fhir[componentKey] &&
+      fhir[componentKey][questionnaireResponseResourceType] &&
+      fhir[componentKey][questionnaireResponseResourceType]) ||
+    {}
+
+  const questionnaire = /** @type {fhir.Questionnaire | null} */ ((questionnaireData &&
+    questionnaireData.data &&
+    getFromBundle(questionnaireData.data, questionnaireResourceType)[0]) ||
     null)
 
-  const questionnaireResponse = /** @type {fhir.QuestionnaireResponse | null} */ ((questionnaireResponseBundle &&
-    getFromBundle(questionnaireResponseBundle, "QuestionnaireResponse")[0]) ||
+  const questionnaireResponse = /** @type {fhir.QuestionnaireResponse | null} */ ((questionnaireResponseData &&
+    questionnaireResponseData.data &&
+    getFromBundle(questionnaireResponseData.data, questionnaireResponseResourceType)[0]) ||
     null)
+
+  console.log(questionnaireResponse)
 
   return {
     questionnaire,
     questionnaireResponse,
+    loading: questionnaireData.loading || questionnaireResponseData.loading || createResource.loading,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getBundle: (key, resourceType, query) => dispatch(getFhirResourcesAction.request(key, resourceType, query)),
-    createResource: (resource) =>
-      dispatch(createFhirResourceAction.request("TopThreeThings", "QuestionnaireResponse", resource)),
+    createResource: ({ resource, completedAction }) =>
+      dispatch(
+        createFhirResourceAction.request("TopThreeThings", "QuestionnaireResponse", { resource, completedAction })
+      ),
   }
 }
 

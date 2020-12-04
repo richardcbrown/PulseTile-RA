@@ -3,6 +3,7 @@ import { takeEvery, put } from "redux-saga/effects"
 
 import { token, domainName } from "../../core/token"
 import { httpErrorAction } from "../../core/actions/httpErrorAction"
+import { flattenQuestionnaireResponse } from "../fhir/QuestionnaireResponse"
 
 const apiPatientsUser = "api/patient/fhir"
 let responseInfo = {}
@@ -15,10 +16,34 @@ function compositionSynopsis(composition) {
   }
 }
 
+/**
+ * @param {fhir.QuestionnaireResponse} questionnaireResponse
+ */
+function questionnaireResponseSynopsis(questionnaireResponse) {
+  const { name1, name2, name3 } = flattenQuestionnaireResponse(questionnaireResponse)
+
+  return {
+    synopsis: [
+      { id: questionnaireResponse.id, text: name1 },
+      { id: questionnaireResponse.id, text: name2 },
+      { id: questionnaireResponse.id, text: name3 },
+    ],
+  }
+}
+
 function createFhirSynopsis(resources) {
   const [resource] = resources
 
+  if (!resource) {
+    return {
+      synopsis: [],
+    }
+  }
+
   switch (resource.resourceType) {
+    case "QuestionnaireResponse": {
+      return questionnaireResponseSynopsis(resource)
+    }
     case "Composition": {
       return compositionSynopsis(resource)
     }
@@ -142,7 +167,8 @@ export function createFhirBundleSaga(actionName, actionType) {
 
 export function createFhirResourceSaga(actionName, actionType) {
   return takeEvery(actionName.REQUEST, function* (action) {
-    const { resource, resourceType, key } = action
+    const { data, resourceType, key } = action
+    const { resource, completedAction } = data
 
     let url = `${domainName}/${apiPatientsUser}/${resourceType}`
     let options = {
@@ -182,6 +208,10 @@ export function createFhirResourceSaga(actionName, actionType) {
 
       if (responseInfo.status === 200) {
         yield put(actionType.success(key, resourceType, result))
+
+        if (completedAction) {
+          yield put(completedAction())
+        }
       } else {
         yield put(
           httpErrorAction.save({

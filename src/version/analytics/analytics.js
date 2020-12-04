@@ -9,11 +9,11 @@ export default function helmPlugin(userConfig) {
     },
     initialize: ({ config }) => {
       // load provider script to page
-      fetch("/analytics/initialise", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(config),
-      })
+      // fetch("/analytics/initialise", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(config),
+      // })
     },
     page: ({ payload }) => {
       // call provider specific page tracking
@@ -25,19 +25,19 @@ export default function helmPlugin(userConfig) {
     },
     track: ({ payload }) => {
       // call provider specific event tracking
-      fetch("/analytics/track", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
+      // fetch("/analytics/track", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // })
     },
     identify: ({ payload }) => {
       // call provider specific user identify method
-      fetch("/analytics/identify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
+      // fetch("/analytics/identify", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(payload),
+      // })
     },
     loaded: () => {
       // return boolean so analytics knows when it can send data to third-party

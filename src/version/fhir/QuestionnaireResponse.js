@@ -1,17 +1,15 @@
 /**
  *
  * @param {fhir.QuestionnaireResponse} questionnaireResponse
- * @param {fhir.Questionnaire} questionnaire
  */
-export function flattenQuestionnaireResponse(questionnaireResponse, questionnaire) {
+export function flattenQuestionnaireResponse(questionnaireResponse) {
   const { authored, item = [] } = questionnaireResponse
-  const qitem = questionnaire.item || []
 
   let name1 = ""
   let name2 = ""
   let name3 = ""
 
-  for (let questionnaireItem of qitem) {
+  for (let questionnaireItem of item) {
     if (questionnaireItem.linkId === "item1") {
       name1 = getItemAnswer(
         item.find((itm) => itm.linkId === "item1"),

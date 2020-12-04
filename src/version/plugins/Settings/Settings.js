@@ -26,6 +26,7 @@ import { useEffect } from "react"
 import ConfirmButton from "../../common/Buttons/ConfirmButton"
 import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import TableHeader from "../../../core/common/TableHeader"
+import { usePrimaryCheckboxStyles } from "../../common/Styles/CheckboxStyles"
 
 const useStyles = makeStyles({
   createBlock: {
@@ -108,6 +109,8 @@ const Settings = (props) => {
 
   const breadcrumbsResource = [{ url: "/" + resourceUrl, title: title, isActive: false }]
 
+  const checkboxStyles = usePrimaryCheckboxStyles()
+
   return (
     <React.Fragment>
       <Breadcrumbs resource={breadcrumbsResource} />
@@ -153,6 +156,7 @@ const Settings = (props) => {
                                 aria-label={item.description || item.title}
                                 control={
                                   <Checkbox
+                                    className={checkboxStyles.muiCheckboxRoot}
                                     checked={getPreferenceValue(settingKey, false)}
                                     onChange={() =>
                                       setPreferenceValue(settingKey, !getPreferenceValue(settingKey, false))

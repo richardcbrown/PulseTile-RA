@@ -1,3 +1,4 @@
+import { CREATE_FHIR_RESOURCE_ACTION } from "../actions/createFhirResourceAction"
 import { GET_FHIR_RESOURCES_ACTION } from "../actions/getFhirResourcesAction"
 
 const initialState = {}
@@ -33,7 +34,32 @@ export default (state = initialState, action) => {
         error: action.error,
       })
     }
-    default:
+    default: {
       return state
+    }
+  }
+}
+
+export function createFhirResourceReducer(state = initialState, action) {
+  switch (action.type) {
+    case CREATE_FHIR_RESOURCE_ACTION.REQUEST: {
+      return applyState(state, action.key, action.resourceType, {
+        loading: true,
+      })
+    }
+    case CREATE_FHIR_RESOURCE_ACTION.SUCCESS: {
+      return applyState(state, action.key, action.resourceType, {
+        loading: false,
+      })
+    }
+    case CREATE_FHIR_RESOURCE_ACTION.FAILURE: {
+      return applyState(state, action.key, action.resourceType, {
+        loading: false,
+        error: action.error,
+      })
+    }
+    default: {
+      return state
+    }
   }
 }
