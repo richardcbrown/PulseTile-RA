@@ -48,6 +48,7 @@ const styles = (theme) => {
       marginRight: 15,
     },
     reloadButton: {
+      padding: 6,
       display: "block",
       width: 140,
       height: 40,

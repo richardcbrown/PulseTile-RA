@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip"
 
 const styles = (theme) => ({
   button: {
+    padding: 6,
     display: "block",
     width: 140,
     height: 40,

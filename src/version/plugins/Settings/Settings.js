@@ -22,11 +22,12 @@ import { connect } from "react-redux"
 import { savePreferencesAction } from "../../actions/preferencesActions"
 import { usePrimaryAccordionStyles } from "../../common/Styles/AccordionStyles"
 import { ReactComponent as ChevronUp } from "../../images/Icons/Chevron-down.svg"
+import { ReactComponent as Tick } from "../../images/Icons/Tick.svg"
 import { useEffect } from "react"
 import ConfirmButton from "../../common/Buttons/ConfirmButton"
 import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import TableHeader from "../../../core/common/TableHeader"
-import { usePrimaryCheckboxStyles } from "../../common/Styles/CheckboxStyles"
+import { usePrimaryCheckboxStyles, usePrimaryRadioStyles } from "../../common/Styles/CheckboxStyles"
 
 const useStyles = makeStyles({
   createBlock: {
@@ -42,6 +43,8 @@ const useStyles = makeStyles({
 function getEditorForPreferenceItem(item, value, setValue) {
   switch (item.editor) {
     case "radio": {
+      const radioStyles = usePrimaryRadioStyles()
+
       return (
         <FormControl margin="normal" component="fieldset">
           <FormLabel component="legend">{item.title}</FormLabel>
@@ -54,7 +57,7 @@ function getEditorForPreferenceItem(item, value, setValue) {
             {item.enum.map((enumval, index) => (
               <FormControlLabel
                 value={enumval}
-                control={<Radio />}
+                control={<Radio color="primary" className={radioStyles.muiRadioRoot} />}
                 label={(item.enumLabels && item.enumLabels[index]) || enumval}
               />
             ))}
@@ -158,6 +161,16 @@ const Settings = (props) => {
                                   <Checkbox
                                     className={checkboxStyles.muiCheckboxRoot}
                                     checked={getPreferenceValue(settingKey, false)}
+                                    color="primary"
+                                    checkedIcon={
+                                      <SvgIcon
+                                        viewBox="0 0 27 20"
+                                        fontSize="small"
+                                        className={checkboxStyles.checkboxIcon}
+                                      >
+                                        <Tick />
+                                      </SvgIcon>
+                                    }
                                     onChange={() =>
                                       setPreferenceValue(settingKey, !getPreferenceValue(settingKey, false))
                                     }

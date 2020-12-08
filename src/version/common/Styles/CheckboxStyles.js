@@ -6,14 +6,24 @@ export const usePrimaryCheckboxStyles = makeStyles((theme) => {
       color: theme.palette.mainColor,
       backgroundColor: theme.palette.common.white,
       borderColor: theme.palette.mainColor,
-      "&:hover": {
-        backgroundColor: theme.palette.mainColor,
-        opacity: 0.04,
-      },
+    },
+    checkboxIcon: {
+      color: theme.palette.mainColor,
+      border: `2px solid ${theme.palette.mainColor}`,
+      borderRadius: "2px",
+      fontSize: "14px",
+      margin: 3,
+    },
+  }
+})
+
+export const usePrimaryRadioStyles = makeStyles((theme) => {
+  return {
+    muiRadioRoot: {
+      color: theme.palette.mainColor,
+
       "&.Mui-checked": {
         color: theme.palette.mainColor,
-        backgroundColor: theme.palette.common.white,
-        borderColor: theme.palette.mainColor,
       },
     },
   }

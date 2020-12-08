@@ -28,6 +28,7 @@ const styles = (theme) => ({
     marginBottom: 7,
   },
   button: {
+    padding: 6,
     display: "block",
     width: 140,
     height: 40,
