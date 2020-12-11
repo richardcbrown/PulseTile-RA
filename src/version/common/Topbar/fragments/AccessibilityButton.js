@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { withRouter } from 'react-router'
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from '@material-ui/core/IconButton';
-import PersonIcon from '@material-ui/icons/Person';
 import Tooltip from '@material-ui/core/Tooltip';
+import { SvgIcon } from "@material-ui/core"
+import { ReactComponent as AccessibilityIcon } from "../../../images/Icons/Accesibility.svg"
 
 const styles = {
     userPanel: {
@@ -22,10 +23,10 @@ const styles = {
 };
 
 /**
- * This component returns Accessability button
+ * This component returns Accessibility button
  *
  */
-class AccessabilityButton extends Component {
+class AccessibilityButton extends Component {
 
     constructor(props) {
         super(props);
@@ -36,17 +37,19 @@ class AccessabilityButton extends Component {
         const { classes, history } = this.props;
         return (
             <div className={classes.rightBlockItem} ref={this.button}>
-                <Tooltip title="Accessability statement">
+                <Tooltip title="Accessibility statement">
                     <IconButton
-                        id="icon-accessability"
+                        id="icon-accessibility"
                         className={classes.rightBlockButton}
                         aria-owns={'menu-appbar'}
                         aria-haspopup="true"
-                        onClick={() => history.push("/accessability")}
+                        onClick={() => history.push("/accessibility")}
                         color="inherit"
-                        aria-label="Accessability statement"
+                        aria-label="Accessibility statement"
                     >
-                        <PersonIcon />
+                        <SvgIcon viewBox="0 0 30 30" fontSize="small">
+                          <AccessibilityIcon />
+                        </SvgIcon>
                     </IconButton>
                 </Tooltip>
             </div>
@@ -54,4 +57,4 @@ class AccessabilityButton extends Component {
     }
 }
 
-export default  withStyles(styles)(withRouter(AccessabilityButton));
+export default  withStyles(styles)(withRouter(AccessibilityButton));

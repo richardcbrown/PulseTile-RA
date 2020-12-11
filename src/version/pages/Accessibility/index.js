@@ -18,6 +18,13 @@ const backgroundStyles = (theme) => {
       width: "100%",
       height: "100%",
       background: `url(${backgroundImage}) 0 0 repeat`,
+    },
+    backgroundContrast: {
+      position: "absolute",
+      top: 0,
+      zIndex: -1,
+      width: "100%",
+      height: "100%",
     }
   }
 }
@@ -44,19 +51,19 @@ const mainStyles = (theme) => {
   }
 }
 
-const Background = withStyles(backgroundStyles)(({ classes }) => {
+const Background = withStyles(backgroundStyles)(({ classes, contrastMode }) => {
     
   return (
-    <div className={classes.background}></div>
+    <div className={contrastMode ? classes.backgroundContrast : classes.background}></div>
   )
 })
 
-const AccessabilityPage = ({ history, theme, classes }) => {
+const AccessibilityPage = ({ history, theme, classes, isContrastMode }) => {
     return (
         <MuiThemeProvider theme={theme}>
           <TopBarOnly />
           <div style={{ position: "relative", width: "100%", }}>
-            <Background />
+            <Background contrastMode={isContrastMode} />
 
             <Grid container spacing={32} style={{ width: "100%", margin: 0 }}>
               <Grid item xs={12}>
@@ -253,8 +260,9 @@ const AccessabilityPage = ({ history, theme, classes }) => {
 const mapStateToProps = state => {
   const isContrastMode = get(state, 'custom.contrastMode.data', false);
   return {
-      theme: getCurrentTheme(isContrastMode),
+    theme: getCurrentTheme(isContrastMode),
+    isContrastMode
   }
 };
 
-export default connect(mapStateToProps, null)(withRouter(withStyles(mainStyles)(AccessabilityPage)));
+export default connect(mapStateToProps, null)(withRouter(withStyles(mainStyles)(AccessibilityPage)));

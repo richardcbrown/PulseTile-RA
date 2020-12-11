@@ -11,7 +11,7 @@ import nhsLogo from "../../../images/nhs.png";
 import UserTour from "../../../features/UserTour";
 import ContrastMode from "../../../features/ContrastMode";
 import UserPanelButton from "./UserPanelButton";
-import AccessabilityButton from "./AccessabilityButton"
+import AccessibilityButton from "./AccessibilityButton"
 
 const styles = theme => ({
     topPart: {
@@ -124,7 +124,7 @@ const TopPart = ({ classes, logout, location, history, noUserJourney }) => {
             { noUserJourney ? null : <UserTour classes={classes} location={location} /> }
             <ContrastMode classes={classes} />
             <UserPanelButton classes={classes} />
-            <AccessabilityButton classes={classes} history={history} />
+            <AccessibilityButton classes={classes} history={history} />
         </Toolbar>
     );
 }
