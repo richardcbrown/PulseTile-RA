@@ -11,6 +11,7 @@ import nhsLogo from "../../../images/nhs.png";
 import UserTour from "../../../features/UserTour";
 import ContrastMode from "../../../features/ContrastMode";
 import UserPanelButton from "./UserPanelButton";
+import AccessibilityButton from "./AccessibilityButton"
 
 const styles = theme => ({
     topPart: {
@@ -90,7 +91,7 @@ const styles = theme => ({
  *
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
-const TopPart = ({ classes, logout, location }) => {
+const TopPart = ({ classes, logout, location, history, noUserJourney }) => {
     return (
         <Toolbar className={classes.topPart}>
             <div className={classes.homeButtonItem}>
@@ -120,9 +121,10 @@ const TopPart = ({ classes, logout, location }) => {
                 image={nhsLogo}
                 title="Pulse Tile"
             />
-            <UserTour classes={classes} location={location} />
+            { noUserJourney ? null : <UserTour classes={classes} location={location} /> }
             <ContrastMode classes={classes} />
             <UserPanelButton classes={classes} />
+            <AccessibilityButton classes={classes} history={history} />
         </Toolbar>
     );
 }
