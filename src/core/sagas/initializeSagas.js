@@ -1,12 +1,14 @@
 import { takeEvery, put } from "redux-saga/effects"
 import get from "lodash/get"
 
-import { domainName } from "../token"
+import { domainName, getToken } from "../token"
 import { INITIALIZE_ACTION, initializeAction } from "../actions/initializeAction"
 import { userLogout } from "ra-core"
 
 export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
   const url = domainName + "/api/initialise"
+  const token = getToken()
+
   let options = {
     credentials: "same-origin",
   }
@@ -16,6 +18,11 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
   options.headers = {
     "X-Requested-With": "XMLHttpRequest",
   }
+
+  if (token) {
+    options.headers["Authorization"] = `Bearer ${token}`
+  }
+
   try {
     const result = yield fetch(url, options)
       .then((res) => res.json())
@@ -24,8 +31,7 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
         const status = get(response, "status", null)
 
         if (response.error) {
-          document.cookie = "JSESSIONID=;"
-          document.cookie = "META=;"
+          localStorage.removeItem("token")
           localStorage.removeItem("userId")
           localStorage.removeItem("username")
           localStorage.removeItem("role")

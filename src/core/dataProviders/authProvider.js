@@ -2,7 +2,7 @@ import get from "lodash/get"
 import jwt from "jsonwebtoken"
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from "react-admin"
 
-import { token, domainName } from "../token"
+import { getToken, domainName } from "../token"
 
 const OLD_PATIENT_DELAY = 1000
 const NEW_PATIENT_DELAY = 5000
@@ -27,7 +27,7 @@ const FetchLogin = (resolve, reject) => {
       }
 
       if (get(response, "status", null) !== "loading_data") {
-        const decodeToken = jwt.decode(token)
+        const decodeToken = jwt.decode(getToken())
         const userName = get(decodeToken, "openid.firstName", null) + " " + get(decodeToken, "openid.lastName", null)
         const role = "PHR"
         localStorage.setItem("userId", decodeToken.nhsNumber)
@@ -42,14 +42,15 @@ const FetchLogin = (resolve, reject) => {
 }
 
 export default async (type, params) => {
+  const token = getToken()
+
   if (type === AUTH_LOGOUT) {
     if (localStorage.getItem("userId") && token && localStorage.getItem("logout")) {
       const urlLogout = domainName + "/auth/logout"
       fetch(urlLogout, options)
         .then((res) => res.json())
         .then((response) => {
-          document.cookie = "JSESSIONID=;"
-          document.cookie = "META=;"
+          localStorage.removeItem("token")
           localStorage.removeItem("userId")
           localStorage.removeItem("username")
           localStorage.removeItem("role")

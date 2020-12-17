@@ -1,11 +1,13 @@
 import { takeEvery, put } from "redux-saga/effects"
-import { domainName, token } from "../../core/token"
+import { domainName, getToken } from "../../core/token"
 import get from "lodash/get"
 
 import { GET_TERMS_ACTION, getTermsAction } from "../actions/getTermsAction"
 
 export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function* (action) {
   const url = domainName + "/api/initialise/terms"
+  const token = getToken()
+
   let options = {
     method: "GET",
     credentials: "same-origin",
@@ -14,7 +16,7 @@ export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function* (actio
     options.headers = new Headers({ Accept: "application/json" })
   }
   options.headers = {
-    Authorization: "Bearer " + token,
+    Authorization: `Bearer ${token}`,
     "X-Requested-With": "XMLHttpRequest",
   }
   try {
@@ -32,8 +34,7 @@ export const getTermsSaga = takeEvery(GET_TERMS_ACTION.REQUEST, function* (actio
         }
 
         if (isJwtMessage(statusCode)) {
-          document.cookie = "JSESSIONID=;"
-          document.cookie = "META=;"
+          localStorage.removeItem("token")
           localStorage.removeItem("userId")
           localStorage.removeItem("username")
           localStorage.removeItem("role")

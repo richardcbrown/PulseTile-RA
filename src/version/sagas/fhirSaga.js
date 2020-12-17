@@ -1,7 +1,7 @@
 import get from "lodash/get"
 import { takeEvery, put } from "redux-saga/effects"
 
-import { token, domainName } from "../../core/token"
+import { getToken, domainName } from "../../core/token"
 import { httpErrorAction } from "../../core/actions/httpErrorAction"
 import { flattenQuestionnaireResponse } from "../fhir/QuestionnaireResponse"
 
@@ -55,8 +55,10 @@ function createFhirSynopsis(resources) {
 
 export default function createFhirSynopsisSaga(actionName, actionType, resourceType, query) {
   return takeEvery(actionName.REQUEST, function* (action) {
-    let url = `${domainName}/${apiPatientsUser}/${resourceType}?${query}`
-    let options = {
+    const url = `${domainName}/${apiPatientsUser}/${resourceType}?${query}`
+    const token = getToken()
+
+    const options = {
       credentials: "same-origin",
     }
     options.method = "GET"
@@ -114,8 +116,9 @@ export function createFhirBundleSaga(actionName, actionType) {
   return takeEvery(actionName.REQUEST, function* (action) {
     const { key, resourceType, query } = action
 
-    let url = `${domainName}/${apiPatientsUser}/${resourceType}?${query}`
-    let options = {
+    const url = `${domainName}/${apiPatientsUser}/${resourceType}?${query}`
+    const token = getToken()
+    const options = {
       credentials: "same-origin",
     }
     options.method = "GET"
@@ -170,14 +173,15 @@ export function createFhirResourceSaga(actionName, actionType) {
     const { data, resourceType, key } = action
     const { resource, completedAction } = data
 
-    let url = `${domainName}/${apiPatientsUser}/${resourceType}`
-    let options = {
+    const url = `${domainName}/${apiPatientsUser}/${resourceType}`
+    const token = getToken()
+    const options = {
       credentials: "same-origin",
     }
     options.method = "POST"
 
     options.headers = {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
       "X-Requested-With": "XMLHttpRequest",
       "Content-Type": "application/json",
     }

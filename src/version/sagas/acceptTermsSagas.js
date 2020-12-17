@@ -1,11 +1,13 @@
 import { takeEvery, put } from "redux-saga/effects"
 import get from "lodash/get"
 
-import { domainName, token } from "../../core/token"
+import { domainName, getToken } from "../../core/token"
 import { ACCEPT_TERMS_ACTION, acceptTermsAction } from "../actions/acceptTermsAction"
 
 export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function* (action) {
   const url = domainName + "/api/initialise/terms/accept"
+  const token = getToken()
+
   let options = {
     method: "POST",
     body: JSON.stringify(action.data),
@@ -15,7 +17,7 @@ export const acceptTermsSaga = takeEvery(ACCEPT_TERMS_ACTION.REQUEST, function* 
     options.headers = new Headers({ Accept: "application/json" })
   }
   options.headers = {
-    Authorization: "Bearer " + token,
+    Authorization: `Bearer ${token}`,
     "X-Requested-With": "XMLHttpRequest",
     "Content-Type": "application/json",
   }

@@ -2,7 +2,7 @@ import React, { Component, useEffect, useRef } from "react"
 
 import { connect } from "react-redux"
 import { withStyles } from "@material-ui/core/styles"
-import { token } from "../token"
+import { getToken } from "../token"
 import { checkTermsAction } from "../../version/actions/checkTermsAction"
 import { initializeAction } from "../actions/initializeAction"
 import GeneralDialog from "../../version/common/Dialogs/GeneralDialog"
@@ -13,6 +13,7 @@ import { render } from "react-dom"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import Slider from "react-slick"
+import queryString from "query-string"
 
 const styles = (theme) => {
   return {
@@ -148,7 +149,20 @@ const SlideDetails = ({ details }) => {
 class InitializePage extends Component {
   componentDidMount() {
     const { status } = this.props
-    if (!token || status !== "found") {
+
+    const hashquery = window.location.hash.split("?")[1]
+
+    const token = getToken()
+
+    const { code, state } = hashquery ? queryString.parse(hashquery) : {}
+
+    console.log(window.location)
+
+    console.log(window.location.search)
+
+    if (code) {
+      this.getToken(code, state)
+    } else if (!token || status !== "found") {
       this.props.initializeAction()
       this.interval = window.setInterval(() => this.props.initializeAction(), 5000)
     } else {
@@ -157,11 +171,15 @@ class InitializePage extends Component {
   }
 
   componentDidUpdate() {
+    const token = getToken()
+
     const { status, error } = this.props
+
     if (error) {
       clearInterval(this.interval)
       return
     }
+
     if (token && status === "found") {
       clearInterval(this.interval)
       this.props.checkTermsAction()
@@ -256,13 +274,28 @@ class InitializePage extends Component {
   }
 
   closeDialog() {
-    document.cookie = "JSESSIONID=;"
-    document.cookie = "META=;"
+    localStorage.removeItem("token")
     localStorage.removeItem("userId")
     localStorage.removeItem("username")
     localStorage.removeItem("role")
 
     window.location.href = "http://myhelm.org"
+  }
+
+  async getToken(code, state) {
+    const result = await fetch(`/api/auth/return?code=${code}&state=${state}`)
+
+    if (!result.ok) {
+      return
+    }
+
+    const tokenResult = await result.json()
+
+    localStorage.setItem("token", tokenResult.token)
+
+    window.location.href = "/#/login"
+
+    window.location.reload()
   }
 }
 

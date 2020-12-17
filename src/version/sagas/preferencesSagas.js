@@ -1,4 +1,4 @@
-import { token, domainName } from "../../core/token"
+import { getToken, domainName } from "../../core/token"
 import { httpErrorAction } from "../../core/actions/httpErrorAction"
 
 import { put, takeEvery } from "redux-saga/effects"
@@ -14,6 +14,7 @@ const preferencesRoot = "api/preferences"
 function* getPreferences(action) {
   try {
     const url = `${domainName}/${preferencesRoot}`
+    const token = getToken()
     const options = {
       credentials: "same-origin",
       method: "GET",
@@ -57,6 +58,7 @@ function* savePreferences(action) {
     const preferences = action.data
 
     const url = `${domainName}/${preferencesRoot}`
+    const token = getToken()
     const options = {
       credentials: "same-origin",
       method: "POST",
