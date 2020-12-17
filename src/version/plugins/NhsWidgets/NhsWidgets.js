@@ -7,8 +7,7 @@ import backgroundImage from "../../images/Artboard.png";
 
 const nhsWidgets = [
     "https://api-bridge.azurewebsites.net/conditions/?uid=aW5mb0BteWhlbG0ub3Jn",
-    "https://api-bridge.azurewebsites.net/livewell/?uid=aW5mb0BteWhlbG0ub3Jn",
-    "https://api-bridge.azurewebsites.net/conditions/?uid=aW5mb0BteWhlbG0ub3Jn&p=social-care-and-support-guide"
+    "https://api-bridge.azurewebsites.net/livewell/?uid=aW5mb0BteWhlbG0ub3Jn"
 ]
 
 const styles = {
