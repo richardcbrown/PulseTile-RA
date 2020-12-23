@@ -4,7 +4,6 @@
 import TopThreeThingsCreate from "../plugins/TopThreeThings/TopThreeThingsCreate"
 
 // LEEDS REPOSITORY
-import { DirectoryList } from "../plugins/Directory/DirectoryList"
 import Directory from "../pages/Directory"
 // NHS WIDGETS
 import NhsWidgets from "../plugins/NhsWidgets/NhsWidgets"

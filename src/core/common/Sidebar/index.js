@@ -1,8 +1,8 @@
-import React, { Component } from "react"
+import React from "react"
 import get from "lodash/get"
 
 import { withRouter } from "react-router-dom"
-import { Sidebar, getResources, Responsive, setSidebarVisibility } from "react-admin"
+import { Sidebar } from "react-admin"
 import { connect } from "react-redux"
 
 import { withStyles } from "@material-ui/core/styles"
@@ -10,6 +10,7 @@ import { withStyles } from "@material-ui/core/styles"
 import MobileMenu from "./MobileMenu"
 import MenuItems from "./MenuItems"
 import { getMenuItems } from "./getMenuType"
+import { Hidden } from "@material-ui/core"
 
 const styles = (theme) => ({
   sidebarBlock: {
@@ -59,25 +60,24 @@ const CustomSidebar = ({ classes, isSidebarOpen, onMenuClick, location }) => {
   const currentList = "/" + pathNameArray[1]
   const menuItems = getMenuItems(currentPathname)
   return (
-    <Responsive
-      small={
-        isSidebarOpen ? null : (
+    <>
+      <Hidden mdUp>
+        {isSidebarOpen ? null : (
           <MobileMenu classes={classes} menuItems={menuItems} currentList={currentList} onMenuClick={onMenuClick} />
-        )
-      }
-      medium={
-        isSidebarOpen ? (
+        )}
+      </Hidden>
+      <Hidden smDown>
+        {isSidebarOpen ? (
           <Sidebar className={classes.sidebarBlock}>
             <MenuItems classes={classes} menuItems={menuItems} currentList={currentList} onMenuClick={onMenuClick} />
           </Sidebar>
-        ) : null
-      }
-    ></Responsive>
+        ) : null}
+      </Hidden>
+    </>
   )
 }
 
 const mapStateToProps = (state) => ({
-  resources: getResources(state),
   isSidebarOpen: state.admin.ui.sidebarOpen,
 })
 

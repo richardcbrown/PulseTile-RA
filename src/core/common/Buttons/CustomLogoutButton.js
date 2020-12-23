@@ -1,11 +1,11 @@
 import React from "react"
 import { connect } from "react-redux"
-import { userLogout } from "react-admin"
 
 import { withStyles } from "@material-ui/core/styles"
 import IconButton from "@material-ui/core/IconButton"
 import ExitIcon from "@material-ui/icons/ExitToApp"
 import Tooltip from "@material-ui/core/Tooltip"
+import { logout } from "../../dataProviders/authProvider"
 
 const styles = (theme) => ({
   button: {
@@ -35,18 +35,17 @@ const styles = (theme) => ({
  *
  * @author Bogdan Shcherban <bsc@piogroup.net>
  * @param {shape}   classes
- * @param {func}    userLogout
  * @param {string}  title
  * @param {boolean} hideIcon
  */
-const CustomLogoutButton = ({ classes, userLogout, title = "Sign Out", hideIcon }) => {
+const CustomLogoutButton = ({ classes, title = "Sign Out", hideIcon }) => {
   return (
     <Tooltip title={title}>
       <IconButton
         className={classes.button}
         onClick={() => {
-          localStorage.setItem("logout", true)
-          userLogout()
+          localStorage.setItem("logout", "true")
+          logout()
         }}
         aria-label="Sign Out"
       >
@@ -57,8 +56,4 @@ const CustomLogoutButton = ({ classes, userLogout, title = "Sign Out", hideIcon 
   )
 }
 
-const mapDispatchToProps = {
-  userLogout,
-}
-
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CustomLogoutButton))
+export default withStyles(styles)(CustomLogoutButton)

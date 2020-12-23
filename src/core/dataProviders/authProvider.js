@@ -41,23 +41,44 @@ const FetchLogin = (resolve, reject) => {
     })
 }
 
+export const logout = async () => {
+  const token = getToken()
+
+  const options = {
+    method: "GET",
+    credentials: "same-origin",
+  }
+
+  options.headers = {
+    Authorization: `Bearer ${token}`,
+    "X-Requested-With": "XMLHttpRequest",
+  }
+
+  const urlLogout = domainName + "/auth/logout"
+  fetch(urlLogout, options)
+    .then((res) => res.json())
+    .then((response) => {
+      localStorage.removeItem("token")
+      localStorage.removeItem("userId")
+      localStorage.removeItem("username")
+      localStorage.removeItem("role")
+      localStorage.removeItem("logout")
+      window.location = get(response, "redirectURL", "/#/login")
+    })
+    .finally(() => {
+      localStorage.removeItem("token")
+      localStorage.removeItem("userId")
+      localStorage.removeItem("username")
+      localStorage.removeItem("role")
+      localStorage.removeItem("logout")
+      window.location = "/#/login"
+    })
+}
+
 export default async (type, params) => {
   const token = getToken()
 
   if (type === AUTH_LOGOUT) {
-    if (localStorage.getItem("userId") && token && localStorage.getItem("logout")) {
-      const urlLogout = domainName + "/auth/logout"
-      fetch(urlLogout, options)
-        .then((res) => res.json())
-        .then((response) => {
-          localStorage.removeItem("token")
-          localStorage.removeItem("userId")
-          localStorage.removeItem("username")
-          localStorage.removeItem("role")
-          localStorage.removeItem("logout")
-          window.location = get(response, "redirectURL", "/#/login")
-        })
-    }
     return Promise.resolve()
   }
 

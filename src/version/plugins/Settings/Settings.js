@@ -29,6 +29,7 @@ import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import TableHeader from "../../../core/common/TableHeader"
 import { usePrimaryCheckboxStyles, usePrimaryRadioStyles } from "../../common/Styles/CheckboxStyles"
 import { CenterLoader } from "../../common/Loader"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const useStyles = makeStyles({
   createBlock: {
@@ -201,6 +202,7 @@ const Settings = (props) => {
 
   return (
     <React.Fragment>
+      <PageTitle />
       <Breadcrumbs resource={breadcrumbsResource} />
       <TableHeader resource={resourceUrl} />
       <Grid container spacing={4} className={classes.createBlock}>

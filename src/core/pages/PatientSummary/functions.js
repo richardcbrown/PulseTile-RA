@@ -35,6 +35,15 @@ export function getSummaryContainerStyles(synopsisData) {
       backgroundSize: "contain",
       transform: transforms[count],
     }
+
+    data["& #" + item.id + ":focus:before"] = {
+      background: "none",
+    }
+
+    data["& #" + item.id + ":focus .MuiTouchRipple-root"] = {
+      display: "none",
+    }
+
     count++
   })
 

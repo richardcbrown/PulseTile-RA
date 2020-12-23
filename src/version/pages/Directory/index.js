@@ -6,6 +6,7 @@ import Breadcrumbs from "../../../core/common/Breadcrumbs"
 import { themeImages } from "../../config/theme.config"
 import get from "lodash/get"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const cardBackgroundImage = get(themeImages, "cardBackgroundImage", null)
 
@@ -160,6 +161,7 @@ class Directory extends Component {
 
       return (
         <React.Fragment>
+          <PageTitle />
           <Breadcrumbs resource={breadcrumbsResource} />
           <Grid container spacing={2} className={classes.container}>
             <Grid container spacing={4}>

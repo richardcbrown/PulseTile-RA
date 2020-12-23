@@ -10,6 +10,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails"
 import Typography from "@material-ui/core/Typography"
 import { useEffect } from "react"
 import { ReactComponent as ChevronUp } from "../../images/Icons/Chevron-down.svg"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const usePrimaryAccordionStyles = makeStyles((theme) => {
   return {
@@ -69,6 +70,7 @@ const NhsWidgets = (props) => {
 
   return (
     <React.Fragment>
+      <PageTitle />
       <Breadcrumbs resource={breadcrumbsResource} />
       <TableHeader resource={resourceUrl} />
       <Grid container spacing={4} className={classes.createBlock}>

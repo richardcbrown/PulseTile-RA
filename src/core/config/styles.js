@@ -52,11 +52,7 @@ const defaultDarkPalette = {
  * @return {string}
  */
 function getBackground(isContrastMode, themeColor, imageName) {
-  const cardBackgroundImage = get(themeImages, imageName, null)
   let result = themeColor
-  if (cardBackgroundImage) {
-    result = `url(${cardBackgroundImage}) 0 0 repeat`
-  }
   return isContrastMode ? "#000" : result
 }
 

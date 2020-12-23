@@ -15,6 +15,7 @@ import { getFromBundle } from "../../fhir/GetFromBundle"
 import { connect } from "react-redux"
 import querystring from "query-string"
 import { flattenQuestionnaireResponse } from "../../fhir/QuestionnaireResponse"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const listStyles = (theme) => ({
   mainBlock: {
@@ -51,15 +52,6 @@ const listStyles = (theme) => ({
     fontSize: 18,
     fontWeight: 700,
   },
-  filterIcon: {
-    color: `${theme.palette.paperColor} !important`,
-    paddingRight: 15,
-  },
-  expandIcon: {
-    height: 20,
-    color: `${theme.palette.paperColor} !important`,
-    paddingRight: 7,
-  },
   filterInput: {
     backgroundColor: theme.palette.mainColor,
     borderRadius: 0,
@@ -86,7 +78,7 @@ const listStyles = (theme) => ({
       },
     },
     "& tbody tr:hover": {
-      backgroundColor: theme.palette.mainColor + "!important",
+      backgroundColor: theme.palette.mainColor,
     },
     "& tbody tr:hover td span": {
       color: "#fff",
@@ -123,6 +115,7 @@ class TopThreeThingsSimpleList extends Component {
 
     return (
       <React.Fragment>
+        <PageTitle />
         <Breadcrumbs resource={breadcrumbsResource} />
         <TableHeader resource={"top3Things"} />
 

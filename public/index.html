@@ -31,17 +31,53 @@
 			src: url('./fonts/HKGrotesk-Regular.otf'), url('./fonts/HKGrotesk-Regular.eot');
 		}
 
-        #root {
-            height: 100%;
-        }
+    #root {
+        height: 100%;
+    }
 
-        #root > div {
-            height: 100%;
-        }
+    #root > div {
+        height: 100%;
+    }
 
-        /* main {
-            max-width: 100%;
-        } */
+    .MuiFocus-visible,
+    *:focus,
+    .MuiButtonBase-root:focus {
+      color: #000000 !important;
+      background-color: #FFA44D !important;
+      outline-style: none;
+    }
+
+    .Mui-focusVisible.MuiRadio-root .MuiSvgIcon-root,
+    .Mui-focusVisible.MuiCheckbox-root .MuiSvgIcon-root {
+      color: #FFA44D !important;
+      border-color: #FFA44D !important;
+    }
+
+    .Mui-focusVisible.MuiCheckbox-root .MuiTouchRipple-root {
+      display: none;
+    }
+
+    *:focus {
+      padding: 5px;
+    }
+
+    .Mui-focusVisible span,
+    *:focus span,
+    .MuiButtonBase-root:focus {
+      color: #000000 !important;
+    }
+
+    .Mui-focusVisible.MuiRadio-root .MuiTouchRipple-root,
+    .Mui-focusVisible.MuiCheckbox-root .MuiTouchRipple-root,
+    .MuiFocus-visible .MuiTouchRipple-root,
+    *:focus .MuiTouchRipple-root,
+    .MuiButtonBase-root:focus .MuiTouchRipple-root {
+      display: none;
+    }
+
+    /* main {
+        max-width: 100%;
+    } */
 	</style>
 
 	<!--
@@ -76,7 +112,7 @@
     window.config = {
       domainName: "",
       lightPalette: {
-        mainColor: "#3596f4",
+        mainColor: "#0C5697",
         dangerColor: "#da534f",
         contrastColor: "#000",
         disabledColor: "#e9e4e4",

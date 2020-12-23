@@ -24,7 +24,6 @@ const styles = (theme) => ({
     borderLeft: "5px solid black",
     marginLeft: 8,
     marginRight: 8,
-    marginTop: 5,
   },
   link: {
     textDecoration: "none",
@@ -32,6 +31,7 @@ const styles = (theme) => ({
   },
   breadcrumbsItem: {
     display: "flex",
+    alignItems: "center",
   },
 })
 
@@ -45,7 +45,7 @@ const styles = (theme) => ({
 const Breadcrumbs = ({ classes, resource }) => {
   return (
     <div className={classes.breadcrumbsBlock}>
-      <Grid item xs={11} md={8} style={{ display: "flex" }}>
+      <Grid item xs={11} md={8} style={{ display: "flex", alignItems: "center" }}>
         <Typography>
           <Link to="/" className={classes.link} color="inherit" aria-label="Home">
             Home

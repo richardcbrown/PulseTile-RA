@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import ItemsList from "./ItemsList"
 import { SHOW_ALL } from "../../pages/PatientSummary/config"
+import { CardActionArea } from "@material-ui/core"
 
 /**
  * This component returns list of empty rows if information is loading
@@ -43,6 +44,28 @@ const ListBlock = ({ classes, items, list, history, listOnly }) => {
   return <LoadingItems classes={classes} />
 }
 
+const CardHeader = ({ id, listOnly, classes, clickHandler, title, icon }) => {
+  if (!listOnly) {
+    return (
+      <CardActionArea id={id} className={classes.topBlock} aria-label={title} onClick={clickHandler}>
+        <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
+        <h1 className={classes.mainHeading}>
+          <Typography className={classes.title}>{title}</Typography>
+        </h1>
+      </CardActionArea>
+    )
+  }
+
+  return (
+    <div id={id} className={classes.topBlockListOnly} aria-label={title}>
+      <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
+      <h1 className={classes.mainHeading}>
+        <Typography className={classes.title}>{title}</Typography>
+      </h1>
+    </div>
+  )
+}
+
 /**
  * This component returns one single Dashboard Card
  *
@@ -58,17 +81,14 @@ export default (props) => {
   return (
     <Grid item xs={12} sm={6} md={6} lg={3}>
       <Card className={classes.card}>
-        <div
+        <CardHeader
           id={id}
-          className={listOnly ? classes.topBlockListOnly : classes.topBlock}
-          aria-label={title}
-          onClick={clickHandler}
-        >
-          <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
-          <h1 className={classes.mainHeading}>
-            <Typography className={classes.title}>{title}</Typography>
-          </h1>
-        </div>
+          listOnly={listOnly}
+          title={title}
+          icon={icon}
+          clickHandler={clickHandler}
+          classes={classes}
+        />
         {(showMode === SHOW_ALL || !showMode || listOnly) && (
           <ListBlock
             loading={loading}

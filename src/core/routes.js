@@ -11,7 +11,6 @@ export default [
   <Route exact path="/summary" component={PatientSummary} />,
   <Route exact path="/top3Things/history" component={TopThreeThingsSimpleList} />,
   <Route path="/leeds-information" component={Directory} />,
-  <Route exact path="/top3Things/history" component={TopThreeThingsSimpleList} />,
   <Route exact path="/terms" component={Terms} noLayout />,
   <Route exact path="/settings" component={Settings} />,
 ]

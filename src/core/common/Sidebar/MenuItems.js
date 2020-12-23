@@ -27,6 +27,8 @@ const MenuItems = ({ classes, menuItems, currentList, onMenuClick }) => {
           selected={currentList === item.url}
           aria-label={item.label}
           role="menuitem"
+          aria-controls="main-content"
+          tabIndex={0}
         />
       ))}
     </div>

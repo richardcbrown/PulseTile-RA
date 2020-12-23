@@ -24,6 +24,8 @@ import { createFhirResourceAction } from "../../actions/createFhirResourceAction
 import { Info } from "@material-ui/icons"
 import GeneralDialog from "../../common/Dialogs/GeneralDialog"
 import ConfirmButton from "../../common/Buttons/ConfirmButton"
+import { PageTitle } from "../../../core/common/PageTitle"
+import { setAccessibilityMessage } from "../../../core/actions/accessibilityActions"
 
 const styles = {
   createBlock: {
@@ -557,7 +559,8 @@ class TopThreeThingsCreate extends Component {
     }
 
     return (
-      <React.Fragment>
+      <>
+        <PageTitle />
         <Breadcrumbs resource={breadcrumbsResource} />
         <TableHeader resource={resourceUrl} />
         <Grid item xs={12} sm={12} className={classes.createBlock}>
@@ -598,7 +601,7 @@ class TopThreeThingsCreate extends Component {
             </Paper>
           )}
         </Grid>
-      </React.Fragment>
+      </>
     )
   }
 }
@@ -656,6 +659,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         createFhirResourceAction.request("TopThreeThings", "QuestionnaireResponse", { resource, completedAction })
       ),
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
   }
 }
 

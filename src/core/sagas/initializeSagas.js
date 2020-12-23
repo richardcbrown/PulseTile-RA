@@ -3,7 +3,7 @@ import get from "lodash/get"
 
 import { domainName, getToken } from "../token"
 import { INITIALIZE_ACTION, initializeAction } from "../actions/initializeAction"
-import { userLogout } from "ra-core"
+import { logout } from "../dataProviders/authProvider"
 
 export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
   const url = domainName + "/api/initialise"
@@ -31,11 +31,7 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
         const status = get(response, "status", null)
 
         if (response.error) {
-          localStorage.removeItem("token")
-          localStorage.removeItem("userId")
-          localStorage.removeItem("username")
-          localStorage.removeItem("role")
-          localStorage.removeItem("logout")
+          logout()
           return false
         } else if (redirectUrl) {
           window.location.href = redirectUrl
@@ -51,7 +47,7 @@ export default takeEvery(INITIALIZE_ACTION.REQUEST, function* (action) {
       })
 
     if (result === false) {
-      yield put(userLogout())
+      logout()
     } else {
       yield put(initializeAction.success(result))
     }

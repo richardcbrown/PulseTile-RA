@@ -17,6 +17,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { Hidden, Paper } from "@material-ui/core"
 import Bowser from "bowser"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const browser = Bowser.getParser(window.navigator.userAgent)
 const isIe = browser.getBrowserName() === "Internet Explorer"
@@ -99,6 +100,8 @@ class Terms extends Component {
 
     return (
       <>
+        <PageTitle />
+
         <TopBarNoUser />
 
         <div className={classes.termsContainer}>
@@ -269,8 +272,7 @@ class Terms extends Component {
   }
 
   closeDialog() {
-    document.cookie = "JSESSIONID=;"
-    document.cookie = "META=;"
+    localStorage.removeItem("token")
     localStorage.removeItem("userId")
     localStorage.removeItem("username")
     localStorage.removeItem("role")

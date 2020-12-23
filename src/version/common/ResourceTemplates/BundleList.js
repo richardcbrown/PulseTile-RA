@@ -44,10 +44,12 @@ class BundleList extends Component {
 
     return (
       <div style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-        <Table className={tableClass}>
-          {headProvider()}
-          <TableBody>{resources.map((resource) => rowProvider(resource))}</TableBody>
-        </Table>
+        <div style={{ width: "100%", overflowX: "auto" }}>
+          <Table className={tableClass}>
+            {headProvider()}
+            <TableBody>{resources.map((resource) => rowProvider(resource))}</TableBody>
+          </Table>
+        </div>
         <BundlePagination
           itemsPerPage={query._count}
           bundle={bundle}

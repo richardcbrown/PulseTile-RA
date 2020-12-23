@@ -22,6 +22,7 @@ import clsx from "clsx"
 import { httpErrorAction } from "../../../core/actions/httpErrorAction"
 import { connect } from "react-redux"
 import get from "lodash/get"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const styles = (theme) => ({
   container: {
@@ -440,6 +441,8 @@ class DirectoryList extends Component {
 
     return (
       <Grid className={classes.container}>
+        <PageTitle />
+
         <TableHeader resource="leeds-information" />
 
         <div className={classes.searchContainer}>

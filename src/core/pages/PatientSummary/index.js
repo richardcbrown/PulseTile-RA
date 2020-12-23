@@ -11,6 +11,7 @@ import Breadcrumbs from "../../common/Breadcrumbs"
 import { themeCommonElements } from "../../../version/config/theme.config"
 import { nonCoreSynopsisActions } from "../../../version/config/nonCoreSynopsis"
 import { getSummaryContainerStyles } from "./functions"
+import { PageTitle } from "../../common/PageTitle"
 
 const styles = (theme) => ({
   summaryContainer: getSummaryContainerStyles(synopsisData),
@@ -34,7 +35,7 @@ const styles = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    color: "#fff",
+    color: theme.palette.common.white,
     "&:hover": {
       cursor: "pointer",
     },
@@ -47,7 +48,7 @@ const styles = (theme) => ({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    color: "#fff",
+    color: theme.palette.common.white,
   },
   icon: {
     marginBottom: 10,
@@ -59,7 +60,6 @@ const styles = (theme) => ({
   },
   title: {
     marginBottom: 0,
-    color: "#fff",
     fontSize: 20,
     fontWeight: 800,
     zIndex: 99999999,
@@ -103,6 +103,7 @@ class PatientSummaryInfo extends Component {
     const FeedsPanels = get(themeCommonElements, "feedsPanels", false)
     return (
       <Grid className={classes.container}>
+        <PageTitle />
         <Breadcrumbs resource={breadcrumbsResource} />
         {/* <SettingsDialog className={classes.settingsIcon} /> */}
         <Grid className={classes.summaryContainer} spacing={4} container>
