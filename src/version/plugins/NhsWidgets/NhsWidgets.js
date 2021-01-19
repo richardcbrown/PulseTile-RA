@@ -31,14 +31,17 @@ const usePrimaryAccordionStyles = makeStyles((theme) => {
 const nhsWidgets = [
   {
     title: "NHS Live Well",
+    widgetTitle: "NHS Live Well Widget",
     url: "https://api-bridge.azurewebsites.net/conditions/?uid=aW5mb0BteWhlbG0ub3Jn",
   },
   {
     title: "A-Z",
+    widgetTitle: "NHS A-Z Widget",
     url: "https://api-bridge.azurewebsites.net/livewell/?uid=aW5mb0BteWhlbG0ub3Jn",
   },
   {
     title: "Social Care Support",
+    widgetTitle: "NHS Social Care Support Widget",
     url: "https://api-bridge.azurewebsites.net/conditions/?uid=aW5mb0BteWhlbG0ub3Jn&p=social-care-and-support-guide",
   },
 ]
@@ -100,7 +103,7 @@ const NhsWidgets = (props) => {
                       <Typography variant="h5">{widget.title}</Typography>
                     </AccordionSummary>
                     <AccordionDetails style={{ padding: 0 }}>
-                      <NhsWidgetDisplay height={500} src={widget.url} id={index} />
+                      <NhsWidgetDisplay title={widget.widgetTitle} height={500} src={widget.url} id={index} />
                     </AccordionDetails>
                   </Accordion>
                 </Grid>

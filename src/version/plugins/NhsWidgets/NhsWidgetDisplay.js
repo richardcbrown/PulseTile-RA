@@ -53,7 +53,7 @@ class NhsWidgetDisplay extends Component {
   }
 
   render() {
-    const { height, src, id, classes } = this.props
+    const { height, src, id, classes, title } = this.props
     const { width, loaded } = this.state
 
     const resolvedWidth = width || 500
@@ -83,6 +83,7 @@ class NhsWidgetDisplay extends Component {
             <iframe
               key={`iframe-${id}`}
               src={`${src}`}
+              title={title}
               style={{ borderStyle: "none", height, width: resolvedWidth }}
               onLoad={() => this.updateWidth()}
             ></iframe>

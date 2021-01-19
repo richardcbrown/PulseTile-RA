@@ -29,7 +29,7 @@ class FeedbackButton extends Component {
           color="inherit"
           aria-label="Feedback"
           href="mailto:info@myhelm.org?subject=User Feedback from Helm"
-          style={{ textDecoration: "none" }}
+          style={{ textDecoration: "none", display: "block", color: "inherit" }}
         >
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             <FeedbackIcon width={40} height={40} title="Feedback" />

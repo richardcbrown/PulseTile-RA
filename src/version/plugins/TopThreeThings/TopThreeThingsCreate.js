@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from "react"
 import { connect } from "react-redux"
 import moment from "moment"
-import { withStyles } from "@material-ui/core/styles"
+import { makeStyles, withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import CreateFormToolbar from "../../common/Toolbars/CreateFormDialogToolbar"
 import TableHeader from "../../../core/common/TableHeader"
@@ -156,16 +156,23 @@ const QuestionnaireResponseItemCreator = ({ classes, item, setValue, value, erro
   switch (type) {
     case "string":
     case "text": {
+      const name = (item.text || item.prefix || "").replace(" ", "-")
+
       return (
         <>
           {children ? (
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
               <FormControl className={type === "text" ? classes.labelBlock : classes.labelBlockTitle}>
                 <TextField
+                  name={name}
                   error={error}
                   value={value}
                   onChange={(event) => setValue(event.target.value)}
-                  label={item.text}
+                  label={item.prefix || item.text}
+                  InputLabelProps={{
+                    "aria-label": item.text || item.prefix,
+                    for: name,
+                  }}
                   fullWidth={type === "text"}
                 />
                 {!error ? (
@@ -179,11 +186,16 @@ const QuestionnaireResponseItemCreator = ({ classes, item, setValue, value, erro
           ) : (
             <FormControl className={type === "text" ? classes.labelBlock : classes.labelBlockTitle}>
               <TextField
+                name={name}
                 error={error}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
-                label={item.text}
+                label={item.prefix || item.text}
                 fullWidth={type === "text"}
+                InputLabelProps={{
+                  "aria-label": item.text || item.prefix,
+                  for: name,
+                }}
               />
               {!error ? (
                 <CharacterCount limit={item.maxLength} value={value} />

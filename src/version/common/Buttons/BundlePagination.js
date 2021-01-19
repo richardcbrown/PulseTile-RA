@@ -8,6 +8,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight"
 import LastPageIcon from "@material-ui/icons/LastPage"
 import Button from "@material-ui/core/Button"
 import Tooltip from "@material-ui/core/Tooltip"
+import { connect } from "react-redux"
+import { setAccessibilityMessage } from "../../../core/actions/accessibilityActions"
 
 const MAXIMAL_BUTTONS_NUMBER = 5
 
@@ -86,18 +88,24 @@ class BundlePagination extends Component {
     this.setState({ pageDetails: newPageDetails })
   }
 
-  pageSelected(page) {
-    const { pageDetails } = this.state
+  pageSelected(newPage) {
+    const { pageDetails, page } = this.state
+    const { setAccessibilityMessage } = this.props
 
     if (!pageDetails) {
       return
     }
 
-    this.setState({ page })
+    this.setState({ page: newPage })
+    setAccessibilityMessage(`Pagination page ${newPage} selected`)
+
+    if (newPage === page) {
+      return
+    }
 
     const { pageSelected } = this.props
 
-    pageSelected({ _page: page, _queryId: pageDetails.queryId })
+    pageSelected({ _page: newPage, _queryId: pageDetails.queryId })
   }
 
   getDigitButtons(buttonsNumber, page, classes) {
@@ -108,8 +116,9 @@ class BundlePagination extends Component {
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
-            aria-label={i + 1}
+            aria-label={`page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
+            aria-current={page === i + 1 ? "page" : ""}
           >
             {i + 1}
           </Button>
@@ -120,8 +129,9 @@ class BundlePagination extends Component {
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
-            aria-label={i + 1}
+            aria-label={`page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
+            aria-current={page === i + 1 ? "page" : ""}
           >
             {i + 1}
           </Button>
@@ -132,8 +142,9 @@ class BundlePagination extends Component {
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
-            aria-label={i + 1}
+            aria-label={`page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
+            aria-current={page === i + 1 ? "page" : ""}
           >
             {i + 1}
           </Button>
@@ -211,13 +222,14 @@ class BundlePagination extends Component {
     const buttonsNumber = Math.ceil(pageDetails.total / itemsPerPage)
     const buttons = this.getDigitButtons(buttonsNumber, page, classes)
     return (
-      <div className={classes.paginatorRoot}>
+      <div className={classes.paginatorRoot} role="navigation" aria-label="pagination">
         <Tooltip title="First page">
           <IconButton
             onClick={() => this.pageSelected(page - 1)}
             className={classes.button}
             disabled={page === 1}
             aria-label="First page"
+            aria-disabled={page === 1}
           >
             <FirstPageIcon />
           </IconButton>
@@ -227,6 +239,7 @@ class BundlePagination extends Component {
             onClick={() => this.pageSelected(page - 1)}
             className={classes.button}
             disabled={page === 1}
+            aria-disabled={page === 1}
             aria-label="Previous page"
           >
             <KeyboardArrowLeft />
@@ -238,6 +251,7 @@ class BundlePagination extends Component {
             onClick={() => this.pageSelected(page + 1)}
             className={classes.button}
             disabled={page === buttonsNumber}
+            aria-disabled={page === buttonsNumber}
             aria-label="Next page"
           >
             <KeyboardArrowRight />
@@ -248,6 +262,7 @@ class BundlePagination extends Component {
             onClick={() => this.pageSelected(buttonsNumber)}
             className={classes.button}
             disabled={page === buttonsNumber}
+            aria-disabled={page === buttonsNumber}
             aria-label="Last page"
           >
             <LastPageIcon />
@@ -258,4 +273,10 @@ class BundlePagination extends Component {
   }
 }
 
-export default withStyles(styles)(BundlePagination)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(BundlePagination))

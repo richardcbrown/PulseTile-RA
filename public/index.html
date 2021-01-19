@@ -40,7 +40,7 @@
     }
 
     .MuiFocus-visible,
-    *:focus,
+    *:focus:not(.MuiBackdrop-root):not(.MuiDialog-container):not(.MuiInput-input),
     .MuiButtonBase-root:focus {
       color: #000000 !important;
       background-color: #FFA44D !important;
@@ -53,6 +53,8 @@
       border-color: #FFA44D !important;
     }
 
+    .Mui-focusVisible.MuiButtonBase-root .MuiTouchRipple-root,
+    .Mui-focusVisible.MuiButtonBase-root .MuiCardActionArea-focusHighlight,
     .Mui-focusVisible.MuiCheckbox-root .MuiTouchRipple-root {
       display: none;
     }
@@ -116,22 +118,28 @@
         dangerColor: "#da534f",
         contrastColor: "#000",
         disabledColor: "#e9e4e4",
+        disabledFontColor: "#A0A0A0",
         borderColor: "#e5e5e5",
+        inputBorderColor: "#4C6272",
         paperColor: "#fff",
         toolbarColor: "#e5e5e5",
         fontColor: "#000",
         viewButton: "#30ad57",
+        highlightColor: "#FFA44D",
       },
       darkPalette: {
         mainColor: "#000",
         dangerColor: "#da534f",
         contrastColor: "#000",
         disabledColor: "#e9e4e4",
+        disabledFontColor: "#A0A0A0",
         borderColor: "#000",
+        inputBorderColor: "#000",
         paperColor: "#fff",
         toolbarColor: "#fff",
         fontColor: "#000",
         viewButton: "#000",
+        highlightColor: "#FFA44D",
       },
     }
 	</script>

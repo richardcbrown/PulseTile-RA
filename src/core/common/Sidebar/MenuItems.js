@@ -21,7 +21,13 @@ const MenuItems = ({ classes, menuItems, currentList, onMenuClick }) => {
           to={item.url}
           primaryText={item.label}
           leftIcon={
-            currentList === item.url ? <FontAwesomeIcon style={{ color: "inherit" }} icon={faCircle} size="xs" /> : null
+            currentList === item.url ? (
+              <FontAwesomeIcon
+                className={currentList === item.url ? classes.menuItemIconSelected : classes.menuItemIcon}
+                icon={faCircle}
+                size="xs"
+              />
+            ) : null
           }
           onClick={onMenuClick}
           selected={currentList === item.url}

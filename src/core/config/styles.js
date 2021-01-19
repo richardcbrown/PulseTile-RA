@@ -97,7 +97,46 @@ export function getCurrentTheme(isContrastMode) {
     overrides: {
       MuiInput: {
         root: {
-          border: `1px solid ${palette.borderColor}`,
+          border: `2px solid ${palette.inputBorderColor}`,
+          paddingLeft: "5px",
+          paddingRight: "5px",
+          "&.Mui-focused": {
+            boxShadow: `0px 0px 0px 4px ${palette.highlightColor}`,
+          },
+          "&.Mui-disabled": {
+            border: `2px solid ${palette.disabledFontColor}`,
+          },
+        },
+        input: {
+          "&:focus": {
+            backgroundColor: "inherit !important",
+          },
+        },
+        underline: {
+          "&:before": {
+            display: "none",
+          },
+          "&:after": {
+            display: "none",
+          },
+        },
+      },
+      MuiFormLabel: {
+        root: {
+          lineHeight: 1.5,
+          "&.Mui-focused": {
+            color: palette.fontColor,
+          },
+        },
+      },
+      MuiInputLabel: {
+        animated: {
+          marginLeft: 5,
+        },
+        shrink: {
+          "&.Mui-focused": {
+            transform: "translate(0, -4px) scale(0.75)",
+          },
         },
       },
       MuiList: {

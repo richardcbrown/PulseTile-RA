@@ -80,8 +80,8 @@ const listStyles = (theme) => ({
     "& tbody tr:hover": {
       backgroundColor: theme.palette.mainColor,
     },
-    "& tbody tr:hover td span": {
-      color: "#fff",
+    "& tbody tr:hover td": {
+      color: theme.palette.common.white,
     },
   },
 })

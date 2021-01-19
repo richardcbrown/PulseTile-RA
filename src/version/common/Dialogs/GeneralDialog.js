@@ -72,10 +72,19 @@ class GeneralDialog extends Component {
 
     return (
       <React.Fragment>
-        <Dialog onBackdropClick={() => onClose()} open={open} {...rest}>
+        <Dialog
+          disableAutoFocus={true}
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-description"
+          onBackdropClick={() => onClose()}
+          open={open}
+          {...rest}
+        >
           <div className={classes.dialogBlock}>
-            <Typography className={classes.titleBlock}>{title}</Typography>
-            <Typography className={classes.description}>
+            <Typography id="dialog-title" className={classes.titleBlock}>
+              {title}
+            </Typography>
+            <Typography id="dialog-description" className={classes.description}>
               <div dangerouslySetInnerHTML={{ __html: message }}></div>
             </Typography>
             <div className={classes.toolbar}>{options.map((o) => o)}</div>

@@ -25,7 +25,7 @@ const styles = (theme) => ({
     height: "100%",
     position: "absolute",
     backgroundColor: theme.palette.paperColor,
-    zIndex: 999999999999,
+    zIndex: 999999,
   },
   menuBlock: {
     border: `1px solid ${theme.palette.borderColor}`,
@@ -39,6 +39,11 @@ const styles = (theme) => ({
       backgroundColor: theme.palette.mainColor,
       color: "#fff !important",
     },
+    "& .MuiListItemIcon-root": {
+      color: "inherit",
+      minWidth: 20,
+      marginTop: -2,
+    },
   },
   menuItemSelected: {
     paddingTop: "16px",
@@ -46,7 +51,14 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.mainColor + "! important",
     color: "#fff !important",
     borderBottom: `1px solid ${theme.palette.borderColor}`,
+    "& .MuiListItemIcon-root": {
+      color: "inherit",
+      minWidth: 20,
+      marginTop: -2,
+    },
   },
+  menuItemIcon: { color: "inherit" },
+  menuItemIconSelected: { color: "inherit" },
 })
 
 /**

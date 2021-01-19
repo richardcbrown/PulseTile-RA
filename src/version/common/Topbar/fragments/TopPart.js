@@ -104,10 +104,10 @@ const TopPart = ({ classes, logout, location, history }) => {
             id="logo-image"
             className={classes.image}
             component="img"
-            alt="Pulse Tile"
+            alt="Helm Logo"
             height="38px"
             image={helmLogo}
-            title="Pulse Tile"
+            title="Helm Logo"
           />
         </Link>
       </div>
@@ -115,10 +115,10 @@ const TopPart = ({ classes, logout, location, history }) => {
       <CardMedia
         className={classes.nhsLogo}
         component="img"
-        alt="Pulse Tile"
+        alt="NHS Logo"
         height="29px"
         image={nhsLogo}
-        title="Pulse Tile"
+        title="NHS Logo"
       />
       <UserTour classes={classes} location={location} />
       <ContrastMode classes={classes} />

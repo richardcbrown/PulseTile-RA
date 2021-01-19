@@ -112,10 +112,20 @@ class HandleErrorModal extends Component {
     const errorDescription = this.getErrorDescription(errorStatus, isJwtOld)
     return (
       <React.Fragment>
-        <Dialog open={isOpen} {...rest}>
+        <Dialog
+          disableAutoFocus={true}
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-description"
+          open={isOpen}
+          {...rest}
+        >
           <div className={classes.dialogBlock}>
-            <Typography className={classes.titleBlock}>Connection Error</Typography>
-            <Typography className={classes.description}>{errorDescription}</Typography>
+            <Typography id="dialog-title" className={classes.titleBlock}>
+              Connection Error
+            </Typography>
+            <Typography id="dialog-description" className={classes.description}>
+              {errorDescription}
+            </Typography>
             <div className={classes.toolbar}>
               <Button aria-label="Close" onClick={() => this.closeModal()}>
                 Close

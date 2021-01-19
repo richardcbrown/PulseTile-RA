@@ -48,20 +48,20 @@ const TopPart = ({ classes }) => {
           id="logo-image"
           className={classes.image}
           component="img"
-          alt="Pulse Tile"
+          alt="Helm Logo"
           height="38px"
           image={helmLogo}
-          title="Pulse Tile"
+          title="Helm Logo"
         />
       </div>
       <div className={classes.emptyBlock}></div>
       <CardMedia
         className={classes.nhsLogo}
         component="img"
-        alt="Pulse Tile"
+        alt="NHS Logo"
         height="29px"
         image={nhsLogo}
-        title="Pulse Tile"
+        title="NHS Logo"
       />
     </Toolbar>
   )
