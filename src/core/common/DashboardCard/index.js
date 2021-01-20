@@ -49,9 +49,9 @@ const CardHeader = ({ id, listOnly, classes, clickHandler, title, icon }) => {
     return (
       <CardActionArea id={id} className={classes.topBlock} aria-label={title} onClick={clickHandler}>
         <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
-        <h1 className={classes.mainHeading}>
+        <h2 className={classes.mainHeading}>
           <Typography className={classes.title}>{title}</Typography>
-        </h1>
+        </h2>
       </CardActionArea>
     )
   }
@@ -59,9 +59,9 @@ const CardHeader = ({ id, listOnly, classes, clickHandler, title, icon }) => {
   return (
     <div id={id} className={classes.topBlockListOnly} aria-label={title}>
       <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
-      <h1 className={classes.mainHeading}>
+      <h2 className={classes.mainHeading}>
         <Typography className={classes.title}>{title}</Typography>
-      </h1>
+      </h2>
     </div>
   )
 }

@@ -90,14 +90,14 @@ class BundlePagination extends Component {
 
   pageSelected(newPage) {
     const { pageDetails, page } = this.state
-    const { setAccessibilityMessage } = this.props
+    const { setAccessibilityMessage, labelPrefix } = this.props
 
     if (!pageDetails) {
       return
     }
 
     this.setState({ page: newPage })
-    setAccessibilityMessage(`Pagination page ${newPage} selected`)
+    setAccessibilityMessage(`${labelPrefix}Pagination page ${newPage} selected`)
 
     if (newPage === page) {
       return
@@ -108,7 +108,7 @@ class BundlePagination extends Component {
     pageSelected({ _page: newPage, _queryId: pageDetails.queryId })
   }
 
-  getDigitButtons(buttonsNumber, page, classes) {
+  getDigitButtons(buttonsNumber, page, classes, labelPrefix) {
     let buttons = []
     if (buttonsNumber > MAXIMAL_BUTTONS_NUMBER) {
       const half = Math.ceil(MAXIMAL_BUTTONS_NUMBER / 2) - 1
@@ -116,7 +116,7 @@ class BundlePagination extends Component {
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
-            aria-label={`page ${i + 1}`}
+            aria-label={`${labelPrefix}page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
             aria-current={page === i + 1 ? "page" : ""}
           >
@@ -129,7 +129,7 @@ class BundlePagination extends Component {
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
-            aria-label={`page ${i + 1}`}
+            aria-label={`${labelPrefix}page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
             aria-current={page === i + 1 ? "page" : ""}
           >
@@ -142,7 +142,7 @@ class BundlePagination extends Component {
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
-            aria-label={`page ${i + 1}`}
+            aria-label={`${labelPrefix}page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
             aria-current={page === i + 1 ? "page" : ""}
           >
@@ -212,6 +212,8 @@ class BundlePagination extends Component {
   render() {
     const { classes, itemsPerPage } = this.props
 
+    let labelPrefix = this.props.labelPrefix ? `${this.props.labelPrefix} ` : ""
+
     const { pageDetails } = this.state
 
     if (!pageDetails) {
@@ -220,50 +222,50 @@ class BundlePagination extends Component {
 
     const page = pageDetails.currentPage
     const buttonsNumber = Math.ceil(pageDetails.total / itemsPerPage)
-    const buttons = this.getDigitButtons(buttonsNumber, page, classes)
+    const buttons = this.getDigitButtons(buttonsNumber, page, classes, labelPrefix)
     return (
-      <div className={classes.paginatorRoot} role="navigation" aria-label="pagination">
-        <Tooltip title="First page">
+      <div className={classes.paginatorRoot} role="navigation" aria-label={`${labelPrefix} pagination`}>
+        <Tooltip title={`${labelPrefix}First page`}>
           <IconButton
             onClick={() => this.pageSelected(page - 1)}
             className={classes.button}
             disabled={page === 1}
-            aria-label="First page"
+            aria-label={`${labelPrefix}First page`}
             aria-disabled={page === 1}
           >
             <FirstPageIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Previous page">
+        <Tooltip title={`${labelPrefix}Previous page`}>
           <IconButton
             onClick={() => this.pageSelected(page - 1)}
             className={classes.button}
             disabled={page === 1}
             aria-disabled={page === 1}
-            aria-label="Previous page"
+            aria-label={`${labelPrefix}Previous page`}
           >
             <KeyboardArrowLeft />
           </IconButton>
         </Tooltip>
         {buttons}
-        <Tooltip title="Next page">
+        <Tooltip title={`${labelPrefix}Next page`}>
           <IconButton
             onClick={() => this.pageSelected(page + 1)}
             className={classes.button}
             disabled={page === buttonsNumber}
             aria-disabled={page === buttonsNumber}
-            aria-label="Next page"
+            aria-label={`${labelPrefix}Next page`}
           >
             <KeyboardArrowRight />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Last page">
+        <Tooltip title={`${labelPrefix}Last page`}>
           <IconButton
             onClick={() => this.pageSelected(buttonsNumber)}
             className={classes.button}
             disabled={page === buttonsNumber}
             aria-disabled={page === buttonsNumber}
-            aria-label="Last page"
+            aria-label={`${labelPrefix}Last page`}
           >
             <LastPageIcon />
           </IconButton>

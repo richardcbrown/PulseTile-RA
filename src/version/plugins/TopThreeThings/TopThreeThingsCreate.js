@@ -165,12 +165,13 @@ const QuestionnaireResponseItemCreator = ({ classes, item, setValue, value, erro
               <FormControl className={type === "text" ? classes.labelBlock : classes.labelBlockTitle}>
                 <TextField
                   name={name}
+                  id={name}
                   error={error}
                   value={value}
                   onChange={(event) => setValue(event.target.value)}
                   label={item.prefix || item.text}
                   InputLabelProps={{
-                    "aria-label": item.text || item.prefix,
+                    "aria-label": `Enter ${item.text || item.prefix}`,
                     for: name,
                   }}
                   fullWidth={type === "text"}
@@ -187,13 +188,14 @@ const QuestionnaireResponseItemCreator = ({ classes, item, setValue, value, erro
             <FormControl className={type === "text" ? classes.labelBlock : classes.labelBlockTitle}>
               <TextField
                 name={name}
+                id={name}
                 error={error}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
                 label={item.prefix || item.text}
                 fullWidth={type === "text"}
                 InputLabelProps={{
-                  "aria-label": item.text || item.prefix,
+                  "aria-label": `Enter ${item.text || item.prefix}`,
                   for: name,
                 }}
               />

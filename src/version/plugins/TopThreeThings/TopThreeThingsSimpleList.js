@@ -129,6 +129,7 @@ class TopThreeThingsSimpleList extends Component {
             </React.Fragment>
             {questionnaire ? (
               <BundleList
+                tableName={"Top three things history"}
                 componentKey={bundleListKey}
                 tableClass={classes.tableList}
                 resourceType="QuestionnaireResponse"

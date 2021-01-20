@@ -23,6 +23,7 @@ import { httpErrorAction } from "../../../core/actions/httpErrorAction"
 import { connect } from "react-redux"
 import get from "lodash/get"
 import { PageTitle } from "../../../core/common/PageTitle"
+import { setAccessibilityMessage } from "../../../core/actions/accessibilityActions"
 
 const styles = (theme) => ({
   container: {
@@ -331,6 +332,11 @@ class DirectoryList extends Component {
       searching: false,
       firstLoad: true,
     }
+
+    this.tagSelected = this.tagSelected.bind(this)
+    this.tagRemoved = this.tagRemoved.bind(this)
+    this.tagChanged = this.tagChanged.bind(this)
+    this.pageSelected = this.pageSelected.bind(this)
   }
 
   componentDidMount() {
@@ -377,7 +383,9 @@ class DirectoryList extends Component {
     this.setState({ searching: true })
 
     const { tags, serviceOrResourceName, page } = this.state
-    const { onError } = this.props
+    const { onError, setAccessibilityMessage } = this.props
+
+    setAccessibilityMessage(`Getting search results for page ${page}`)
 
     customDataProvider("GET_LIST", "leeds-information", {
       q: serviceOrResourceName,
@@ -393,6 +401,8 @@ class DirectoryList extends Component {
             firstLoad: false,
           }
         })
+
+        setAccessibilityMessage(`Search results for page ${page} loaded`)
       })
       .catch((error) => {
         const errorTrim = error.message.replace("Error:", "").trim()
@@ -447,8 +457,7 @@ class DirectoryList extends Component {
 
         <div className={classes.searchContainer}>
           <Typography
-            style={{ marginBottom: 5 }}
-            variant="caption"
+            variant="h6"
             aria-label="Type in a search term e.g. Diabetes for national and local service information."
           >
             Type in a search term e.g. Diabetes for national and local service information.
@@ -456,9 +465,15 @@ class DirectoryList extends Component {
           <TextField
             value={serviceOrResourceName}
             onChange={(e) => this.debounceNameSearch(e.target.value)}
+            id="resources-search"
             label="Search Service or Resource name"
+            aria-label="Search Service or Resource name"
             fullWidth
             className={classes.searchField}
+            InputLabelProps={{
+              for: "resources-search",
+              "aria-label": "Search Service or Resource name",
+            }}
           />
 
           {(results.length && (
@@ -501,6 +516,7 @@ class DirectoryList extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     onError: (error) => dispatch(httpErrorAction.save(error)),
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
   }
 }
 

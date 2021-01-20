@@ -34,7 +34,17 @@ class BundleList extends Component {
 
   /** @returns {JSX.Element | null} */
   render() {
-    const { bundle, resourceType, componentKey, getBundle, rowProvider, headProvider, query, tableClass } = this.props
+    const {
+      bundle,
+      resourceType,
+      componentKey,
+      getBundle,
+      rowProvider,
+      headProvider,
+      query,
+      tableClass,
+      tableName,
+    } = this.props
 
     if (!bundle) {
       return null
@@ -51,6 +61,7 @@ class BundleList extends Component {
           </Table>
         </div>
         <BundlePagination
+          labelPrefix={tableName}
           itemsPerPage={query._count}
           bundle={bundle}
           pageSelected={(query) => getBundle(componentKey, resourceType, querystring.stringify(query))}
