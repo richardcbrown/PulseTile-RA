@@ -94,18 +94,18 @@ const TopPart = ({ classes, logout, location, history }) => {
   return (
     <Toolbar className={classes.topPart}>
       <div className={classes.homeButtonItem}>
-        <Link id="icon-home" to="/" className={classes.homeButton} color="inherit" aria-label="Home">
+        <Link id="icon-home" to="/" className={classes.homeButton} aria-label="Home">
           <HomeIcon />
         </Link>
       </div>
       <div className={classes.mainLogoItem}>
-        <Link to="/" className={classes.homeButton} color="inherit" aria-label="Home">
+        <Link to="/" className={classes.homeButton} aria-label="Home">
           <CardMedia
             id="logo-image"
             className={classes.image}
             component="img"
             alt="Helm Logo"
-            height="38px"
+            height="38"
             image={helmLogo}
             title="Helm Logo"
           />
@@ -116,7 +116,7 @@ const TopPart = ({ classes, logout, location, history }) => {
         className={classes.nhsLogo}
         component="img"
         alt="NHS Logo"
-        height="29px"
+        height="29"
         image={nhsLogo}
         title="NHS Logo"
       />

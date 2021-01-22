@@ -93,7 +93,7 @@ const DirectoryCard = (props) => {
     <Grid className={classes.cardContainer} item xs={12} sm={6} md={6} lg={3}>
       <Card className={classes.card} onClick={() => onPageSelected()}>
         <div id={id} className={classes.topBlock} aria-label={title}>
-          <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
+          <FontAwesomeIcon title="" icon={icon} size="2x" className={classes.icon} />
           <h1 className={classes.mainHeading}>
             <Typography className={classes.title}>{title}</Typography>
           </h1>

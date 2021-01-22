@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import ItemsList from "./ItemsList"
 import { SHOW_ALL } from "../../pages/PatientSummary/config"
 import { CardActionArea } from "@material-ui/core"
+import clsx from "clsx"
 
 /**
  * This component returns list of empty rows if information is loading
@@ -47,21 +48,21 @@ const ListBlock = ({ classes, items, list, history, listOnly }) => {
 const CardHeader = ({ id, listOnly, classes, clickHandler, title, icon }) => {
   if (!listOnly) {
     return (
-      <CardActionArea id={id} className={classes.topBlock} aria-label={title} onClick={clickHandler}>
-        <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
-        <h2 className={classes.mainHeading}>
-          <Typography className={classes.title}>{title}</Typography>
-        </h2>
-      </CardActionArea>
+      <a id={id} className={classes.topBlock} aria-label={title} onClick={clickHandler}>
+        <FontAwesomeIcon title="" icon={icon} size="2x" className={classes.icon} />
+        <Typography variant="h2" className={clsx(classes.mainHeading, classes.title)}>
+          {title}
+        </Typography>
+      </a>
     )
   }
 
   return (
     <div id={id} className={classes.topBlockListOnly} aria-label={title}>
-      <FontAwesomeIcon icon={icon} size="2x" className={classes.icon} />
-      <h2 className={classes.mainHeading}>
-        <Typography className={classes.title}>{title}</Typography>
-      </h2>
+      <FontAwesomeIcon title="" icon={icon} size="2x" className={classes.icon} />
+      <Typography variant="h2" className={clsx(classes.mainHeading, classes.title)}>
+        {title}
+      </Typography>
     </div>
   )
 }

@@ -137,7 +137,7 @@ class DialogContent extends Component {
       <Dialog onBackdropClick={() => onClose()} {...rest}>
         <div className={classes.dialogBlock}>
           <Tooltip title="Settings">
-            <IconButton className={classes.closeIcon} color="inherit" onClick={() => onClose()}>
+            <IconButton className={classes.closeIcon} onClick={() => onClose()}>
               <CloseIcon />
             </IconButton>
           </Tooltip>

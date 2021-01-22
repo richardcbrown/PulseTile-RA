@@ -10,6 +10,8 @@ import { pageHasTitle } from "../../../../core/common/Topbar/functions"
 import PageTitle from "../../../../core/common/Topbar/fragments/PageTitle"
 import PatientBanner from "../../../../core/common/Topbar/fragments/PatientBanner"
 import MobileMenu from "./MobileMenu"
+import { setAccessibilityMessage } from "../../../../core/actions/accessibilityActions"
+import { connect } from "react-redux"
 
 const styles = (theme) => ({
   lowPart: {
@@ -90,7 +92,7 @@ const MenuButton = ({ classes, setSidebarVisibility, isSidebarOpen }) => {
   return (
     <div className={classes.menuButtonBlock}>
       <Button
-        aria-label={!isSidebarOpen ? "Menu" : "Close"}
+        aria-label={!isSidebarOpen ? "Open Navigation Menu" : "Close Navigation Menu"}
         variant="contained"
         color="primary"
         className={classes.menuButton}
@@ -112,11 +114,19 @@ const MenuButton = ({ classes, setSidebarVisibility, isSidebarOpen }) => {
 class LowPart extends Component {
   componentWillMount() {
     this.props.setSidebarVisibility(true)
+    this.setSidebarVisibility = this.setSidebarVisibility.bind(this)
+  }
+
+  setSidebarVisibility(visibility) {
+    this.props.setSidebarVisibility(visibility)
+    this.props.setAccessibilityMessage(`Navigation menu ${visibility ? "opened" : "closed"}`)
   }
 
   render() {
     const { classes, isSidebarOpen, setSidebarVisibility, location, patientInfo } = this.props
+
     const isPageHasTitle = pageHasTitle(location)
+
     return (
       <Toolbar className={classes.lowPart}>
         {isPageHasTitle && <PageTitle classes={classes} location={location} />}
@@ -134,4 +144,10 @@ class LowPart extends Component {
   }
 }
 
-export default withStyles(styles)(LowPart)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
+  }
+}
+
+export default withStyles(styles)(connect(null, mapDispatchToProps)(LowPart))

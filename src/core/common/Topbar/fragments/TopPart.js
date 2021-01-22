@@ -53,7 +53,7 @@ class TopPart extends Component {
     return (
       <Toolbar className={classes.whitePart}>
         <Tooltip title="Back">
-          <IconButton className={classes.backButton} onClick={() => history.goBack()} color="inherit">
+          <IconButton className={classes.backButton} onClick={() => history.goBack()}>
             <BackIcon />
           </IconButton>
         </Tooltip>
@@ -72,7 +72,6 @@ class TopPart extends Component {
               aria-owns={isTopbarMenuOpen ? "menu-appbar" : undefined}
               aria-haspopup="true"
               onClick={() => this.handleMenu()}
-              color="inherit"
             >
               <AccountCircle />
             </IconButton>

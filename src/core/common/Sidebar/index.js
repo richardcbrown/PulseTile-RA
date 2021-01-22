@@ -18,6 +18,7 @@ const styles = (theme) => ({
     backgroundColor: "#fff",
     "& div": {
       marginTop: 0,
+      marginBottom: 0,
     },
   },
   mobileSidebar: {
@@ -31,8 +32,7 @@ const styles = (theme) => ({
     border: `1px solid ${theme.palette.borderColor}`,
   },
   menuItem: {
-    paddingTop: "16px",
-    paddingBottom: "16px",
+    padding: "16px !important",
     color: `${theme.palette.mainColor} !important`,
     borderBottom: `1px solid ${theme.palette.borderColor}`,
     "&:hover": {
@@ -46,15 +46,14 @@ const styles = (theme) => ({
     },
   },
   menuItemSelected: {
-    paddingTop: "16px",
-    paddingBottom: "16px",
+    padding: "16px !important",
     backgroundColor: theme.palette.mainColor + "! important",
     color: "#fff !important",
     borderBottom: `1px solid ${theme.palette.borderColor}`,
     "& .MuiListItemIcon-root": {
       color: "inherit",
       minWidth: 20,
-      marginTop: -2,
+      margin: -2,
     },
   },
   menuItemIcon: { color: "inherit" },

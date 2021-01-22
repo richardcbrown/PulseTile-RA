@@ -26,10 +26,9 @@ class FeedbackButton extends Component {
     return (
       <Tooltip title="Feedback">
         <a
-          color="inherit"
           aria-label="Feedback"
-          href="mailto:info@myhelm.org?subject=User Feedback from Helm"
-          style={{ textDecoration: "none", display: "block", color: "inherit" }}
+          href="mailto:info@myhelm.org?subject=User%20Feedback%20from%20Helm"
+          style={{ textDecoration: "none", display: "inline-block", color: "inherit" }}
         >
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             <FeedbackIcon width={40} height={40} title="Feedback" />

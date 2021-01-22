@@ -57,7 +57,6 @@ const MenuButtonMobile = ({ classes, setSidebarVisibility, isSidebarOpen }) => (
     <IconButton
       className={classes.mobileMenuButton}
       aria-haspopup="true"
-      color="inherit"
       onClick={() => setSidebarVisibility(!isSidebarOpen)}
       aria-label={isSidebarOpen ? "Menu" : "Close"}
     >
@@ -96,6 +95,7 @@ class MobileMenu extends Component {
             {get(patientInfo, "name", null)}
           </Typography>
           <FontAwesomeIcon
+            title=""
             icon={faSortDown}
             size="1x"
             className={classes.iconArrowDown}

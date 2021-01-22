@@ -36,7 +36,7 @@ const LowPart = ({ classes, setSidebarVisibility, isSidebarOpen, isMenuVisible, 
     <Toolbar className={classes.greenPart}>
       {isMenuVisible && (
         <Tooltip title="Menu">
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton className={classes.menuButton} aria-label="Menu">
             <MenuIcon onClick={() => setSidebarVisibility(!isSidebarOpen)} />
           </IconButton>
         </Tooltip>

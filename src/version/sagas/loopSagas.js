@@ -16,7 +16,7 @@ export const getLoopServicesSaga = takeEvery(SYNOPSIS_LOOPSERVICES_ACTION.REQUES
         {
           text: (
             <Typography>
-              <Link to="/leeds-information" color="inherit" aria-label="Search">
+              <Link to="/leeds-information" aria-label="Search">
                 Search
               </Link>
             </Typography>

@@ -3,6 +3,7 @@ import { translate } from "react-admin"
 
 import { withStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
+import clsx from "clsx"
 
 const styles = (theme) => ({
   tableHeaderBlock: {
@@ -54,16 +55,11 @@ const TableHeader = ({ classes, resource, translate }) => {
 
   return (
     <div className={classes.tableHeaderBlock}>
-      <h1 className={classes.mainHeader}>
-        <Typography className={classes.title}>{title}</Typography>
-      </h1>
+      <Typography variant="h1" className={clsx(classes.mainHeader, classes.title)}>
+        {title}
+      </Typography>
       {(description && <Typography className={classes.description}>{description}</Typography>) || null}
-      {(subText && (
-        <Typography className={classes.description}>
-          <div dangerouslySetInnerHTML={{ __html: subText }}></div>
-        </Typography>
-      )) ||
-        null}
+      {(subText && <Typography className={classes.description}>{subText}</Typography>) || null}
     </div>
   )
 }

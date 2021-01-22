@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { setSidebarVisibility } from "react-admin"
 import RunUserTour from "./fragments/RunTourButton"
+import { setAccessibilityMessage } from "../../../core/actions/accessibilityActions"
 
 class UserTour extends Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class UserTour extends Component {
       this.setState({
         shouldRunTour: false,
       })
+
+      this.props.setAccessibilityMessage("User tour finished")
     }
   }
 
@@ -32,6 +35,8 @@ class UserTour extends Component {
    */
   runTour() {
     this.setState({ shouldRunTour: true }, this.props.setSidebarVisibility(false))
+
+    this.props.setAccessibilityMessage("User tour started")
   }
 
   render() {
@@ -62,6 +67,7 @@ const mapDispatchToProps = (dispatch) => {
     setSidebarVisibility(params) {
       dispatch(setSidebarVisibility(params))
     },
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
   }
 }
 

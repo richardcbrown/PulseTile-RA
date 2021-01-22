@@ -30,7 +30,7 @@ const ItemsList = ({ classes, items, list, history, listOnly }) => {
             list && item.sourceId ? () => history.push("/" + list + "/" + item.sourceId + "/show") : () => {}
           return (
             <li key={key} className={classes.listItem} onClick={onClick}>
-              <Typography>{item.text}</Typography>
+              {typeof item.text === "string" ? <Typography>{item.text}</Typography> : item.text}
             </li>
           )
         })}

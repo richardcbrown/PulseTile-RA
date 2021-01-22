@@ -40,7 +40,7 @@
     }
 
     .MuiFocus-visible,
-    *:focus:not(.MuiBackdrop-root):not(.MuiDialog-container):not(.MuiInput-input),
+    *:focus:not(.MuiBackdrop-root):not(.MuiDialog-container):not(.MuiInput-input):not(.MuiPopover-paper),
     .MuiButtonBase-root:focus {
       color: #000000 !important;
       background-color: #FFA44D !important;
@@ -59,13 +59,14 @@
       display: none;
     }
 
-    *:focus {
+    *:focus:not(.MuiBackdrop-root):not(.MuiDialog-container):not(.MuiInput-input):not(.MuiPopover-paper) {
       padding: 5px;
     }
 
     .Mui-focusVisible span,
-    *:focus span,
-    .MuiButtonBase-root:focus {
+    *:focus:not(.MuiBackdrop-root):not(.MuiDialog-container):not(.MuiInput-input):not(.MuiPopover-paper) span,
+    .MuiButtonBase-root:focus,
+    *:focus:not(.MuiBackdrop-root):not(.MuiDialog-container):not(.MuiInput-input):not(.MuiPopover-paper) {
       color: #000000 !important;
     }
 

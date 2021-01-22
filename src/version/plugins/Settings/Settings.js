@@ -30,6 +30,7 @@ import TableHeader from "../../../core/common/TableHeader"
 import { usePrimaryCheckboxStyles, usePrimaryRadioStyles } from "../../common/Styles/CheckboxStyles"
 import { CenterLoader } from "../../common/Loader"
 import { PageTitle } from "../../../core/common/PageTitle"
+import { setAccessibilityMessage } from "../../../core/actions/accessibilityActions"
 
 const useStyles = makeStyles({
   createBlock: {
@@ -84,10 +85,10 @@ const CheckboxControl = ({ item, value, setValue }) => {
                 <Tick />
               </SvgIcon>
             }
-            onChange={setValue}
+            onChange={() => setValue(!value)}
           />
         }
-        label={<Typography>{item.title}</Typography>}
+        label={item.title}
       />
       <FormHelperText>{item.description}</FormHelperText>
     </FormControl>
@@ -113,7 +114,7 @@ function getEditorForPreferenceItemByType(item, value, setValue) {
     case "link": {
       return (
         <a href={item.url} target={item.target} rel="noopener noreferrer">
-          {item.title}
+          <Typography>{item.title}</Typography>
         </a>
       )
     }
@@ -169,7 +170,12 @@ const SettingsSection = ({ index, preferences, getPreferenceValue, setPreference
 }
 
 const Settings = (props) => {
-  const { savePreferences } = props
+  const { savePreferences, setAccessibilityMessage } = props
+
+  const accessibilitySavePreferences = (preferences) => {
+    savePreferences(preferences)
+    setAccessibilityMessage("Saving user preferences")
+  }
 
   const [selectedPreferences, setSelectedPreferences] = useState({})
 
@@ -177,6 +183,7 @@ const Settings = (props) => {
     const preferences = (props.preferences && props.preferences.data && props.preferences.data.preferences) || {}
 
     setSelectedPreferences(preferences)
+    setAccessibilityMessage("User preferences loaded")
   }, [props.preferences])
 
   const classes = useStyles()
@@ -231,7 +238,11 @@ const Settings = (props) => {
                   xs={12}
                   style={{ flexBasis: "initial", flexGrow: 1, display: "flex", alignItems: "flex-end" }}
                 >
-                  <ConfirmButton label="Save" onClick={() => savePreferences(selectedPreferences)} />
+                  <ConfirmButton
+                    label="Save"
+                    aria-label="Save preferences"
+                    onClick={() => accessibilitySavePreferences(selectedPreferences)}
+                  />
                 </Grid>
               </>
             )
@@ -252,6 +263,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     savePreferences: (preferences) => dispatch(savePreferencesAction.request(preferences)),
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
   }
 }
 

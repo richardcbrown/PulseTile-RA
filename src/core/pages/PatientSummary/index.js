@@ -105,7 +105,6 @@ class PatientSummaryInfo extends Component {
       <Grid className={classes.container}>
         <PageTitle />
         <Breadcrumbs resource={breadcrumbsResource} />
-        {/* <SettingsDialog className={classes.settingsIcon} /> */}
         <Grid className={classes.summaryContainer} spacing={4} container>
           {synopsisData.map((item, key) => {
             return (

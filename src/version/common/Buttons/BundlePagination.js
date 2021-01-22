@@ -113,12 +113,14 @@ class BundlePagination extends Component {
     if (buttonsNumber > MAXIMAL_BUTTONS_NUMBER) {
       const half = Math.ceil(MAXIMAL_BUTTONS_NUMBER / 2) - 1
       for (let i = 0; i < half; i++) {
+        const attrs = page === i + 1 ? { "aria-current": "page" } : {}
+
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
             aria-label={`${labelPrefix}page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
-            aria-current={page === i + 1 ? "page" : ""}
+            {...attrs}
           >
             {i + 1}
           </Button>
@@ -126,12 +128,14 @@ class BundlePagination extends Component {
       }
       buttons.push(<Button className={classes.button}>{"..."}</Button>)
       for (let i = buttonsNumber - half; i < buttonsNumber; i++) {
+        const attrs = page === i + 1 ? { "aria-current": "page" } : {}
+
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
             aria-label={`${labelPrefix}page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
-            aria-current={page === i + 1 ? "page" : ""}
+            {...attrs}
           >
             {i + 1}
           </Button>
@@ -139,12 +143,14 @@ class BundlePagination extends Component {
       }
     } else {
       for (let i = 0; i < buttonsNumber; i++) {
+        const attrs = page === i + 1 ? { "aria-current": "page" } : {}
+
         buttons.push(
           <Button
             onClick={() => this.pageSelected(i + 1)}
             aria-label={`${labelPrefix}page ${i + 1}`}
             className={page === i + 1 ? classes.activeButton : classes.button}
-            aria-current={page === i + 1 ? "page" : ""}
+            {...attrs}
           >
             {i + 1}
           </Button>

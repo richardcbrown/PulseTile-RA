@@ -47,7 +47,7 @@ const Breadcrumbs = ({ classes, resource }) => {
     <div className={classes.breadcrumbsBlock}>
       <Grid item xs={11} md={8} style={{ display: "flex", alignItems: "center" }}>
         <Typography>
-          <Link to="/" className={classes.link} color="inherit" aria-label="Home">
+          <Link to="/" className={classes.link} aria-label="Home">
             Home
           </Link>
         </Typography>
@@ -56,7 +56,7 @@ const Breadcrumbs = ({ classes, resource }) => {
             <div key={key} className={classes.breadcrumbsItem}>
               <div className={classes.separator}></div>
               {item.isActive ? (
-                <Link to={item.url} className={classes.link} color="inherit" aria-label={item.title}>
+                <Link to={item.url} className={classes.link} aria-label={item.title}>
                   <Typography className={classes.link}>{item.title}</Typography>
                 </Link>
               ) : (

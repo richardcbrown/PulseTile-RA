@@ -5,9 +5,9 @@ import IconButton from "@material-ui/core/IconButton"
 import ContrastIcon from "@material-ui/icons/Tonality"
 import Tooltip from "@material-ui/core/Tooltip"
 
-import { contrastModeAction } from "../../actions/contrastModeAction"
 import { get } from "lodash"
 import { savePreferencesAction } from "../../actions/preferencesActions"
+import { setAccessibilityMessage } from "../../../core/actions/accessibilityActions"
 
 /**
  * Thic component returns Contrast Mode button
@@ -20,7 +20,7 @@ class ContrastMode extends Component {
   }
 
   toggleContrastMode() {
-    const { contrastMode, preferences, savePreferences } = this.props
+    const { contrastMode, preferences, savePreferences, setAccessibilityMessage } = this.props
 
     const userPrefs = (preferences && preferences.data && preferences.data.preferences) || null
 
@@ -28,7 +28,11 @@ class ContrastMode extends Component {
       return
     }
 
-    userPrefs["general.preferences.contrastMode"] = !contrastMode
+    const newContrastMode = !contrastMode
+
+    userPrefs["general.preferences.contrastMode"] = newContrastMode
+
+    setAccessibilityMessage(`Turning contrast mode ${newContrastMode ? "on" : "off"}`)
 
     savePreferences(userPrefs)
   }
@@ -41,7 +45,6 @@ class ContrastMode extends Component {
           <IconButton
             className={classes.rightBlockButton}
             aria-haspopup="true"
-            color="inherit"
             onClick={() => this.toggleContrastMode()}
             aria-label="Contrast mode"
           >
@@ -69,6 +72,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     savePreferences: (preferences) => dispatch(savePreferencesAction.request(preferences)),
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
   }
 }
 

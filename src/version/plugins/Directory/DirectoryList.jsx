@@ -230,19 +230,19 @@ class DefaultCard extends Component {
           <CardContent>
             {resource.contact_name && (
               <div className={classes.cardContact}>
-                <FontAwesomeIcon icon={faUser} size="2x" style={{ height: 20 }} />
+                <FontAwesomeIcon title="" icon={faUser} size="2x" style={{ height: 20 }} />
                 <Typography>{resource.contact_name}</Typography>
               </div>
             )}
             {resource.contact_phone && (
               <div className={classes.cardContact}>
-                <FontAwesomeIcon icon={faPhone} size="2x" style={{ height: 20 }} />
+                <FontAwesomeIcon title="" icon={faPhone} size="2x" style={{ height: 20 }} />
                 <Typography>{resource.contact_phone}</Typography>
               </div>
             )}
             {resource.contact_email && (
               <div className={classes.cardContact}>
-                <FontAwesomeIcon icon={faAt} size="2x" style={{ height: 20 }} />
+                <FontAwesomeIcon title="" icon={faAt} size="2x" style={{ height: 20 }} />
                 <Typography>{resource.contact_email}</Typography>
               </div>
             )}

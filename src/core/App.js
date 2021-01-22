@@ -66,7 +66,6 @@ const AccessibilityNotice = ({ message }) => {
 
 const mapStateToProps = (state) => {
   const message = get(state, "custom.accessibility.message", null)
-  console.log(message)
   return {
     message,
   }

@@ -7,11 +7,12 @@ import Popover from "@material-ui/core/Popover"
 import Card from "@material-ui/core/Card"
 import PersonIcon from "@material-ui/icons/Person"
 import Tooltip from "@material-ui/core/Tooltip"
-
+import { connect } from "react-redux"
 import CustomLogoutButton from "../../../../core/common/Buttons/CustomLogoutButton"
 import { ReactComponent as SettingsIcon } from "../../../images/Icons/Settings.svg"
 import { SvgIcon } from "@material-ui/core"
 import { withRouter } from "react-router-dom"
+import { setAccessibilityMessage } from "../../../../core/actions/accessibilityActions"
 
 const styles = (theme) => ({
   userPanel: {
@@ -66,17 +67,25 @@ class UserPanelButton extends Component {
   }
 
   handleMenu() {
+    const isOpen = !this.state.isOpen
+
     this.setState((state) => ({
       anchorEl: this.button.current,
-      isOpen: !state.isOpen,
+      isOpen,
     }))
+
+    this.props.setAccessibilityMessage(`User menu ${isOpen ? "opened" : "closed"}`)
   }
 
   handleClose() {
+    const isOpen = !this.state.isOpen
+
     this.setState((state) => ({
       anchorEl: null,
-      isOpen: !state.isOpen,
+      isOpen,
     }))
+
+    this.props.setAccessibilityMessage(`User menu ${isOpen ? "opened" : "closed"}`)
   }
 
   render() {
@@ -90,8 +99,7 @@ class UserPanelButton extends Component {
             className={classes.rightBlockButton}
             aria-owns={isOpen ? "menu-appbar" : undefined}
             aria-haspopup="true"
-            onClick={this.handleMenu.bind(this)}
-            color="inherit"
+            onClick={() => this.handleMenu()}
             aria-label="User Panel"
           >
             <PersonIcon />
@@ -127,4 +135,10 @@ class UserPanelButton extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(UserPanelButton))
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAccessibilityMessage: (message) => dispatch(setAccessibilityMessage(message)),
+  }
+}
+
+export default withStyles(styles)(withRouter(connect(null, mapDispatchToProps)(UserPanelButton)))
