@@ -23,7 +23,7 @@ export default [
     SYNOPSIS_TOP_THREE_THINGS_ACTION,
     synopsisTopThreeThingsAction,
     "QuestionnaireResponse",
-    "_sort=-authored&_count=1&questionnaire.identifier=http://test.com|test"
+    "_sort=authored&_count=1&questionnaire.identifier=http://test.com|test"
   ),
   createFhirBundleSaga(GET_FHIR_RESOURCES_ACTION, getFhirResourcesAction),
   createFhirResourceSaga(CREATE_FHIR_RESOURCE_ACTION, createFhirResourceAction),

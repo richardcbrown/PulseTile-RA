@@ -134,7 +134,7 @@ class TopThreeThingsSimpleList extends Component {
                 tableClass={classes.tableList}
                 resourceType="QuestionnaireResponse"
                 query={{
-                  _sort: "-authored",
+                  _sort: "authored",
                   _count: 10,
                   questionnaire: `${questionnaire.resourceType}/${questionnaire.id}`,
                 }}

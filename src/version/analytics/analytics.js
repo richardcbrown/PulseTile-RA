@@ -1,3 +1,5 @@
+import { getToken } from "../../core/token"
+
 export default function helmPlugin(userConfig) {
   // return object for analytics to use
   return {
@@ -19,7 +21,7 @@ export default function helmPlugin(userConfig) {
       // call provider specific page tracking
       fetch("/analytics/page", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
         body: JSON.stringify(payload),
       })
     },
