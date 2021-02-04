@@ -23,10 +23,9 @@ const styles = (theme) => ({
   },
   mobileSidebar: {
     width: "100%",
-    height: "100%",
     position: "absolute",
-    backgroundColor: theme.palette.paperColor,
-    zIndex: 999999,
+    backgroundColor: "transparent",
+    zIndex: 3,
   },
   menuBlock: {
     border: `1px solid ${theme.palette.borderColor}`,

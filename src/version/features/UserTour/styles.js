@@ -15,7 +15,7 @@ export default {
     spotlightShadow: "none",
     textColor: "#333",
     width: 400,
-    zIndex: 999999,
+    zIndex: 3,
   },
   tooltipTitle: {
     textAlign: "left",

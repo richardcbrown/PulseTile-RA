@@ -25,9 +25,11 @@ const styles = (theme) => ({
     padding: 0,
     justifyContent: "space-between",
     backgroundColor: theme.palette.paperColor,
+    color: theme.palette.fontColor,
   },
   mobileMenuButton: {
     color: theme.palette.mainColor,
+    padding: "12px !important",
   },
   iconArrowDown: {
     color: theme.palette.fontColor,
@@ -37,6 +39,7 @@ const styles = (theme) => ({
   patientBannerMobile: {
     paddingLeft: 15,
     backgroundColor: theme.palette.paperColor,
+    color: theme.palette.fontColor,
     width: "100%",
     minHeight: "auto",
     "& span": {
@@ -132,7 +135,7 @@ class MobileMenu extends Component {
               <span>Address: </span>
               {get(patientInfo, "address", null)}
             </Typography>
-            {!resolved === false ? (
+            {resolved === false ? (
               <Typography className={classes.bannerRow} variant="caption">
                 Helm is working to obtain your details from the server. They will automatically update when received.
                 Thank you for your patience.

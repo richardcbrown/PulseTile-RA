@@ -52,28 +52,28 @@ const styles = (theme) => ({
   },
   icon: {
     marginBottom: 10,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   mainHeading: {
     margin: 0,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   title: {
     marginBottom: 0,
     fontSize: 20,
     fontWeight: 800,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   list: {
     padding: 0,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   listItem: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     padding: 15,
-    zIndex: 99999999,
+    zIndex: 2,
     fontSize: "1rem",
     borderLeft: `1px solid ${theme.palette.borderColor}`,
     borderRight: `1px solid ${theme.palette.borderColor}`,
@@ -81,7 +81,7 @@ const styles = (theme) => ({
   },
   emptyRows: {
     height: 150,
-    zIndex: 99999999,
+    zIndex: 2,
     borderLeft: `1px solid ${theme.palette.borderColor}`,
     borderRight: `1px solid ${theme.palette.borderColor}`,
     borderBottom: `1px solid ${theme.palette.borderColor}`,

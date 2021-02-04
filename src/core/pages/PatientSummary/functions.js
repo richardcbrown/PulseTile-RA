@@ -30,7 +30,7 @@ export function getSummaryContainerStyles(synopsisData) {
       height: 300,
       left: 0,
       right: 0,
-      zIndex: 999999,
+      zIndex: 1,
       background: `url(${cardBackgroundImage}) 0 0 repeat`,
       backgroundSize: "contain",
       transform: transforms[count],

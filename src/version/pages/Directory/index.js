@@ -61,7 +61,7 @@ const styles = (theme) => ({
       height: 300,
       left: 0,
       right: 0,
-      zIndex: 999999,
+      zIndex: 1,
       background: `url(${cardBackgroundImage}) 0 0 repeat`,
       backgroundSize: "contain",
       transform: "translate(-5px, -98px)",
@@ -69,18 +69,18 @@ const styles = (theme) => ({
   },
   icon: {
     marginBottom: 10,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   mainHeading: {
     margin: 0,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   title: {
     marginBottom: 0,
     color: "#fff",
     fontSize: 20,
     fontWeight: 800,
-    zIndex: 99999999,
+    zIndex: 2,
   },
   cardContainer: {
     alignSelf: "baseline",

@@ -42,6 +42,7 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   menuButton: {
+    padding: "6px 16px !important",
     borderRadius: 15,
     minWidth: 64,
     color: theme.palette.mainColor,
