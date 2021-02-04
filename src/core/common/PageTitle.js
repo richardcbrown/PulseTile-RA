@@ -12,6 +12,7 @@ const titles = {
   "/terms": { title: "Terms and Conditions" },
   "/settings": { title: "Settings" },
   "/nhs-resources": { title: "NHS Resources" },
+  "/accessibility": { title: "Accessibility" },
 }
 
 const PageTitle = (props) => {

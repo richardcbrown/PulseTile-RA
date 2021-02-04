@@ -91,7 +91,7 @@ const styles = (theme) => ({
  *
  * @author Bogdan Shcherban <bsc@piogroup.net>
  */
-const TopPart = ({ classes, logout, location, history }) => {
+const TopPart = ({ classes, logout, location, history, noUserJourney }) => {
   return (
     <Toolbar className={classes.topPart}>
       <div className={classes.homeButtonItem}>
@@ -121,7 +121,7 @@ const TopPart = ({ classes, logout, location, history }) => {
         image={nhsLogo}
         title="NHS Logo"
       />
-      <UserTour classes={classes} location={location} />
+      {noUserJourney ? null : <UserTour classes={classes} location={location} />}
       <ContrastMode classes={classes} />
       <UserPanelButton classes={classes} history={history} />
       <AccessibilityButton classes={classes} history={history} />

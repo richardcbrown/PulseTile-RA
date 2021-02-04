@@ -8,6 +8,7 @@ import { connect } from "react-redux"
 import { getCurrentTheme } from "../../../core/config/styles"
 import ArrowBack from "@material-ui/icons/ArrowBack"
 import PrimaryButton from "../../common/Buttons/PrimaryButton"
+import { PageTitle } from "../../../core/common/PageTitle"
 
 const backgroundStyles = (theme) => {
   return {
@@ -58,12 +59,13 @@ const Background = withStyles(backgroundStyles)(({ classes, contrastMode }) => {
 const AccessibilityPage = ({ history, theme, classes, isContrastMode }) => {
   return (
     <MuiThemeProvider theme={theme}>
+      <PageTitle />
       <TopBarOnly />
       <div style={{ position: "relative", width: "100%" }}>
         <Background contrastMode={isContrastMode} />
 
         <Grid container spacing={8} style={{ width: "100%", margin: 0 }}>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ paddingBottom: 0 }}>
             <PrimaryButton label="Back" icon={ArrowBack} onClick={() => history.goBack()} />
           </Grid>
           <Grid item xs={12}>
@@ -333,10 +335,15 @@ const AccessibilityPage = ({ history, theme, classes, isContrastMode }) => {
 }
 
 const mapStateToProps = (state) => {
-  const isContrastMode = get(state, "custom.contrastMode.data", false)
+  const preferences = get(state, "custom.preferences", {})
+
+  const userPrefs = (preferences && preferences.data && preferences.data.preferences) || {}
+
+  const contrastMode = get(userPrefs, "general.preferences.contrastMode", false)
+
   return {
-    theme: getCurrentTheme(isContrastMode),
-    isContrastMode,
+    theme: getCurrentTheme(contrastMode),
+    isContrastMode: contrastMode,
   }
 }
 
