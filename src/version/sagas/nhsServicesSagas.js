@@ -13,9 +13,9 @@ export const getNhsServicesSaga = takeEvery(SYNOPSIS_NHSSERVICES_ACTION.REQUEST,
         {
           text: "A-Z",
         },
-        {
-          text: "Social Care Support",
-        },
+        // {
+        //   text: "Social Care Support",
+        // },
       ],
     })
   )

@@ -39,11 +39,11 @@ const nhsWidgets = [
     widgetTitle: "NHS A-Z Widget",
     url: "https://api-bridge.azurewebsites.net/livewell/?uid=aW5mb0BteWhlbG0ub3Jn",
   },
-  {
-    title: "Social Care Support",
-    widgetTitle: "NHS Social Care Support Widget",
-    url: "https://api-bridge.azurewebsites.net/conditions/?uid=aW5mb0BteWhlbG0ub3Jn&p=social-care-and-support-guide",
-  },
+  // {
+  //   title: "Social Care Support",
+  //   widgetTitle: "NHS Social Care Support Widget",
+  //   url: "https://api-bridge.azurewebsites.net/conditions/?uid=aW5mb0BteWhlbG0ub3Jn&p=social-care-and-support-guide",
+  // },
 ]
 
 const useStyles = makeStyles({
