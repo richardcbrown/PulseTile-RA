@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Grid, Paper, withStyles, MuiThemeProvider } from "@material-ui/core"
 import { withRouter } from "react-router"
 import backgroundImage from "../../images/Artboard.png"
@@ -57,6 +57,10 @@ const Background = withStyles(backgroundStyles)(({ classes, contrastMode }) => {
 })
 
 const AccessibilityPage = ({ history, theme, classes, isContrastMode }) => {
+  useEffect(() => {
+    window.analytics.page({ url: window.location.hash })
+  }, [])
+
   return (
     <MuiThemeProvider theme={theme}>
       <PageTitle />

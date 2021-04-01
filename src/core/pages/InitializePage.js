@@ -156,10 +156,6 @@ class InitializePage extends Component {
 
     const { code, state } = hashquery ? queryString.parse(hashquery) : {}
 
-    console.log(window.location)
-
-    console.log(window.location.search)
-
     if (code) {
       this.getToken(code, state)
     } else if (!token || status !== "found") {
@@ -283,7 +279,13 @@ class InitializePage extends Component {
   }
 
   async getToken(code, state) {
-    const result = await fetch(`/api/auth/return?code=${code}&state=${state}`)
+    const query = { code }
+
+    if (state) {
+      query.state = state
+    }
+
+    const result = await fetch(`/api/auth/return?${queryString.stringify(query)}`)
 
     if (!result.ok) {
       return

@@ -147,7 +147,7 @@ class Terms extends Component {
                               aria-controls={`panel-${key}-content`}
                               id={`panel-${key}-header`}
                             >
-                              <Typography variant="title" className={classes.heading}>
+                              <Typography variant="h4" className={classes.heading}>
                                 {p.name}
                               </Typography>
                             </ExpansionPanelSummary>

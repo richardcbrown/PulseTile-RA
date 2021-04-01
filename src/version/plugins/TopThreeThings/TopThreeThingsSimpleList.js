@@ -98,7 +98,11 @@ class TopThreeThingsSimpleList extends Component {
 
     const { getBundle } = this.props
 
-    getBundle("TopThreeThingsList", "Questionnaire", querystring.stringify({ identifier: "http://test.com|test" }))
+    getBundle(
+      "TopThreeThingsList",
+      "Questionnaire",
+      querystring.stringify({ identifier: "https://fhir.myhelm.org/questionnaire-identifier|topThreeThings" })
+    )
   }
 
   render() {
@@ -134,7 +138,7 @@ class TopThreeThingsSimpleList extends Component {
                 tableClass={classes.tableList}
                 resourceType="QuestionnaireResponse"
                 query={{
-                  _sort: "authored",
+                  _sort: "-authored",
                   _count: 10,
                   questionnaire: `${questionnaire.resourceType}/${questionnaire.id}`,
                 }}

@@ -180,6 +180,10 @@ const Settings = (props) => {
   const [selectedPreferences, setSelectedPreferences] = useState({})
 
   useEffect(() => {
+    window.analytics.page({ url: window.location.hash })
+  }, [])
+
+  useEffect(() => {
     const preferences = (props.preferences && props.preferences.data && props.preferences.data.preferences) || {}
 
     setSelectedPreferences(preferences)

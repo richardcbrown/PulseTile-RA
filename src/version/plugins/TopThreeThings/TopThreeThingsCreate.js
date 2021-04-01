@@ -457,8 +457,14 @@ class TopThreeThingsCreate extends Component {
   }
 
   componentDidMount() {
+    window.analytics.page({ url: window.location.hash })
+
     const { resourceType, query, getBundle, componentKey } = this.props
-    getBundle("TopThreeThings", "Questionnaire", querystring.stringify({ identifier: "http://test.com|test" }))
+    getBundle(
+      "TopThreeThings",
+      "Questionnaire",
+      querystring.stringify({ identifier: "https://fhir.myhelm.org/questionnaire-identifier|topThreeThings" })
+    )
   }
 
   componentDidUpdate() {
@@ -486,7 +492,7 @@ class TopThreeThingsCreate extends Component {
       "QuestionnaireResponse",
       querystring.stringify({
         questionnaire: `${questionnaire.resourceType}/${questionnaire.id}`,
-        _sort: "authored",
+        _sort: "-authored",
         _count: 1,
       })
     )
@@ -656,8 +662,6 @@ const mapStateToProps = (state, ownProps) => {
     questionnaireResponseData.data &&
     getFromBundle(questionnaireResponseData.data, questionnaireResponseResourceType)[0]) ||
     null)
-
-  console.log(questionnaireResponse)
 
   return {
     questionnaire,
